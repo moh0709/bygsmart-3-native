@@ -5,18 +5,34 @@
   "description": "BygSmart 3.0 Native — the universal Expo app: iOS + Android + installable PWA (React Native Web).",
   "main": "expo-router/entry",
   "dependencies": {
-    "@bygsmart/core": "workspace:*",
+    "@bygsmart/api-client": "workspace:*",
     "@bygsmart/calc-engine": "workspace:*",
-    "@bygsmart/ui": "workspace:*",
+    "@bygsmart/core": "workspace:*",
     "@bygsmart/tokens": "workspace:*",
-    "@bygsmart/api-client": "workspace:*"
+    "@bygsmart/ui": "workspace:*",
+    "@expo/metro-runtime": "~56.0.18",
+    "expo": "~56.0.18",
+    "expo-constants": "~56.0.22",
+    "expo-linking": "~56.0.16",
+    "expo-router": "~56.2.17",
+    "expo-status-bar": "~56.0.4",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.85.3",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "~4.26.0",
+    "react-native-web": "^0.21.2"
   },
   "scripts": {
     "start": "expo start",
     "web": "expo start --web",
-    "typecheck": "echo \"(app: typecheck wired at Expo SDK 56 init)\" && exit 0",
-    "lint": "echo \"(app: lint wired at Expo SDK 56 init)\" && exit 0",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
     "test": "vitest run --passWithNoTests"
   },
-  "//": "Expo SDK 56 (55 fallback) + RN + react-native-web + NativeWind v5 + expo-router are added by the Expo init step (deliverable 0.4 completion). Metro constraint: manifest load() uses LITERAL static imports; React.lazy is NEVER nested inside React.lazy."
+  "//": "Expo SDK 56 + RN + react-native-web + expo-router wired at deliverable 0.4 completion. NativeWind (v5, still preview) is deferred to P1 — do not add it here. Metro constraint: manifest load() uses LITERAL static imports; React.lazy is NEVER nested inside React.lazy.",
+  "devDependencies": {
+    "@types/react": "~19.2.14",
+    "typescript": "~6.0.3"
+  }
 }

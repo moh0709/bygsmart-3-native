@@ -1,0 +1,20 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@bygsmart/core": ["../../packages/core/src"],
+      "@bygsmart/calc-engine": ["../../packages/calc-engine/src"],
+      "@bygsmart/ui": ["../../packages/ui/src"],
+      "@bygsmart/tokens": ["../../packages/tokens/src"],
+      "@bygsmart/api-client": ["../../packages/api-client/src"]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ],
+  "exclude": ["node_modules", "dist", ".expo/web-report"]
+}
