@@ -7,14 +7,24 @@
   "dependencies": {
     "@bygsmart/core": "workspace:*",
     "@bygsmart/api-client": "workspace:*",
-    "@bygsmart/tokens": "workspace:*"
+    "@bygsmart/tokens": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.5",
+    "typescript": "^5.7.2",
+    "vite": "^8.2.0"
   },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "typecheck": "echo \"(admin: typecheck wired at Vite init)\" && exit 0",
-    "lint": "echo \"(admin: lint wired at Vite init)\" && exit 0",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint src --ext .ts,.tsx --max-warnings=0",
     "test": "vitest run --passWithNoTests"
   },
-  "//": "Vite + React + DOM added at the P5-D admin init step. Deliberately NO react-native-web: dense admin tables are where RNW costs and delivers nothing."
+  "//": "Deliberately NO react-native-web: dense admin tables are where RNW costs and delivers nothing. This is the DOM half of D-12."
 }
