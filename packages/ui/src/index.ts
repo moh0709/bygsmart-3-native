@@ -14,3 +14,4 @@ export * from './primitives/Divider';
 export * from './primitives/EmptyState';
 export * from './primitives/ErrorState';
 export * from './primitives/OfflineBanner';
+export * from './navigation/NavShell';
