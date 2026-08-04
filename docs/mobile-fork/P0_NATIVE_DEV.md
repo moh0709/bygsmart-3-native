@@ -31,6 +31,15 @@ Prerequisite: hardware virtualization / a hypervisor present (this host: `Hyperv
 
 ## Stage B — EAS (cloud builds, no local Mac / NDK / gradle)
 
+**Android cloud build ✅ VERIFIED (2026-08-04).** EAS project linked (`ce8fcd14…`, owner
+`waypays-team`, Expo slug `byggeapp-native`). First preview build (id `47047d35…`) succeeded:
+keystore auto-generated in the cloud, SDK 56.0.0, signed APK produced. The standalone APK
+(`com.bygsmart.app`) was installed on the emulator and launched its own `MainActivity` (no
+Expo Go, no Metro) — rendering the app with `@bygsmart/core` resolved in the production bundle.
+Free-tier queue latency was ~2.5 h before the build ran (not a failure; consider a paid plan
+for priority). **iOS build still needs Apple signing** (personal Apple ID for internal, or the
+D-U-N-S Developer Program for distribution).
+
 `eas.json` defines the build profiles. EAS builds real iOS + Android binaries in the cloud, so
 we never need a local Mac or the heavy native toolchain, and the output can run on a **cloud
 real-device farm** (which *does* satisfy "physical" for gate evidence).
