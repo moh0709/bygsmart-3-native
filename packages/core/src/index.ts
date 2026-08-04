@@ -1,5 +1,10 @@
-// @bygsmart/core — types, module registry, entitlements, org, pure business rules.
-// Harvested wholesale from legacy/ in P1 (E1, deliverable 1.4), not extracted in place.
-// Test layer 2 targets this package at >=90% lines / 100% of decision branches.
-
-export const PLACEHOLDER_CORE = 'bygsmart-core' as const;
+// @bygsmart/core — types, module registry, and pure business rules.
+// Harvested from legacy/ (not extracted in place). Test layer 2 targets this package.
+// In 3.0 this becomes the SINGLE source both the app and the server import — collapsing
+// 2.1's deliberate client/server duplication (and its parity tests).
+export * from './types';
+export * from './registry/types';
+export * from './registry/registry';
+export * from './registry/moduleInfo';
+export * from './access/projectTabAccess';
+export * from './access/roles';
