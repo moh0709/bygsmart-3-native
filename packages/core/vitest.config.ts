@@ -8,7 +8,13 @@ export default defineConfig({
     include: ['src/**/*.test.ts'],
     coverage: {
       provider: 'v8',
-      include: ['src/registry/registry.ts', 'src/access/**/*.ts', 'src/entitlements/**/*.ts'],
+      include: [
+        'src/registry/registry.ts',
+        'src/access/**/*.ts',
+        'src/entitlements/**/*.ts',
+        'src/status/**/*.ts',
+        'src/org/**/*.ts',
+      ],
       exclude: ['src/**/*.test.ts'],
       reporter: ['text-summary', 'text'],
     },
