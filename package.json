@@ -15,6 +15,7 @@
     "test": "turbo run test",
     "test:unit": "turbo run test:unit",
     "test:pending": "vitest run --config test-harness/vitest.config.ts",
+    "test:spike": "vitest run --config spikes/vitest.config.ts",
     "clean": "turbo run clean"
   },
   "devDependencies": {
