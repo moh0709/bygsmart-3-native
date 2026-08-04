@@ -8,3 +8,5 @@ export * from './registry/registry';
 export * from './registry/moduleInfo';
 export * from './access/projectTabAccess';
 export * from './access/roles';
+export * from './entitlements/moduleCatalog';
+export * from './entitlements/enabledModules';
