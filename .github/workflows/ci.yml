@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  # ── GREEN GATE ── must pass to merge. Real test layers 1/2/7 + lint (incl. boundaries) + types.
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Lint (includes eslint-plugin-boundaries — AR-05 + legacy import ban)
+        run: pnpm lint
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Test — real layers (1 fixtures, 2 rules, 7 universal)
+        run: pnpm test
+
+  # ── RED-PENDING ── visible, non-blocking. Layers 3/4/5/6/6b/8 are failing placeholders
+  # until their subsystems exist. A failing placeholder cannot be forgotten; an absent one can.
+  red-pending:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Test — red-pending layers (expected to fail until implemented)
+        run: pnpm test:pending
+
+  # ── THREE-TARGET BUILD ── the non-negotiable per-PR guardrail: green build on a real
+  # iPhone, a mid-range Android, and web. Needs EAS + a device farm that does not exist yet.
+  # Represented here so its absence is LOUD, not silent. Wire in P1 (before any feature code).
+  three-target-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Physical three-target build (NOT YET WIRED)
+        run: |
+          echo "::warning::three-target physical build (iOS device + Android device + web) is a"
+          echo "::warning::non-negotiable per-PR gate and is NOT yet wired. Required from P1."
+          exit 1
+    continue-on-error: true
