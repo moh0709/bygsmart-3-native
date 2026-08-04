@@ -12,11 +12,20 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-safe-area-context": "*"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.1.0",
+    "@types/react": "^19.2.0",
+    "jsdom": "^25.0.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-native-web": "^0.21.2"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "eslint src --max-warnings=0",
+    "lint": "eslint src --ext .ts,.tsx --max-warnings=0",
     "test": "vitest run"
   }
 }

@@ -1,6 +1,16 @@
 // @bygsmart/ui — universal responsive primitives (RN + RNW).
-// ~25 primitives with phone/tablet/desktop breakpoints designed in from the first line
-// (D-05, P7). Built in P1 (E1, deliverable 1.2). Every component runs on BOTH renderers
-// or it is not a packages/ui test (layer 7) — this is the Liskov check on .web.tsx siblings.
-
-export const PLACEHOLDER_UI = 'bygsmart-ui' as const;
+// Every primitive: token-driven, responsive-aware, a11y role, >=48dp targets (P6).
+export * from './theme/ThemeProvider';
+export * from './hooks/useBreakpoint';
+export * from './primitives/Text';
+export * from './primitives/Box';
+export * from './primitives/Stack';
+export * from './primitives/Button';
+export * from './primitives/Card';
+export * from './primitives/Screen';
+export * from './primitives/Spinner';
+export * from './primitives/Badge';
+export * from './primitives/Divider';
+export * from './primitives/EmptyState';
+export * from './primitives/ErrorState';
+export * from './primitives/OfflineBanner';

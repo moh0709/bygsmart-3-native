@@ -1,7 +1,13 @@
 import { Stack } from 'expo-router';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ThemeProvider } from '@bygsmart/ui';
 
-// Root layout for the universal app. A single native stack is enough to prove
-// expo-router file-based routing resolves and renders on every target.
 export default function RootLayout() {
-  return <Stack />;
+  return (
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </ThemeProvider>
+    </SafeAreaProvider>
+  );
 }
