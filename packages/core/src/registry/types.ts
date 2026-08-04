@@ -38,7 +38,8 @@ export type ModuleId = (typeof MODULE_IDS)[number];
 export interface NavContribution {
   to: string;
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
+  /** Icon identifier — an emoji now, an icon name resolved by packages/ui icons in P1 1.6. */
+  icon: string;
   /** Marks this item active for a pathname (defaults to a `to`-prefix match). */
   match?: (pathname: string) => boolean;
   /** 'bottom' items render in both bottom nav and rail; 'rail' items are rail-only extras. */
@@ -102,7 +103,7 @@ export interface SearchResultItem {
 export interface SearchSourceContribution {
   id: string;
   label: string;
-  icon?: React.ComponentType<{ className?: string }>;
+  icon?: string;
   order: number;
   filters?: string[];
   search: (query: string, filters: string[]) => Promise<SearchResultItem[]>;
@@ -111,7 +112,8 @@ export interface SearchSourceContribution {
 export interface QuickActionContribution {
   id: string;
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
+  /** Icon identifier — an emoji now, an icon name resolved by packages/ui icons in P1 1.6. */
+  icon: string;
   to: string;
   order: number;
 }

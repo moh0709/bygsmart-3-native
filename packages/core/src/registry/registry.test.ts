@@ -47,10 +47,10 @@ describe('resolveActiveManifests', () => {
 describe('collectSlot', () => {
   it('flattens and sorts contributions by order', () => {
     const a = manifest('projects', [], {
-      nav: [{ to: '/projects', label: 'Projekter', icon: () => null, surface: 'bottom', order: 20 }],
+      nav: [{ to: '/projects', label: 'Projekter', icon: '•', surface: 'bottom', order: 20 }],
     });
     const b = manifest('tasks', [], {
-      nav: [{ to: '/tasks', label: 'Opgaver', icon: () => null, surface: 'bottom', order: 10 }],
+      nav: [{ to: '/tasks', label: 'Opgaver', icon: '•', surface: 'bottom', order: 10 }],
     });
     const nav = collectSlot([a, b], 'nav');
     expect(nav.map((n) => n.to)).toEqual(['/tasks', '/projects']);
