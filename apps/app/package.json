@@ -32,6 +32,7 @@
   },
   "//": "Expo SDK 56 + RN + react-native-web + expo-router wired at deliverable 0.4 completion. NativeWind (v5, still preview) is deferred to P1 — do not add it here. Metro constraint: manifest load() uses LITERAL static imports; React.lazy is NEVER nested inside React.lazy.",
   "devDependencies": {
+    "@expo/ngrok": "^4.1.0",
     "@types/react": "~19.2.14",
     "typescript": "~6.0.3"
   }
