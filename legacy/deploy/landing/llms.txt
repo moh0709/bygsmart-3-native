@@ -1,0 +1,51 @@
+# BYG SMART
+
+> BYG SMART er en dansk byggestyrings-platform (SaaS) til håndværkere, bygherrer og entreprenører. Platformen samler AI-assistance, BR18-beregnere, projektplanlægning, 3D/AR-opmåling og tilbudsberegning i ét værktøj. Data hostes i Danmark.
+
+BYG SMART henvender sig til danske håndværksvirksomheder, byggeledere og bygherrer, der planlægger, budgetterer og gennemfører byggeprojekter — fra enkeltmandsfirmaer til større entreprenørvirksomheder.
+
+## Kernefunktioner
+
+- **AI-byggeassistent**: Svarer på spørgsmål om byggeregler, beregninger og projektstatus, med daglige AI-briefinger.
+- **81 fagberegnere**: Dækker 16 fagområder (fx konstruktion, energi, VVS, el, beton, tømrer) baseret på danske normer.
+- **Regelkatalog**: 71 indbyggede referencer — alle 35 kapitler i BR18 (Bygningsreglementet 2018) samt SBi-anvisninger, Dansk Standard (DS), AB18 og Arbejdstilsynets regler.
+- **Projektplanlægning**: Gantt-plan, tidsplaner og opgavestyring.
+- **3D/AR-opmåling (RoomMapper)**: Opmåling af rum og lokationer via telefonens kamera.
+- **Tilbud & indkøb**: Beregn og generér tilbud/PDF på minutter.
+- **BBR-opslag**: Slå ejendomsoplysninger op direkte i platformen.
+- **Team & roller**: Inviter medarbejdere, kunder og (fra Mester-planen) underentreprenører med forskellige adgangsniveauer.
+
+## Priser (pr. bruger/måned, ekskl. moms)
+
+- **Start**: 0 kr — 1 projekt, grundlæggende beregnere, 5 AI-forespørgsler/dag.
+- **Mester**: 199 kr/md — 5 projekter, 50 AI-forespørgsler/dag, avancerede beregnere, økonomiværktøjer, inviter medarbejdere/kunder/underentreprenører.
+- **Entreprise**: 499 kr/md (399 kr/md ved årsbetaling) — ubegrænsede projekter, 1000 AI-forespørgsler/dag, alle beregnere og roller. Mest populære plan for mellemstore virksomheder.
+- **Koncern**: Kontakt salg — skræddersyet til store organisationer, 10.000 AI-forespørgsler/dag.
+
+Fuld sammenligning af planer: https://bygsmart.com/priser.html
+
+## Sikkerhed & hosting
+
+Data hostes på servere i Danmark. Platformen er bygget på Supabase (PostgreSQL) med kryptering, og overholder GDPR. Se detaljer på https://bygsmart.com/gdpr.html og https://bygsmart.com/privatliv.html.
+
+## Sider
+
+- [Forside](https://bygsmart.com/): Produktoverblik, funktioner, "sådan virker det".
+- [Om BYG SMART](https://bygsmart.com/om-bygsmart.html): Detaljeret gennemgang af alle funktioner, moduler og sikkerhed.
+- [Priser](https://bygsmart.com/priser.html): Planer, prissammenligning og ofte stillede spørgsmål.
+- [BR18-katalog](https://bygsmart.com/br18-katalog.html): Alle 35 BR18-kapitler og referencestandarder.
+- [Byggeguide](https://bygsmart.com/byggeguide.html): Guide til brug af platformen på byggepladsen.
+- [Hjælp](https://bygsmart.com/hjaelp.html): Ofte stillede spørgsmål og support.
+- [Kontakt](https://bygsmart.com/kontakt.html): Kontaktformular til salg og support.
+- [Driftsstatus](https://bygsmart.com/status.html): Aktuel driftsstatus.
+- [Privatlivspolitik](https://bygsmart.com/privatliv.html), [Handelsbetingelser](https://bygsmart.com/vilkaar.html), [GDPR](https://bygsmart.com/gdpr.html), [Cookies](https://bygsmart.com/cookies.html).
+
+## Adgang til produktet
+
+- Log ind: https://app.bygsmart.com/#/login
+- Opret gratis konto: https://app.bygsmart.com/#/register
+
+## Kontakt
+
+Support: support@bygsmart.com
+Salg: salg@bygsmart.dk

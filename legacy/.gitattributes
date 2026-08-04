@@ -1,0 +1,7 @@
+# Line-ending policy.
+# Files that execute on the Linux production server MUST retain LF endings,
+# regardless of the committer's OS or core.autocrlf — a CRLF in a shell script
+# produces "bad interpreter: /bin/bash^M" and a broken deploy.
+*.sh       text eol=lf
+*.php      text eol=lf
+.htaccess  text eol=lf

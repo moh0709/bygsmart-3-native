@@ -1,0 +1,9 @@
+{
+  "name": "BYG SMART DEMO version 2",
+  "description": "A PWA that lets tradespeople find, cite, and export Danish building & fire safety rules in seconds. Made for mobile and tablets.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ],
+  "title": "BYG SMART"
+}

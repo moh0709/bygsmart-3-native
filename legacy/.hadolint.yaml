@@ -1,0 +1,10 @@
+# Hadolint config for the BygSmart Dockerfiles.
+# Only errors block CI (style/info warnings are advisory). Security-relevant
+# rules stay enabled; we silence the handful of non-blocking style rules that
+# the intentionally-hardened, digest-pinned Dockerfiles trip.
+failure-threshold: error
+ignored:
+  - DL3018  # apk: pin versions — we install + immediately remove libcap (setcap helper)
+  - DL3059  # multiple consecutive RUN instructions (readability only)
+trustedRegistries:
+  - docker.io

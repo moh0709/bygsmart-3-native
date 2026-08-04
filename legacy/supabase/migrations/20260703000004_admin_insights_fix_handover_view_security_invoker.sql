@@ -1,0 +1,15 @@
+-- Fixes a security bug in admin_handover_reports_v (introduced by the prior
+-- migration, admin_insights_handover_log): Postgres views default to
+-- security_invoker = false, meaning the view ran with its OWNER's privileges
+-- rather than the querying user's — bypassing RLS on task_handovers,
+-- member_terminations, and ai_handover_reports_log entirely. Any user able to
+-- SELECT the view (anon/authenticated both can, matching this project's
+-- standard grant-plus-RLS pattern) could read every handover report
+-- platform-wide, not just their own. security_invoker = true makes the view
+-- enforce the underlying tables' RLS policies for whoever is querying it.
+--
+-- Recorded here for the local migration history to match what's actually
+-- applied on the live project (this was applied directly via the Supabase
+-- MCP tool as "admin_insights_fix_handover_view_security_invoker" without a
+-- local file at the time — see docs/SECURITY_FINDINGS.md, closed item #0).
+ALTER VIEW public.admin_handover_reports_v SET (security_invoker = true);

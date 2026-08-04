@@ -1,0 +1,46 @@
+# Environment variables - NEVER commit these
+# Ignore all real env files (.env, .env.production, .env.local, etc.)
+.env
+.env.*
+# ...but keep the tracked, secret-free template
+!.env.example
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+server/node_modules
+dist
+dist-ssr
+*.local
+coverage
+playwright-report
+test-results
+
+# Deployment scripts with secrets (use env vars instead)
+deploy-schema.cjs
+fix-api.cjs
+fix-api.js
+test_api.py
+test_write.txt
+test.txt
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Scratch: files staged for manual deletion
+_to_delete/

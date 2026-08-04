@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BygSmart 2.1 — UI Overhaul Mockups</title>
+<style>
+  /* ═══════════ DESIGN TOKENS (DS 2.0) ═══════════ */
+  :root{
+    --brand:#1E5FFF; --brand-strong:#0E4AE8; --brand-subtle:#EFF4FF; --brand-border:#C7D7FE;
+    --accent:#FFB020;
+    --success:#12934B; --success-subtle:#E7F6EE; --success-border:#B5E3C8;
+    --warning:#B76E00; --warning-subtle:#FFF4E0; --warning-border:#FFDFA3;
+    --danger:#D92D20;  --danger-subtle:#FEECEB;  --danger-border:#F9C1BD;
+    --info:#175CD3;    --info-subtle:#EAF1FE;
+    --canvas:#F4F6F8; --surface:#FFFFFF; --surface-sunken:#EEF1F4;
+    --ink:#101828; --ink-2:#475467; --ink-3:#98A2B3;
+    --line:#E9EDF2; --line-strong:#D5DCE4;
+    --r-card:16px; --r-control:10px; --r-modal:24px;
+    --shadow-card:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.06);
+    --shadow-raised:0 4px 12px rgba(16,24,40,.10);
+    --shadow-overlay:0 12px 32px rgba(16,24,40,.18);
+  }
+  .dark{
+    --brand:#5B8CFF; --brand-strong:#7AA2FF; --brand-subtle:#182448; --brand-border:#2B3D6E;
+    --success:#3CCB7F; --success-subtle:#0E2B1C; --success-border:#1E4D33;
+    --warning:#F5A524; --warning-subtle:#2E2107; --warning-border:#584312;
+    --danger:#F97066;  --danger-subtle:#331311;  --danger-border:#5C221E;
+    --info:#6BA6FF;    --info-subtle:#122544;
+    --canvas:#0B1220; --surface:#151E30; --surface-sunken:#0F1728;
+    --ink:#F2F5F9; --ink-2:#A9B4C4; --ink-3:#6B7789;
+    --line:#243043; --line-strong:#33415A;
+    --shadow-card:0 1px 2px rgba(0,0,0,.4);
+    --shadow-raised:0 4px 14px rgba(0,0,0,.5);
+    --shadow-overlay:0 12px 36px rgba(0,0,0,.6);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Inter,'SF Pro',system-ui,-apple-system,sans-serif;background:var(--canvas);color:var(--ink);padding:32px 24px 80px;transition:background .3s}
+  /* type scale */
+  .t-display{font-size:28px;line-height:34px;font-weight:800;letter-spacing:-.02em}
+  .t-title{font-size:22px;line-height:28px;font-weight:700;letter-spacing:-.01em}
+  .t-heading{font-size:17px;line-height:24px;font-weight:650}
+  .t-body{font-size:15px;line-height:22px}
+  .t-label{font-size:13px;line-height:18px}
+  .t-caption{font-size:11px;line-height:14px}
+  .muted{color:var(--ink-2)} .faint{color:var(--ink-3)}
+
+  /* page chrome */
+  .page-head{max-width:1480px;margin:0 auto 28px}
+  .page-head h1{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .page-head p{color:var(--ink-2);margin-top:6px;font-size:14px;max-width:760px}
+  .toolbar{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .toggle{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);border-radius:99px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer}
+  .toggle:hover{border-color:var(--brand)}
+  .frames{display:flex;gap:28px;flex-wrap:wrap;max-width:1480px;margin:0 auto;align-items:flex-start}
+  .frame-wrap{display:flex;flex-direction:column;gap:10px}
+  .frame-label{font-size:13px;font-weight:700;color:var(--ink-2);padding-left:6px}
+  .frame-label span{display:block;font-weight:400;color:var(--ink-3);font-size:12px;margin-top:2px}
+  .phone{width:390px;height:844px;background:var(--canvas);border-radius:40px;border:1px solid var(--line-strong);box-shadow:var(--shadow-overlay);overflow:hidden;position:relative;display:flex;flex-direction:column}
+  .statusbar{height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:13px;font-weight:600}
+  .scroll{flex:1;overflow-y:auto;padding:0 16px 120px;scrollbar-width:none}
+  .scroll::-webkit-scrollbar{display:none}
+
+  /* ═══════════ PRIMITIVES ═══════════ */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);box-shadow:var(--shadow-card)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:var(--r-control);font-weight:650;border:none;cursor:pointer;font-size:14px;min-height:44px;padding:0 18px}
+  .btn-sm{min-height:36px;padding:0 14px;font-size:13px}
+  .btn-primary{background:var(--brand);color:#fff}
+  .btn-secondary{background:var(--brand-subtle);color:var(--brand)}
+  .dark .btn-secondary{color:var(--brand-strong)}
+  .btn-outline{background:var(--surface);border:1px solid var(--line-strong);color:var(--ink)}
+  .btn-ghost{background:transparent;color:var(--ink-2)}
+  .chip{display:inline-flex;align-items:center;gap:5px;border-radius:99px;font-size:11px;font-weight:700;padding:3px 10px;white-space:nowrap}
+  .chip .dot{width:6px;height:6px;border-radius:99px;background:currentColor}
+  .chip-success{background:var(--success-subtle);color:var(--success)}
+  .chip-warning{background:var(--warning-subtle);color:var(--warning)}
+  .chip-danger{background:var(--danger-subtle);color:var(--danger)}
+  .chip-brand{background:var(--brand-subtle);color:var(--brand)}
+  .chip-neutral{background:var(--surface-sunken);color:var(--ink-2)}
+  .avatar{width:32px;height:32px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex:none;position:relative}
+  .avatar.sm{width:26px;height:26px;font-size:10px}
+  .av-a{background:#6172F3}.av-b{background:#12934B}.av-c{background:#DD6B20}.av-me{background:var(--brand)}
+  .presence{position:absolute;bottom:-1px;right:-1px;width:9px;height:9px;border-radius:99px;background:var(--success);border:2px solid var(--surface)}
+  .avgroup{display:flex}.avgroup .avatar{margin-left:-8px;border:2px solid var(--surface)}.avgroup .avatar:first-child{margin-left:0}
+  .seg{display:flex;background:var(--surface-sunken);border-radius:12px;padding:3px;gap:2px}
+  .seg button{flex:1;border:none;border-radius:10px;padding:8px 4px;font-size:13px;font-weight:650;background:transparent;color:var(--ink-2);cursor:pointer}
+  .seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-card)}
+  .icon{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  .icon.sm{width:16px;height:16px}
+  .section{display:flex;align-items:baseline;justify-content:space-between;margin:22px 4px 10px}
+  .section h3{font-size:16px;font-weight:750;letter-spacing:-.01em}
+  .section a{font-size:13px;font-weight:650;color:var(--brand);text-decoration:none}
+  .ring{transform:rotate(-90deg)}
+  .ring .bg{stroke:var(--surface-sunken)} .ring .fg{stroke:var(--brand);stroke-linecap:round}
+  .bar{height:6px;border-radius:99px;background:var(--surface-sunken);overflow:hidden}
+  .bar>i{display:block;height:100%;border-radius:99px;background:var(--brand)}
+
+  /* bottom nav v2 */
+  .navbar{position:absolute;left:16px;right:16px;bottom:16px;background:var(--surface);border:1px solid var(--line);border-radius:99px;box-shadow:var(--shadow-raised);display:flex;align-items:center;padding:6px;z-index:50}
+  .navbar .item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0;border-radius:99px;border:none;background:none;color:var(--ink-3);font-size:11px;font-weight:650;cursor:pointer}
+  .navbar .item.on{color:var(--brand)}
+  .navbar .scanbtn{width:54px;height:54px;flex:none;border-radius:99px;background:var(--brand);color:#fff;border:4px solid var(--surface);display:flex;align-items:center;justify-content:center;margin:-18px 4px 0;box-shadow:var(--shadow-raised);cursor:pointer}
+  .navbar .scanbtn .icon{width:24px;height:24px}
+
+  /* app header */
+  .apphead{display:flex;align-items:center;gap:12px;padding:10px 0 4px}
+  .apphead .grow{flex:1;min-width:0}
+  .iconbtn{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;flex:none}
+  .iconbtn .badge{position:absolute;top:-4px;right:-4px;background:var(--danger);color:#fff;font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:99px;display:flex;align-items:center;justify-content:center;border:2px solid var(--canvas)}
+
+  /* stat tiles */
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-card);padding:14px;display:flex;gap:12px;align-items:center;box-shadow:var(--shadow-card)}
+  .kpi .ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none}
+  .kpi b{font-size:22px;font-weight:800;letter-spacing:-.02em;display:block;line-height:1.1}
+  .kpi span{font-size:11px;color:var(--ink-2);font-weight:600}
+
+  .listrow{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
+  .listrow:first-child{border-top:none}
+  .checkbox{width:22px;height:22px;border-radius:8px;border:2px solid var(--line-strong);flex:none}
+  .sheet-grabber{width:36px;height:4px;border-radius:99px;background:var(--line-strong);margin:10px auto 6px}
+
+  /* tablet frame */
+  .tablet{width:1024px;height:700px;background:var(--canvas);border-radius:28px;border:1px solid var(--line-strong);box-shadow:var(--shadow-overlay);overflow:hidden;display:flex}
+  .rail{width:88px;flex:none;background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:6px}
+  .rail .item{width:64px;padding:10px 0;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;font-weight:650;color:var(--ink-3);cursor:pointer;border:none;background:none}
+  .rail .item.on{background:var(--brand-subtle);color:var(--brand)}
+  .rail .logo{width:44px;height:44px;border-radius:14px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;margin-bottom:14px}
+
+  .swatches{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .sw{width:118px;border-radius:12px;border:1px solid var(--line);overflow:hidden;background:var(--surface)}
+  .sw i{display:block;height:44px}
+  .sw span{display:block;padding:6px 8px;font-size:10px;color:var(--ink-2);font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>BygSmart 2.1 — UI Overhaul · Mockups</h1>
+  <p>Design System 2.0 anvendt på nøgleskærme. Samme informationer som i dag — ny hierarki, navigation og komponenter.
+     Fuld plan: <b>docs/UI_OVERHAUL_PLAN.md</b>. Skift lys/mørk for at se token-baseret dark mode.</p>
+  <div class="toolbar">
+    <button class="toggle" onclick="document.body.classList.toggle('dark')">🌗 Skift lys / mørk</button>
+  </div>
+  <div class="swatches">
+    <div class="sw"><i style="background:var(--brand)"></i><span>brand · #1E5FFF</span></div>
+    <div class="sw"><i style="background:var(--success)"></i><span>success</span></div>
+    <div class="sw"><i style="background:var(--warning)"></i><span>warning</span></div>
+    <div class="sw"><i style="background:var(--danger)"></i><span>danger</span></div>
+    <div class="sw"><i style="background:var(--surface);border-bottom:1px solid var(--line)"></i><span>surface</span></div>
+    <div class="sw"><i style="background:var(--canvas)"></i><span>canvas</span></div>
+    <div class="sw"><i style="background:var(--ink)"></i><span>ink · tekst</span></div>
+  </div>
+</div>
+
+<div class="frames">
+
+<!-- ════════════════ FRAME 1 · HOME / PROJEKTLEDELSE ════════════════ -->
+<div class="frame-wrap">
+  <div class="frame-label">1 · Hjem — Projektledelse<span>Handling først · KPI som heltal · AI-briefing foldet sammen</span></div>
+  <div class="phone">
+    <div class="statusbar"><span>09:41</span><span style="letter-spacing:2px">▂▄▆ ▮▮▯</span></div>
+    <div class="scroll">
+
+      <div class="apphead">
+        <div class="avatar av-me" style="width:40px;height:40px;font-size:13px">MI<span class="presence"></span></div>
+        <div class="grow">
+          <div class="t-caption faint">Onsdag 2. juli</div>
+          <div class="t-heading">God morgen, Moi</div>
+        </div>
+        <span class="chip chip-brand" style="height:26px">PRO</span>
+        <button class="iconbtn"><svg class="icon" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="badge">3</span></button>
+      </div>
+
+      <div class="seg" style="margin:10px 0 4px">
+        <button class="on">Projektledelse</button>
+        <button>Min Arbejdsdag</button>
+      </div>
+
+      <!-- Kræver handling -->
+      <div class="section"><h3>Kræver handling</h3><span class="chip chip-warning">2</span></div>
+      <div class="card" style="padding:14px;border-left:3px solid var(--warning)">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div class="kpi ic" style="background:var(--warning-subtle);color:var(--warning);width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-9 8.4 8.5 8.5 0 0 1-3.4-.7L3 21l1.8-5.6a8.38 8.38 0 0 1-.7-3.4 8.5 8.5 0 0 1 8.4-8.5 8.38 8.38 0 0 1 8.5 8Z"/></svg>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;justify-content:space-between;gap:8px">
+              <b class="t-label" style="font-weight:750">Nyt modtilbud · Badeværelset</b>
+              <span class="t-caption faint">1 t</span>
+            </div>
+            <div class="t-label muted" style="margin-top:2px">Moh0709 Ismail: <b style="color:var(--ink)">2.500 kr.</b> — “Det tager tid”</div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="btn btn-sm btn-primary">Svar på tilbud</button>
+              <button class="btn btn-sm btn-outline">Afvis</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="padding:12px 14px;margin-top:8px;border-left:3px solid var(--danger);display:flex;align-items:center;gap:10px">
+        <svg class="icon" style="color:var(--danger)" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        <div style="flex:1"><b class="t-label" style="font-weight:750">14 overskredne deadlines</b><div class="t-caption muted">Villa Renovering · 12 · Tag &amp; Loft · 2</div></div>
+        <svg class="icon sm faint" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
+
+      <!-- KPI -->
+      <div class="section"><h3>Mit overblik</h3></div>
+      <div class="kpis">
+        <div class="kpi"><div class="ic" style="background:var(--brand-subtle);color:var(--brand)"><svg class="icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2Z"/></svg></div><div><b>6</b><span>Aktive projekter</span></div></div>
+        <div class="kpi"><div class="ic" style="background:var(--success-subtle);color:var(--success)"><svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><b>0</b><span>Opgaver i dag</span></div></div>
+        <div class="kpi" style="border-color:var(--danger-border)"><div class="ic" style="background:var(--danger-subtle);color:var(--danger)"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><b style="color:var(--danger)">14</b><span>Overskredne</span></div></div>
+        <div class="kpi"><div class="ic" style="background:var(--warning-subtle);color:var(--warning)"><svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></div><div><b>69</b><span>Afventer indkøb</span></div></div>
+      </div>
+
+      <!-- Fokus i dag -->
+      <div class="section"><h3>Fokus i dag</h3><a>Se alle →</a></div>
+      <div class="card">
+        <div class="listrow">
+          <div class="checkbox"></div>
+          <div style="flex:1;min-width:0">
+            <div class="t-label" style="font-weight:650">Opsætning af stillads på baghavdel</div>
+            <div class="t-caption faint" style="margin-top:2px">Renovering: Tag &amp; Loft</div>
+          </div>
+          <span class="chip chip-danger"><i class="dot"></i>15/6</span>
+        </div>
+        <div class="listrow">
+          <div class="checkbox"></div>
+          <div style="flex:1;min-width:0">
+            <div class="t-label" style="font-weight:650">1.2.2 Ny vandledning køkken → bad</div>
+            <div class="t-caption faint" style="margin-top:2px">Villa Renovering · Kildeskovgård 12</div>
+          </div>
+          <span class="chip chip-neutral">12/2</span>
+        </div>
+        <div class="listrow">
+          <div class="checkbox"></div>
+          <div style="flex:1;min-width:0">
+            <div class="t-label" style="font-weight:650">2.1.2 Ny el før køkkenområde</div>
+            <div class="t-caption faint" style="margin-top:2px">Villa Renovering · Kildeskovgård 12</div>
+          </div>
+          <span class="chip chip-neutral">25/2</span>
+        </div>
+      </div>
+
+      <!-- AI briefing (collapsed) -->
+      <div class="section"><h3>Dagens briefing</h3><span class="t-caption faint">☀️ 20° · 5 m/s</span></div>
+      <div class="card" style="padding:14px;background:linear-gradient(135deg,var(--brand-subtle),var(--surface) 60%)">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="width:34px;height:34px;border-radius:12px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;flex:none">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+          </div>
+          <b class="t-label" style="font-weight:750;flex:1">3 vigtigste i dag</b>
+          <svg class="icon sm faint" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+          <div class="t-label" style="display:flex;gap:8px"><span>🦺</span><span><b>Sikkerhed:</b> Ekstra kig på stilladset før frokost</span></div>
+          <div class="t-label" style="display:flex;gap:8px"><span>🎯</span><span><b>Mål:</b> Sidste 10 % af vinduesmontering, etage 2</span></div>
+          <div class="t-label" style="display:flex;gap:8px"><span>✅</span><span><b>Kvalitet:</b> Dobbelttjek loftsbjælke-justeringer</span></div>
+        </div>
+        <button class="btn btn-sm btn-secondary" style="margin-top:12px;width:100%">Få Pro-briefing ✨</button>
+      </div>
+
+      <!-- Projekt puls -->
+      <div class="section"><h3>Projekt puls</h3><a>Alle 6 →</a></div>
+      <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px">
+        <div class="card" style="min-width:250px;padding:14px;flex:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <b class="t-label" style="font-weight:750">Renovering: Tag &amp; Loft</b>
+            <span class="chip chip-success"><i class="dot"></i>I rute</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+            <svg class="ring" width="44" height="44" viewBox="0 0 44 44"><circle class="bg" cx="22" cy="22" r="18" stroke-width="5" fill="none"/><circle class="fg" cx="22" cy="22" r="18" stroke-width="5" fill="none" stroke-dasharray="113" stroke-dashoffset="113"/></svg>
+            <div style="flex:1">
+              <div class="t-caption faint">Næste milepæl</div>
+              <div class="t-label" style="font-weight:650">Opstart · 13 opgaver</div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+            <div class="avgroup"><div class="avatar sm av-a">AA</div><div class="avatar sm av-b">BB</div><div class="avatar sm av-c">CC</div></div>
+            <span class="t-caption faint">61 dage tilbage</span>
+          </div>
+        </div>
+        <div class="card" style="min-width:250px;padding:14px;flex:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <b class="t-label" style="font-weight:750">Nivå project båd</b>
+            <span class="chip chip-warning"><i class="dot"></i>Opstart</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+            <svg class="ring" width="44" height="44" viewBox="0 0 44 44"><circle class="bg" cx="22" cy="22" r="18" stroke-width="5" fill="none"/><circle class="fg" cx="22" cy="22" r="18" stroke-width="5" fill="none" stroke-dasharray="113" stroke-dashoffset="90"/></svg>
+            <div style="flex:1">
+              <div class="t-caption faint">Næste milepæl</div>
+              <div class="t-label" style="font-weight:650">Opstart</div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+            <div class="avgroup"><div class="avatar sm av-me">MI</div></div>
+            <span class="t-caption faint">København</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hurtige handlinger -->
+      <div class="section"><h3>Hurtige handlinger</h3></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+        <div class="card" style="padding:12px 4px;text-align:center"><div style="color:var(--brand);display:flex;justify-content:center"><svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><div class="t-caption" style="font-weight:650;margin-top:6px">Nyt projekt</div></div>
+        <div class="card" style="padding:12px 4px;text-align:center"><div style="color:var(--brand);display:flex;justify-content:center"><svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="t-caption" style="font-weight:650;margin-top:6px">Tjekliste</div></div>
+        <div class="card" style="padding:12px 4px;text-align:center"><div style="color:var(--brand);display:flex;justify-content:center"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div><div class="t-caption" style="font-weight:650;margin-top:6px">Reglement</div></div>
+        <div class="card" style="padding:12px 4px;text-align:center"><div style="color:var(--brand);display:flex;justify-content:center"><svg class="icon" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></div><div class="t-caption" style="font-weight:650;margin-top:6px">Punch-foto</div></div>
+      </div>
+    </div>
+
+    <!-- bottom nav v2 -->
+    <div class="navbar">
+      <button class="item on"><svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Hjem</button>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2Z"/></svg>Projekter</button>
+      <button class="scanbtn"><svg class="icon" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></button>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Opgaver</button>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>Værktøj</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ FRAME 2 · PROJEKT DETALJE ════════════════ -->
+<div class="frame-wrap">
+  <div class="frame-label">2 · Projekt — Overblik<span>11 tabs → 5 destinationer · Sundhed som chip · Start tid uden overlap</span></div>
+  <div class="phone">
+    <div class="statusbar"><span>09:41</span><span style="letter-spacing:2px">▂▄▆ ▮▮▯</span></div>
+    <div class="scroll">
+
+      <div class="apphead">
+        <button class="iconbtn"><svg class="icon" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+        <div class="grow">
+          <div class="t-heading" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Renovering: Tag &amp; Loft</div>
+          <div class="t-caption faint">#26-92726 · Du er: Ejer</div>
+        </div>
+        <button class="btn btn-sm btn-primary" style="gap:5px"><svg class="icon sm" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>Start tid</button>
+        <button class="iconbtn"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></button>
+      </div>
+
+      <!-- 5 destinations -->
+      <div class="seg" style="margin:8px 0 14px">
+        <button class="on">Overblik</button>
+        <button>Opgaver</button>
+        <button>Plan</button>
+        <button>Økonomi</button>
+        <button>Mere</button>
+      </div>
+
+      <!-- hero -->
+      <div class="card" style="padding:16px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+          <div>
+            <span class="chip chip-success"><i class="dot"></i>I rute</span>
+            <div class="t-caption faint" style="margin-top:8px">1. jul – 31. aug 2026</div>
+          </div>
+          <div style="text-align:center">
+            <svg class="ring" width="64" height="64" viewBox="0 0 64 64"><circle class="bg" cx="32" cy="32" r="26" stroke-width="7" fill="none"/><circle class="fg" cx="32" cy="32" r="26" stroke-width="7" fill="none" stroke-dasharray="163" stroke-dashoffset="163"/></svg>
+            <div class="t-caption faint" style="margin-top:-42px;position:relative;font-weight:800;color:var(--ink);font-size:13px">0%</div>
+            <div style="height:26px"></div>
+          </div>
+        </div>
+        <div class="bar" style="margin-top:2px"><i style="width:2%"></i></div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px">
+          <span class="t-caption faint">Start 1.7</span><span class="t-caption faint">61 dage tilbage</span><span class="t-caption faint">Slut 31.8</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)">
+          <div class="avgroup">
+            <div class="avatar av-a">AA<span class="presence"></span></div>
+            <div class="avatar av-b">BB</div>
+            <div class="avatar av-c">CC</div>
+          </div>
+          <button class="btn btn-sm btn-ghost" style="color:var(--brand)">+ Ny kunde / adresse</button>
+        </div>
+      </div>
+
+      <!-- sundhed chip/panel -->
+      <div class="card" style="margin-top:10px;padding:14px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <svg class="ring" width="40" height="40" viewBox="0 0 40 40"><circle class="bg" cx="20" cy="20" r="16" stroke-width="5" fill="none"/><circle cx="20" cy="20" r="16" stroke-width="5" fill="none" stroke="var(--warning)" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="41"/></svg>
+          <div style="flex:1">
+            <b class="t-label" style="font-weight:750">Projekt-sundhed · 59</b>
+            <div class="t-caption muted">Budget og dokumentation trækker ned</div>
+          </div>
+          <svg class="icon sm faint" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px">
+          <div><div class="t-caption faint" style="text-align:center">Plan</div><div class="bar" style="margin-top:4px"><i style="width:100%;background:var(--success)"></i></div></div>
+          <div><div class="t-caption faint" style="text-align:center">Budget</div><div class="bar" style="margin-top:4px"><i style="width:4%;background:var(--danger)"></i></div></div>
+          <div><div class="t-caption faint" style="text-align:center">Tid</div><div class="bar" style="margin-top:4px"><i style="width:85%;background:var(--success)"></i></div></div>
+          <div><div class="t-caption faint" style="text-align:center">Kvalitet</div><div class="bar" style="margin-top:4px"><i style="width:4%;background:var(--danger)"></i></div></div>
+          <div><div class="t-caption faint" style="text-align:center">Folk</div><div class="bar" style="margin-top:4px"><i style="width:88%;background:var(--success)"></i></div></div>
+        </div>
+      </div>
+
+      <!-- KPI strip -->
+      <div class="kpis" style="margin-top:10px">
+        <div class="kpi"><div class="ic" style="background:var(--brand-subtle);color:var(--brand)"><svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><b>13</b><span>Åbne opgaver</span></div></div>
+        <div class="kpi"><div class="ic" style="background:var(--info-subtle);color:var(--info)"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><b>61</b><span>Dage tilbage</span></div></div>
+        <div class="kpi"><div class="ic" style="background:var(--warning-subtle);color:var(--warning)"><svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></div><div><b>3</b><span>Indkøb afventer</span></div></div>
+        <div class="kpi"><div class="ic" style="background:var(--success-subtle);color:var(--success)"><svg class="icon" viewBox="0 0 24 24"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></svg></div><div><b>0 kr</b><span>Materialer af 0 kr</span></div></div>
+      </div>
+
+      <!-- AI + handover actions -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+        <button class="btn btn-secondary" style="flex-direction:column;height:auto;padding:14px;gap:6px;border-radius:16px">
+          <svg class="icon" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+          <span class="t-label" style="font-weight:700">Evaluér tidsplan (AI)</span>
+          <span class="t-caption" style="opacity:.75">Risikoanalyse</span>
+        </button>
+        <button class="btn btn-outline" style="flex-direction:column;height:auto;padding:14px;gap:6px;border-radius:16px">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          <span class="t-label" style="font-weight:700">Overdragelse</span>
+          <span class="t-caption faint">Generér PDF</span>
+        </button>
+      </div>
+
+      <!-- aktivitet -->
+      <div class="section"><h3>Aktivitet</h3><a>Fuld log →</a></div>
+      <div class="card">
+        <div class="listrow">
+          <div class="avatar sm av-a">AA</div>
+          <div style="flex:1"><div class="t-label"><b>Anders</b> oprettede opgaven <b>“Stillads baghave”</b></div><div class="t-caption faint" style="margin-top:2px">I dag 08:12</div></div>
+        </div>
+        <div class="listrow">
+          <div class="avatar sm av-me">MI</div>
+          <div style="flex:1"><div class="t-label"><b>Du</b> inviterede <b>Moh0709</b> som partner</div><div class="t-caption faint" style="margin-top:2px">30. jun 23:47</div></div>
+        </div>
+        <div class="listrow">
+          <div class="avatar sm av-b">BB</div>
+          <div style="flex:1"><div class="t-label"><b>Bente</b> uploadede 3 fotos til <b>Punch List</b></div><div class="t-caption faint" style="margin-top:2px">30. jun 14:03</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ FRAME 3 · MERE-SHEET + FORHANDLING ════════════════ -->
+<div class="frame-wrap">
+  <div class="frame-label">3 · “Mere”-ark + Forhandling<span>Sekundære tabs i bottom sheet · forhandling som chat med tilbudskort</span></div>
+  <div class="phone">
+    <div class="statusbar"><span>09:41</span><span style="letter-spacing:2px">▂▄▆ ▮▮▯</span></div>
+    <div class="scroll" style="padding-bottom:0">
+      <div class="apphead">
+        <button class="iconbtn"><svg class="icon" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+        <div class="grow"><div class="t-heading">Forhandling</div><div class="t-caption faint">Badeværelset · med Moh0709 Ismail</div></div>
+        <span class="chip chip-brand">Inviteret</span>
+      </div>
+
+      <!-- negotiation thread -->
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+        <div style="align-self:flex-start;max-width:75%">
+          <div class="card" style="padding:10px 14px;border-radius:16px 16px 16px 4px"><div class="t-label">hurtig opgave</div></div>
+          <div class="t-caption faint" style="margin:4px 0 0 6px">30. jun 23:47</div>
+        </div>
+
+        <div style="align-self:flex-start;max-width:80%;width:80%">
+          <div class="card" style="padding:14px;border:1.5px solid var(--brand-border);border-radius:16px 16px 16px 4px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="chip chip-brand">Tilbud</span><span class="t-caption faint">Åbningstilbud</span>
+            </div>
+            <div class="t-title" style="margin-top:8px">2.000,00 kr.</div>
+          </div>
+          <div class="t-caption faint" style="margin:4px 0 0 6px">30. jun 23:47</div>
+        </div>
+
+        <div style="align-self:flex-end;max-width:80%;width:80%">
+          <div class="card" style="padding:14px;border:1.5px solid var(--warning-border);background:var(--warning-subtle);border-radius:16px 16px 4px 16px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="chip chip-warning">Modtilbud</span><span class="t-caption faint">“Det tager tid”</span>
+            </div>
+            <div class="t-title" style="margin-top:8px">2.500,00 kr.</div>
+          </div>
+          <div class="t-caption faint" style="margin:4px 6px 0 0;text-align:right">1. jul 22:36</div>
+        </div>
+
+        <div style="align-self:center" class="chip chip-neutral">Afventer dit svar</div>
+      </div>
+
+      <!-- composer -->
+      <div class="card" style="margin-top:14px;padding:12px">
+        <div style="display:flex;gap:8px">
+          <div style="flex:1;border:1px solid var(--line-strong);border-radius:10px;padding:11px 12px" class="t-label faint">Skriv en besked…</div>
+          <button class="btn btn-primary" style="min-width:44px;padding:0"><svg class="icon" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn btn-sm btn-primary" style="flex:1">Accepter 2.500 kr.</button>
+          <button class="btn btn-sm btn-outline" style="flex:1">Nyt modtilbud</button>
+          <button class="btn btn-sm btn-ghost" style="color:var(--danger)">Afvis</button>
+        </div>
+      </div>
+
+      <!-- MERE bottom sheet (shown statically) -->
+      <div style="margin:26px -16px 0;background:var(--surface);border-radius:24px 24px 0 0;box-shadow:var(--shadow-overlay);border:1px solid var(--line);border-bottom:none;padding:0 16px 24px">
+        <div class="sheet-grabber"></div>
+        <div class="t-heading" style="text-align:center;margin:4px 0 12px">Mere · Renovering: Tag &amp; Loft</div>
+        <div class="card">
+          <div class="listrow"><div class="kpi ic" style="width:36px;height:36px;background:var(--brand-subtle);color:var(--brand);border-radius:10px;display:flex;align-items:center;justify-content:center"><svg class="icon sm" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div style="flex:1"><b class="t-label" style="font-weight:650">Partnere</b><div class="t-caption faint">1 aktiv forhandling</div></div><span class="chip chip-warning">1</span></div>
+          <div class="listrow"><div class="kpi ic" style="width:36px;height:36px;background:var(--info-subtle);color:var(--info);border-radius:10px;display:flex;align-items:center;justify-content:center"><svg class="icon sm" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div style="flex:1"><b class="t-label" style="font-weight:650">Opfølgning</b><div class="t-caption faint">Kvalitetssikring &amp; tilsyn</div></div><svg class="icon sm faint" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+          <div class="listrow"><div class="kpi ic" style="width:36px;height:36px;background:var(--success-subtle);color:var(--success);border-radius:10px;display:flex;align-items:center;justify-content:center"><svg class="icon sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div><div style="flex:1"><b class="t-label" style="font-weight:650">Dokumenter</b><div class="t-caption faint">12 filer · 3 kontrakter</div></div><svg class="icon sm faint" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+          <div class="listrow"><div class="kpi ic" style="width:36px;height:36px;background:var(--warning-subtle);color:var(--warning);border-radius:10px;display:flex;align-items:center;justify-content:center"><svg class="icon sm" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><div style="flex:1"><b class="t-label" style="font-weight:650">Detaljer &amp; rapport</b><div class="t-caption faint">Projektinfo · Tilbud · Eksport</div></div><svg class="icon sm faint" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ FRAME 4 · MIN ARBEJDSDAG (worker) ════════════════ -->
+<div class="frame-wrap">
+  <div class="frame-label">4 · Min Arbejdsdag (Svend)<span>Aktuel opgave som hero · timer · tjekliste · punch-foto ved tommelfingeren</span></div>
+  <div class="phone">
+    <div class="statusbar"><span>09:41</span><span style="letter-spacing:2px">▂▄▆ ▮▮▯</span></div>
+    <div class="scroll">
+      <div class="apphead">
+        <div class="avatar av-b" style="width:40px;height:40px;font-size:13px">BB<span class="presence"></span></div>
+        <div class="grow">
+          <div class="t-caption faint">Onsdag 2. juli · ☀️ 20°</div>
+          <div class="t-heading">Min Arbejdsdag</div>
+        </div>
+        <button class="iconbtn"><svg class="icon" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      </div>
+
+      <!-- current task hero -->
+      <div class="card" style="padding:16px;margin-top:8px;border:1.5px solid var(--brand-border)">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="chip chip-brand"><i class="dot"></i>Igangværende</span>
+          <span class="t-caption faint">Renovering: Tag &amp; Loft</span>
+        </div>
+        <div class="t-heading" style="margin-top:10px">Opsætning af stillads på baghavdel</div>
+        <div class="t-label muted" style="margin-top:4px">Husk beskyttelsesudstyr · se risikovurdering</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
+          <div style="flex:1"><div class="bar"><i style="width:40%"></i></div><div class="t-caption faint" style="margin-top:4px">Tjekliste · 2 af 5</div></div>
+          <div class="t-title" style="font-variant-numeric:tabular-nums">01:24:36</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <button class="btn btn-primary" style="flex:1;gap:6px"><svg class="icon sm" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>Pause</button>
+          <button class="btn btn-outline" style="flex:1">Markér udført</button>
+        </div>
+      </div>
+
+      <!-- day list -->
+      <div class="section"><h3>Resten af dagen</h3><span class="t-caption faint">3 opgaver</span></div>
+      <div class="card">
+        <div class="listrow">
+          <div class="checkbox" style="background:var(--success);border-color:var(--success);display:flex;align-items:center;justify-content:center"><svg class="icon sm" style="color:#fff" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div style="flex:1"><div class="t-label" style="font-weight:650;text-decoration:line-through;color:var(--ink-3)">Morgenbriefing med sjakket</div><div class="t-caption faint">07:00 · udført</div></div>
+        </div>
+        <div class="listrow">
+          <div class="checkbox"></div>
+          <div style="flex:1"><div class="t-label" style="font-weight:650">Vinduesmontering etage 2 — sidste 10 %</div><div class="t-caption faint">Efter frokost · med <b>Carl</b></div></div>
+          <div class="avatar sm av-c">CC</div>
+        </div>
+        <div class="listrow">
+          <div class="checkbox"></div>
+          <div style="flex:1"><div class="t-label" style="font-weight:650">Justér loftsbjælker — dobbelttjek</div><div class="t-caption faint">Kræver foto-dokumentation</div></div>
+          <span class="chip chip-warning">QA</span>
+        </div>
+      </div>
+
+      <!-- week hours -->
+      <div class="section"><h3>Mine timer denne uge</h3><a>Detaljer →</a></div>
+      <div class="card" style="padding:16px">
+        <div style="display:flex;align-items:flex-end;gap:8px;height:70px">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;height:52px;background:var(--brand);border-radius:6px 6px 0 0;opacity:.35"></div><span class="t-caption faint">Ma</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;height:60px;background:var(--brand);border-radius:6px 6px 0 0;opacity:.35"></div><span class="t-caption faint">Ti</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;height:24px;background:var(--brand);border-radius:6px 6px 0 0"></div><span class="t-caption" style="font-weight:700">On</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;height:6px;background:var(--surface-sunken);border-radius:6px 6px 0 0"></div><span class="t-caption faint">To</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;height:6px;background:var(--surface-sunken);border-radius:6px 6px 0 0"></div><span class="t-caption faint">Fr</span></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)">
+          <span class="t-label muted">I alt</span><b class="t-label">17,5 t / 37 t</b>
+        </div>
+      </div>
+
+      <!-- punch quick add -->
+      <button class="btn btn-secondary" style="width:100%;margin-top:16px;height:52px;gap:8px;border-radius:16px">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+        Nyt punch-punkt med foto
+      </button>
+    </div>
+
+    <div class="navbar">
+      <button class="item on"><svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Hjem</button>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2Z"/></svg>Projekter</button>
+      <button class="scanbtn"><svg class="icon" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></button>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Opgaver</button>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>Værktøj</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ FRAME 5 · OPGAVER ════════════════ -->
+<div class="frame-wrap">
+  <div class="frame-label">5 · Opgaver — global<span>Segmenteret visning · filterchips · ensartet kort-anatomi m. ansvarlig</span></div>
+  <div class="phone">
+    <div class="statusbar"><span>09:41</span><span style="letter-spacing:2px">▂▄▆ ▮▮▯</span></div>
+    <div class="scroll">
+      <div class="apphead">
+        <div class="grow"><div class="t-title">Opgaver</div></div>
+        <button class="iconbtn"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
+        <button class="btn btn-sm btn-primary" style="gap:4px"><svg class="icon sm" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Ny</button>
+      </div>
+
+      <div class="seg" style="margin:8px 0">
+        <button class="on">Liste</button><button>Gruppe</button><button>Opdelt</button><button>Kanban</button>
+      </div>
+
+      <div style="display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px">
+        <span class="chip chip-brand" style="padding:7px 14px">Alle · 27</span>
+        <span class="chip chip-neutral" style="padding:7px 14px">I dag</span>
+        <span class="chip chip-neutral" style="padding:7px 14px;color:var(--danger)">Forfaldne · 14</span>
+        <span class="chip chip-neutral" style="padding:7px 14px">Igangværende</span>
+        <span class="chip chip-neutral" style="padding:7px 14px">Partner</span>
+      </div>
+
+      <div class="t-caption faint" style="margin:4px 4px 8px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Forfaldne</div>
+      <div class="card" style="border-left:3px solid var(--danger)">
+        <div class="listrow">
+          <div class="checkbox"></div>
+          <div style="flex:1;min-width:0">
+            <div class="t-label" style="font-weight:650">Opsætning af stillads på baghavdel</div>
+            <div style="display:flex;gap:6px;margin-top:5px;align-items:center">
+              <span class="chip chip-neutral">Tag &amp; Loft</span>
+              <span class="chip chip-danger"><i class="dot"></i>15. jun</span>
+            </div>
+          </div>
+          <div class="avatar sm av-b">BB</div>
+        </div>
+        <div class="listrow">
+          <div class="checkbox"></div>
+          <div style="flex:1;min-width:0">
+            <div class="t-label" style="font-weight:650">1.2.2 Ny vandledning køkken → bad</div>
+            <div style="display:flex;gap:6px;margin-top:5px;align-items:center">
+              <span class="chip chip-neutral">Villa Renovering</span>
+              <span class="chip chip-danger"><i class="dot"></i>12. feb</span>
+            </div>
+          </div>
+          <div class="avatar sm av-c">CC</div>
+        </div>
+      </div>
+
+      <div class="t-caption faint" style="margin:16px 4px 8px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Til review</div>
+      <div class="card" style="border-left:3px solid var(--info)">
+        <div class="listrow">
+          <div style="width:22px;height:22px;border-radius:8px;background:var(--info-subtle);display:flex;align-items:center;justify-content:center;flex:none"><svg class="icon sm" style="color:var(--info)" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div style="flex:1;min-width:0">
+            <div class="t-label" style="font-weight:650">Gipsvæg mellem stue og entré</div>
+            <div style="display:flex;gap:6px;margin-top:5px;align-items:center">
+              <span class="chip chip-neutral">Villa Renovering</span>
+              <span class="chip" style="background:var(--info-subtle);color:var(--info)">Afventer din godkendelse</span>
+            </div>
+          </div>
+          <div class="avatar sm av-a">AA</div>
+        </div>
+      </div>
+
+      <div class="t-caption faint" style="margin:16px 4px 8px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Partneropgaver</div>
+      <div class="card">
+        <div class="listrow">
+          <div class="checkbox"></div>
+          <div style="flex:1;min-width:0">
+            <div class="t-label" style="font-weight:650">Badeværelset — hurtig opgave</div>
+            <div style="display:flex;gap:6px;margin-top:5px;align-items:center">
+              <span class="chip chip-warning"><i class="dot"></i>Forhandling</span>
+              <span class="t-caption" style="color:var(--success);font-weight:700">2.500 kr.</span>
+            </div>
+          </div>
+          <div class="avatar sm" style="background:#9333EA">MO</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar">
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Hjem</button>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2Z"/></svg>Projekter</button>
+      <button class="scanbtn"><svg class="icon" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg></button>
+      <button class="item on"><svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Opgaver</button>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>Værktøj</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ FRAME 6 · TABLET ════════════════ -->
+<div class="frame-wrap">
+  <div class="frame-label">6 · Tablet ≥768px — nav-rail + to-panelet layout<span>Samme komponenter · liste + detalje side om side</span></div>
+  <div class="tablet">
+    <div class="rail">
+      <div class="logo">B</div>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Hjem</button>
+      <button class="item on"><svg class="icon" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2Z"/></svg>Projekter</button>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/></svg>Scan</button>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Opgaver</button>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>Værktøj</button>
+      <div style="flex:1"></div>
+      <button class="item"><svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Team</button>
+      <div class="avatar av-me">MI</div>
+    </div>
+
+    <!-- list pane -->
+    <div style="width:340px;flex:none;border-right:1px solid var(--line);padding:20px 16px;overflow-y:auto">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="t-title">Projekter</div>
+        <button class="btn btn-sm btn-primary">+ Nyt</button>
+      </div>
+      <div style="display:flex;gap:6px;margin:12px 0">
+        <span class="chip chip-brand" style="padding:6px 12px">Aktive · 6</span>
+        <span class="chip chip-neutral" style="padding:6px 12px">Afsluttede</span>
+      </div>
+      <div class="card" style="padding:14px;border:1.5px solid var(--brand-border);margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><b class="t-label" style="font-weight:750">Renovering: Tag &amp; Loft</b><span class="chip chip-success"><i class="dot"></i>I rute</span></div>
+        <div class="bar" style="margin-top:10px"><i style="width:2%"></i></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+          <div class="avgroup"><div class="avatar sm av-a">AA</div><div class="avatar sm av-b">BB</div><div class="avatar sm av-c">CC</div></div>
+          <span class="t-caption faint">13 opgaver · 61 dage</span>
+        </div>
+      </div>
+      <div class="card" style="padding:14px;margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><b class="t-label" style="font-weight:750">Nivå project båd</b><span class="chip chip-warning"><i class="dot"></i>Opstart</span></div>
+        <div class="bar" style="margin-top:10px"><i style="width:20%"></i></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+          <div class="avgroup"><div class="avatar sm av-me">MI</div></div>
+          <span class="t-caption faint">København</span>
+        </div>
+      </div>
+      <div class="card" style="padding:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><b class="t-label" style="font-weight:750">Villa Renovering</b><span class="chip chip-danger"><i class="dot"></i>12 forfaldne</span></div>
+        <div class="bar" style="margin-top:10px"><i style="width:64%"></i></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+          <div class="avgroup"><div class="avatar sm av-a">AA</div><div class="avatar sm av-c">CC</div></div>
+          <span class="t-caption faint">Kildeskovgård 12</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- detail pane -->
+    <div style="flex:1;padding:20px 24px;overflow-y:auto">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="flex:1">
+          <div class="t-title">Renovering: Tag &amp; Loft</div>
+          <div class="t-caption faint">#26-92726 · 1. jul – 31. aug 2026 · Du er: Ejer</div>
+        </div>
+        <button class="btn btn-sm btn-primary" style="gap:5px"><svg class="icon sm" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>Start tid</button>
+        <button class="iconbtn"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></button>
+      </div>
+      <div class="seg" style="margin:14px 0;max-width:520px">
+        <button class="on">Overblik</button><button>Opgaver</button><button>Plan</button><button>Økonomi</button><button>Mere</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+        <div class="kpi"><div><b>13</b><span>Åbne opgaver</span></div></div>
+        <div class="kpi"><div><b>61</b><span>Dage tilbage</span></div></div>
+        <div class="kpi"><div><b>3</b><span>Indkøb afventer</span></div></div>
+        <div class="kpi"><div><b>59</b><span>Sundhed</span></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-top:12px">
+        <div class="card" style="padding:16px">
+          <b class="t-label" style="font-weight:750">Tidslinje</b>
+          <div class="bar" style="margin-top:12px;height:10px"><i style="width:2%"></i></div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px"><span class="t-caption faint">Start 1.7</span><span class="t-caption faint">I dag</span><span class="t-caption faint">Slut 31.8</span></div>
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;gap:8px;align-items:center"><span class="chip chip-success"><i class="dot"></i></span><span class="t-label">Opstart &amp; stillads</span><span class="t-caption faint" style="margin-left:auto">uge 27–28</span></div>
+            <div style="display:flex;gap:8px;align-items:center"><span class="chip chip-neutral"><i class="dot"></i></span><span class="t-label">Tagkonstruktion</span><span class="t-caption faint" style="margin-left:auto">uge 29–32</span></div>
+            <div style="display:flex;gap:8px;align-items:center"><span class="chip chip-neutral"><i class="dot"></i></span><span class="t-label">Isolering &amp; loft</span><span class="t-caption faint" style="margin-left:auto">uge 33–35</span></div>
+          </div>
+        </div>
+        <div class="card" style="padding:16px">
+          <b class="t-label" style="font-weight:750">Aktivitet</b>
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:8px"><div class="avatar sm av-a">AA</div><div class="t-caption"><b>Anders</b> oprettede “Stillads baghave”<div class="faint" style="margin-top:2px">08:12</div></div></div>
+            <div style="display:flex;gap:8px"><div class="avatar sm av-me">MI</div><div class="t-caption"><b>Du</b> inviterede Moh0709 som partner<div class="faint" style="margin-top:2px">i går</div></div></div>
+            <div style="display:flex;gap:8px"><div class="avatar sm av-b">BB</div><div class="t-caption"><b>Bente</b> uploadede 3 punch-fotos<div class="faint" style="margin-top:2px">i går</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

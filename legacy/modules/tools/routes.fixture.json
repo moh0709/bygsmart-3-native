@@ -1,0 +1,362 @@
+[
+  {
+    "path": "areal-rumfang/rumareal",
+    "toolId": "rumareal"
+  },
+  {
+    "path": "areal-rumfang/vaegareal",
+    "toolId": "vaegareal"
+  },
+  {
+    "path": "areal-rumfang/loftsareal",
+    "toolId": null
+  },
+  {
+    "path": "areal-rumfang/tagareal",
+    "toolId": null
+  },
+  {
+    "path": "areal-rumfang/gulvareal",
+    "toolId": null
+  },
+  {
+    "path": "areal-rumfang/bygningsskal-areal",
+    "toolId": null
+  },
+  {
+    "path": "areal-rumfang/rumfangsberegner",
+    "toolId": "rumfangsberegner"
+  },
+  {
+    "path": "areal-rumfang/materialevolumen",
+    "toolId": null
+  },
+  {
+    "path": "areal-rumfang/skraatag-areal",
+    "toolId": null
+  },
+  {
+    "path": "statiske-beregninger/bjaelkebelastning",
+    "toolId": "statiske-beregninger-bjaelkebelastning"
+  },
+  {
+    "path": "statiske-beregninger/soejlebelastning",
+    "toolId": "statiske-beregninger-soejlebelastning"
+  },
+  {
+    "path": "statiske-beregninger/daekbelastning",
+    "toolId": null
+  },
+  {
+    "path": "statiske-beregninger/fundament",
+    "toolId": null
+  },
+  {
+    "path": "statiske-beregninger/taglast-snelast",
+    "toolId": null
+  },
+  {
+    "path": "statiske-beregninger/vindlast",
+    "toolId": null
+  },
+  {
+    "path": "statiske-beregninger/baerende-vaeg",
+    "toolId": null
+  },
+  {
+    "path": "statiske-beregninger/nedboejning",
+    "toolId": null
+  },
+  {
+    "path": "statiske-beregninger/stoettemur",
+    "toolId": null
+  },
+  {
+    "path": "gulve-overflader/gulvafretning",
+    "toolId": "gulvafretning"
+  },
+  {
+    "path": "gulve-overflader/flisemaengde",
+    "toolId": "flisemaengde"
+  },
+  {
+    "path": "gulve-overflader/traegulv-maengde",
+    "toolId": "traegulv-maengde"
+  },
+  {
+    "path": "gulve-overflader/taeppe-laminat",
+    "toolId": "taeppe-laminat"
+  },
+  {
+    "path": "gulve-overflader/gulvisolering",
+    "toolId": "gulvisolering"
+  },
+  {
+    "path": "vaegge-skillevaegge/mursten-blokke",
+    "toolId": "mursten-blokke"
+  },
+  {
+    "path": "vaegge-skillevaegge/gipsplader",
+    "toolId": "gipsplader"
+  },
+  {
+    "path": "vaegge-skillevaegge/puds-spartel",
+    "toolId": "puds-spartel"
+  },
+  {
+    "path": "vaegge-skillevaegge/vaegisolering",
+    "toolId": "vaegisolering"
+  },
+  {
+    "path": "vaegge-skillevaegge/maling-grunder",
+    "toolId": "maling-grunder"
+  },
+  {
+    "path": "vaegge-skillevaegge/maling-pro",
+    "toolId": "vaegge-skillevaegge-maling-pro"
+  },
+  {
+    "path": "vaegge-skillevaegge/skeletvaeg",
+    "toolId": "vaegge-skillevaegge-skeletvaeg"
+  },
+  {
+    "path": "vaegge-skillevaegge/skiftegang",
+    "toolId": null
+  },
+  {
+    "path": "lofter-tag/loftplader",
+    "toolId": "lofter-tag-loftplader"
+  },
+  {
+    "path": "lofter-tag/loftisolering",
+    "toolId": "loftisolering"
+  },
+  {
+    "path": "lofter-tag/tagmateriale",
+    "toolId": null
+  },
+  {
+    "path": "lofter-tag/vandtætning",
+    "toolId": null
+  },
+  {
+    "path": "lofter-tag/taghaelding",
+    "toolId": null
+  },
+  {
+    "path": "lofter-tag/spaer-estimat",
+    "toolId": "lofter-tag-spaer-estimat"
+  },
+  {
+    "path": "lofter-tag/tagrender",
+    "toolId": null
+  },
+  {
+    "path": "lofter-tag/laegter",
+    "toolId": "lofter-tag-laegter"
+  },
+  {
+    "path": "doere-vinduer/vinduesareal",
+    "toolId": "doere-vinduer-vinduesareal"
+  },
+  {
+    "path": "doere-vinduer/u-vaerdi",
+    "toolId": null
+  },
+  {
+    "path": "doere-vinduer/doerstoerrelse",
+    "toolId": null
+  },
+  {
+    "path": "doere-vinduer/fugemasse",
+    "toolId": null
+  },
+  {
+    "path": "doere-vinduer/redningsaabning",
+    "toolId": "doere-vinduer-redningsaabning"
+  },
+  {
+    "path": "doere-vinduer/lyd-rude",
+    "toolId": null
+  },
+  {
+    "path": "vvs/roerdimension",
+    "toolId": null
+  },
+  {
+    "path": "vvs/vandflow",
+    "toolId": null
+  },
+  {
+    "path": "vvs/kedelstoerrelse",
+    "toolId": null
+  },
+  {
+    "path": "vvs/radiatorstoerrelse",
+    "toolId": null
+  },
+  {
+    "path": "vvs/gulvvarme",
+    "toolId": null
+  },
+  {
+    "path": "vvs/afloebsfald",
+    "toolId": null
+  },
+  {
+    "path": "el/kabel",
+    "toolId": null
+  },
+  {
+    "path": "el/kredslobsbelastning",
+    "toolId": null
+  },
+  {
+    "path": "el/sikring",
+    "toolId": null
+  },
+  {
+    "path": "el/lyspunkter",
+    "toolId": null
+  },
+  {
+    "path": "el/solpanel",
+    "toolId": null
+  },
+  {
+    "path": "el/sol-roi",
+    "toolId": null
+  },
+  {
+    "path": "el/fejlstrom-zs",
+    "toolId": null
+  },
+  {
+    "path": "el/ladestander",
+    "toolId": null
+  },
+  {
+    "path": "hvac/ventilationsflow",
+    "toolId": null
+  },
+  {
+    "path": "hvac/kanaldimension",
+    "toolId": null
+  },
+  {
+    "path": "hvac/luftskifte",
+    "toolId": null
+  },
+  {
+    "path": "hvac/udsugning",
+    "toolId": null
+  },
+  {
+    "path": "beton-armering/betonvolumen",
+    "toolId": "beton-volumen"
+  },
+  {
+    "path": "beton-armering/armeringsstaal",
+    "toolId": "beton-armering-armeringsstaal"
+  },
+  {
+    "path": "beton-armering/forskalling",
+    "toolId": "beton-armering-forskalling"
+  },
+  {
+    "path": "beton-armering/blandingsforhold",
+    "toolId": "blandingsforhold"
+  },
+  {
+    "path": "beton-armering/fundablokke",
+    "toolId": "beton-armering-fundablokke"
+  },
+  {
+    "path": "udgravning-jord/jordvolumen",
+    "toolId": "udgravning-jord-jordvolumen"
+  },
+  {
+    "path": "udgravning-jord/skraaning",
+    "toolId": "udgravning-jord-skraaning"
+  },
+  {
+    "path": "udgravning-jord/tilbagefyldning",
+    "toolId": "udgravning-jord-tilbagefyldning"
+  },
+  {
+    "path": "udgravning-jord/afstivning",
+    "toolId": null
+  },
+  {
+    "path": "pris-budget/projektbudget",
+    "toolId": null
+  },
+  {
+    "path": "pris-budget/materialeomkostning",
+    "toolId": null
+  },
+  {
+    "path": "pris-budget/arbejdsloen",
+    "toolId": null
+  },
+  {
+    "path": "pris-budget/finansiering",
+    "toolId": null
+  },
+  {
+    "path": "energi-klima/varmetab",
+    "toolId": "energi-klima-varmetab"
+  },
+  {
+    "path": "energi-klima/co2",
+    "toolId": "energi-klima-co2"
+  },
+  {
+    "path": "energi-klima/dugpunkt",
+    "toolId": null
+  },
+  {
+    "path": "trapper/ligeloeb",
+    "toolId": null
+  },
+  {
+    "path": "trapper/vanger",
+    "toolId": null
+  },
+  {
+    "path": "trapper/rampe",
+    "toolId": null
+  },
+  {
+    "path": "trapper/vindeltrappe",
+    "toolId": null
+  },
+  {
+    "path": "udenomsarealer/fliser",
+    "toolId": "flisebelaegning"
+  },
+  {
+    "path": "udenomsarealer/fald",
+    "toolId": "udenomsarealer-fald"
+  },
+  {
+    "path": "udenomsarealer/hegn",
+    "toolId": "udenomsarealer-hegn"
+  },
+  {
+    "path": "udenomsarealer/faskine",
+    "toolId": null
+  },
+  {
+    "path": "geometri/pythagoras",
+    "toolId": "geometri-pythagoras"
+  },
+  {
+    "path": "geometri/cirkel",
+    "toolId": "geometri-cirkel"
+  },
+  {
+    "path": "geometri/ar-opmåling",
+    "toolId": null
+  }
+]

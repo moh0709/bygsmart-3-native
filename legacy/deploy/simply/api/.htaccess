@@ -1,0 +1,17 @@
+# app.bygsmart.com/api/*  → proxy.php → 127.0.0.1:3002 (Node/Express)
+RewriteEngine On
+RewriteBase /api/
+
+# Let a real file be served directly (but never bypass the proxy itself)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_URI} !/api/proxy\.php$
+RewriteRule ^ - [L]
+
+# Everything under /api → proxy.php, preserving the full /api/... path
+RewriteRule ^(.*)$ proxy.php?__path=/api/$1 [QSA,L]
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Vary "Origin"
+</IfModule>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BYG SMART — Byggestyring for danske håndværkere og bygherrer</title>
+<meta name="description" content="Planlæg, beregn og byg med styr på det hele. 81 BR18-beregnere, AI-byggeassistent, Gantt-planlægning, 3D/AR-opmåling og tilbud på minutter. Gratis at starte.">
+<link rel="canonical" href="https://bygsmart.com/">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BYG SMART">
+<meta property="og:title" content="BYG SMART — Byggestyring for danske håndværkere og bygherrer">
+<meta property="og:description" content="Planlæg, beregn og byg med styr på det hele. 81 BR18-beregnere, AI-byggeassistent, Gantt-planlægning, 3D/AR-opmåling og tilbud på minutter. Gratis at starte.">
+<meta property="og:url" content="https://bygsmart.com/">
+<meta property="og:image" content="https://bygsmart.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="da_DK">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BYG SMART — Byggestyring for danske håndværkere og bygherrer">
+<meta name="twitter:description" content="Planlæg, beregn og byg med styr på det hele. 81 BR18-beregnere, AI-byggeassistent, Gantt-planlægning, 3D/AR-opmåling og tilbud på minutter.">
+<meta name="twitter:image" content="https://bygsmart.com/assets/og-image.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+
+<!-- Structured data (SEO + AEO) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "BYG SMART",
+  "url": "https://bygsmart.com/",
+  "logo": "https://bygsmart.com/assets/og-image.jpg",
+  "description": "Byggestyring for danske håndværkere og bygherrer. AI-assistent, BR18-beregnere, planlægning og tilbud i én platform.",
+  "areaServed": "DK",
+  "email": "support@bygsmart.com",
+  "sameAs": []
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "BYG SMART",
+  "url": "https://bygsmart.com/",
+  "inLanguage": "da-DK"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "BYG SMART",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "url": "https://bygsmart.com/",
+  "description": "Byggestyring for danske håndværkere og bygherrer: 81 BR18-beregnere, AI-byggeassistent, Gantt-planlægning, 3D/AR-opmåling og tilbud.",
+  "offers": [
+    { "@type": "Offer", "name": "Start", "price": "0", "priceCurrency": "DKK" },
+    { "@type": "Offer", "name": "Mester", "price": "199", "priceCurrency": "DKK" },
+    { "@type": "Offer", "name": "Entreprise", "price": "499", "priceCurrency": "DKK" }
+  ],
+  "provider": { "@type": "Organization", "name": "BYG SMART" }
+}
+</script>
+</head>
+<body>
+
+<div style="position:relative; width:100%; overflow-x:clip;">
+
+  <!-- ================= NAV ================= -->
+  <nav id="bygNav">
+    <div id="bygNavInner">
+      <a href="#top" id="bygBrand">
+        <span id="bygMark"><img src="assets/logo-mark.png" alt="BYG SMART logo" width="34" height="34"></span>
+        <span id="bygWordmark">BYG SMART</span>
+      </a>
+      <div id="bygNavLinks">
+        <a href="#funktioner" class="bygNavLink">Funktioner</a>
+        <a href="om-bygsmart.html" class="bygNavLink">Om BYG SMART</a>
+        <a href="priser.html" class="bygNavLink">Priser</a>
+        <a href="byggeguide.html" class="bygNavLink">Guide</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px;">
+        <a href="https://app.bygsmart.com/#/login" id="bygLogin">Log ind</a>
+        <a href="https://app.bygsmart.com/#/register" class="bygNavCta">Start gratis</a>
+        <button id="bygNavToggle" aria-label="Åbn menu"><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile menu panel -->
+  <div id="bygMobileMenu">
+    <button class="byg-mm-close" aria-label="Luk menu">✕</button>
+    <a href="#funktioner">Funktioner</a>
+    <a href="#saadan">Sådan virker det</a>
+    <a href="om-bygsmart.html">Om BYG SMART</a>
+    <a href="priser.html">Priser</a>
+    <a href="byggeguide.html">Guide</a>
+    <a href="hjaelp.html">Hjælp</a>
+    <a href="kontakt.html">Kontakt</a>
+    <a href="https://app.bygsmart.com/#/login">Log ind</a>
+    <a href="https://app.bygsmart.com/#/register" class="byg-mm-cta">Start gratis</a>
+  </div>
+
+  <!-- ================= HERO ================= -->
+  <section id="top" style="position:relative; min-height:100vh; display:flex; align-items:flex-end; background:#fff;">
+    <div style="position:absolute; inset:0; overflow:hidden;">
+      <img src="assets/hero-kitchen.jpg" alt="Lyst minimalistisk køkken med ø og pendler – BYG SMART" style="width:100%; height:100%; object-fit:cover; object-position:top center; display:block;">
+      <div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(15,23,42,.34) 0%, rgba(15,23,42,0) 20%, rgba(255,255,255,0) 44%, rgba(255,255,255,.82) 64%, #fff 80%);"></div>
+    </div>
+    <div aria-hidden="true" class="bygBlueprint" style="position:absolute; top:0; left:0; right:0; height:46%; opacity:.55; -webkit-mask-image:linear-gradient(#000 38%, transparent); mask-image:linear-gradient(#000 38%, transparent);"></div>
+    <div aria-hidden="true" class="bygHeroDim" style="position:absolute; left:6.5%; top:15%; height:27%; z-index:1;">
+      <div style="position:absolute; left:0; top:0; width:12px; height:1.5px; background:rgba(30,95,255,.75);"></div>
+      <div style="position:absolute; left:5px; top:0; bottom:0; width:1.5px; background:rgba(30,95,255,.5);"></div>
+      <div style="position:absolute; left:0; bottom:0; width:12px; height:1.5px; background:rgba(30,95,255,.75);"></div>
+      <div style="position:absolute; left:15px; top:50%; transform:translateY(-50%); writing-mode:vertical-rl; font-size:10.5px; font-weight:700; letter-spacing:.18em; color:#1E5FFF;">LOFT · 2500</div>
+    </div>
+
+    <div id="bygCopy" style="position:relative; z-index:2; width:100%; max-width:1120px; margin:0 auto; padding:130px 24px 64px; display:flex; flex-direction:column; align-items:center; text-align:center;">
+      <div style="display:flex; align-items:center; gap:10px; font-size:13px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:#1E5FFF; margin-bottom:18px;">
+        <svg class="bygRuler" width="22" height="10" viewBox="0 0 22 10" fill="none"><path d="M1 9V2M6 9V5M11 9V2M16 9V5M21 9V2" stroke="#1E5FFF" stroke-width="1.4" stroke-linecap="round"></path></svg>
+        <span>Byggestyring</span><span style="opacity:.4;">·</span><span>AI</span><span style="opacity:.4;">·</span><span>BR18</span>
+      </div>
+      <h1 style="margin:0; font-size:clamp(2.5rem,6vw,5.25rem); line-height:1.02; font-weight:800; letter-spacing:-.03em; color:#101828; max-width:14ch;">Gør dit byggeprojekt<br>til virkelighed</h1>
+      <p style="margin:20px 0 0; font-size:clamp(1.05rem,1.5vw,1.3rem); line-height:1.55; color:#475467; max-width:38ch;">Alt hvad du behøver for at planlægge, bygge og renovere – lige ved hånden.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin-top:34px;">
+        <a href="https://app.bygsmart.com/#/register" class="byg-btn byg-btn-primary">Start dit projekt</a>
+        <a href="#funktioner" class="byg-btn byg-btn-secondary">Udforsk BYG SMART</a>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:18px; justify-content:center; margin-top:26px; font-size:14px; font-weight:500; color:#475467;">
+        <span style="display:flex; align-items:center; gap:7px;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#1E5FFF"></circle><path d="M4.6 8.2 7 10.4l4.2-4.6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Hosted i Danmark</span>
+        <span style="display:flex; align-items:center; gap:7px;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#1E5FFF"></circle><path d="M4.6 8.2 7 10.4l4.2-4.6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>2-faktor sikkerhed</span>
+        <span style="display:flex; align-items:center; gap:7px;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#1E5FFF"></circle><path d="M4.6 8.2 7 10.4l4.2-4.6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Dansk support</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STATS + DATA SOURCES ================= -->
+  <section style="background:#F9FAFB; border-top:1px solid #F2F4F7; border-bottom:1px solid #F2F4F7;">
+    <div style="max-width:1200px; margin:0 auto; padding:64px 24px;">
+      <p data-reveal style="text-align:center; margin:0 0 40px; font-size:15px; font-weight:500; color:#475467;">Bygget til danske håndværkere og bygherrer</p>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:760px; margin:0 auto; text-align:center;">
+        <div data-reveal data-reveal-delay="0">
+          <div style="font-size:clamp(2.2rem,4vw,3.2rem); font-weight:800; letter-spacing:-.02em; color:#00529B; font-variant-numeric:tabular-nums;"><span data-count="81" data-suffix="">81</span></div>
+          <div style="font-size:14px; color:#475467; margin-top:4px;">beregnere i systemet</div>
+        </div>
+        <div data-reveal data-reveal-delay="80">
+          <div style="font-size:clamp(2.2rem,4vw,3.2rem); font-weight:800; letter-spacing:-.02em; color:#00529B; font-variant-numeric:tabular-nums;"><span data-count="71" data-suffix="">71</span></div>
+          <div style="font-size:14px; color:#475467; margin-top:4px;">regler &amp; standarder indbygget</div>
+        </div>
+        <div data-reveal data-reveal-delay="160">
+          <div style="font-size:clamp(2.2rem,4vw,3.2rem); font-weight:800; letter-spacing:-.02em; color:#00529B; font-variant-numeric:tabular-nums;"><span data-count="16" data-suffix="">16</span></div>
+          <div style="font-size:14px; color:#475467; margin-top:4px;">fagområder dækket</div>
+        </div>
+      </div>
+      <p data-reveal style="text-align:center; margin:46px 0 18px; font-size:12.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#98A2B3;">Data &amp; regler fra</p>
+      <div style="display:flex; flex-wrap:wrap; gap:38px; justify-content:center; align-items:center; opacity:.6;">
+        <span style="font-weight:700; font-size:17px; letter-spacing:.02em; color:#475467;">BR18</span>
+        <span style="font-weight:700; font-size:17px; letter-spacing:.02em; color:#475467;">BBR</span>
+        <span style="font-weight:700; font-size:17px; letter-spacing:.02em; color:#475467;">SBi-anvisninger</span>
+        <span style="font-weight:700; font-size:17px; letter-spacing:.02em; color:#475467;">Dansk Standard</span>
+        <span style="font-weight:700; font-size:17px; letter-spacing:.02em; color:#475467;">AB18</span>
+        <span style="font-weight:700; font-size:17px; letter-spacing:.02em; color:#475467;">Arbejdstilsynet</span>
+      </div>
+      <p data-reveal style="text-align:center; margin:22px 0 0; font-size:12.5px; color:#98A2B3; max-width:52ch; margin-left:auto; margin-right:auto;">BYG SMART er bygget ovenpå de officielle danske kilder — se det fulde katalog i <a href="br18-katalog.html" style="color:#1E5FFF; font-weight:600;">BR18-kataloget</a>.</p>
+    </div>
+  </section>
+
+  <!-- ================= REAL PHOTOS FROM THE FIELD ================= -->
+  <section style="padding:clamp(64px,10vw,120px) 24px; background:#ffffff;">
+    <div style="max-width:1120px; margin:0 auto;">
+      <div data-reveal style="text-align:center; margin-bottom:48px;">
+        <div class="byg-eyebrow" style="display:flex; justify-content:center;">Fra byggepladsen</div>
+        <h2 class="byg-h2">Bygget til de hænder, der bruger det</h2>
+      </div>
+      <div class="bygPhotoGrid">
+        <img data-reveal src="assets/feature-planlaegning.jpg" alt="Håndværkere planlægger et byggeprojekt sammen på pladsen" width="1600" height="1058" loading="lazy" class="bygPhotoCard">
+        <img data-reveal data-reveal-delay="60" src="assets/feature-maaling.jpg" alt="Håndværker udfører en præcis måling med vaterpas på byggepladsen" width="1540" height="1021" loading="lazy" class="bygPhotoCard">
+        <img data-reveal data-reveal-delay="120" src="assets/feature-haandvaerk.jpg" alt="Håndværker udfører kvalitetsarbejde med struktur og dokumentation" width="1600" height="1046" loading="lazy" class="bygPhotoCard">
+        <img data-reveal data-reveal-delay="180" src="assets/feature-tablet.jpg" alt="Håndværker bruger BYG SMART på tablet direkte på byggepladsen" width="1600" height="1056" loading="lazy" class="bygPhotoCard">
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FEATURES ================= -->
+  <div id="funktioner"></div>
+
+  <!-- Feature 1 — AI -->
+  <section style="padding:clamp(80px,12vw,150px) 24px; background:#ffffff;">
+    <div style="max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:clamp(40px,6vw,90px); align-items:center;" class="bygFeatRow">
+      <div data-reveal>
+        <div class="byg-eyebrow">AI-byggeassistent</div>
+        <h2 style="margin:0; font-size:clamp(2rem,3.6vw,3.1rem); line-height:1.08; font-weight:800; letter-spacing:-.025em; color:#101828;">Spørg om alt.<br>Få svar med det samme.</h2>
+        <p style="margin:22px 0 0; font-size:1.125rem; line-height:1.6; color:#475467; max-width:42ch;">Chat eller tal med assistenten håndfrit på byggepladsen. Den kender BR18, dine mål og dit projekt – og svarer på dansk.</p>
+        <div style="margin-top:22px; display:inline-flex; align-items:center; gap:9px; font-size:14px; font-weight:500; color:#475467; background:#F9FAFB; border:1px solid #F2F4F7; padding:8px 14px; border-radius:999px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3.2l1.9 5.4a3 3 0 0 0 1.5 1.5l5.4 1.9-5.4 1.9a3 3 0 0 0-1.5 1.5L12 20.8l-1.9-5.4a3 3 0 0 0-1.5-1.5L3.2 12l5.4-1.9a3 3 0 0 0 1.5-1.5L12 3.2Z" fill="#1E5FFF"></path></svg>
+          Drevet af Google Gemini
+        </div>
+      </div>
+      <div data-reveal data-reveal-delay="90" class="bygDeviceWrap">
+        <div style="width:100%; max-width:560px; margin:0 auto; border-radius:28px; background:#101828; padding:14px; box-shadow:0 40px 90px -34px rgba(16,24,40,.5); position:relative;">
+          <div aria-hidden="true" style="position:absolute; top:50%; left:8px; transform:translateY(-50%); width:6px; height:6px; border-radius:50%; background:#334155;"></div>
+          <div style="border-radius:18px; background:#F9FAFB; overflow:hidden; aspect-ratio:4/3; display:flex; flex-direction:column; position:relative;"><div class="bygGlare"></div>
+            <div style="padding:18px 18px 12px; background:#fff; border-bottom:1px solid #F2F4F7; display:flex; align-items:center; gap:11px;">
+              <div style="width:38px; height:38px; border-radius:11px; background:linear-gradient(135deg,#1E5FFF,#00529B); display:grid; place-items:center; animation:bygPulse 2.4s ease-in-out infinite;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" stroke="#fff" stroke-width="1.6"></path><circle cx="9" cy="11" r="1.4" fill="#fff"></circle><circle cx="15" cy="11" r="1.4" fill="#fff"></circle><path d="M9 15c1.8 1.3 4.2 1.3 6 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round"></path></svg>
+              </div>
+              <div style="flex:1;"><div style="font-size:15px; font-weight:700; color:#101828;">Byggeassistent</div><div style="font-size:12px; color:#1E5FFF; font-weight:500;">● Online · hands-free</div></div>
+              <div style="font-size:11px; font-weight:700; letter-spacing:.04em; color:#475467; background:#F2F4F7; padding:5px 11px; border-radius:999px;">BR18</div>
+            </div>
+            <div id="bygChatBody" style="flex:1; padding:18px 20px; display:flex; flex-direction:column; justify-content:flex-end; gap:11px; overflow:hidden;">
+              <div style="align-self:flex-end; max-width:72%; background:#1E5FFF; color:#fff; padding:11px 15px; border-radius:16px 16px 4px 16px; font-size:14px; line-height:1.45;">Hvilken U-værdi kræver BR18 for en ny ydervæg?</div>
+              <div style="align-self:flex-start; max-width:78%; background:#fff; color:#101828; padding:11px 15px; border-radius:16px 16px 16px 4px; font-size:14px; line-height:1.45; border:1px solid #F2F4F7;">Kravet er <b>U ≤ 0,18 W/m²K</b>. Med 250 mm mineraluld (λ 0,034) lander du på ca. 0,14 – godkendt.</div>
+            </div>
+            <div style="padding:14px 16px; background:#fff; border-top:1px solid #F2F4F7; display:flex; align-items:center; gap:10px;">
+              <div style="flex:1; height:38px; border-radius:999px; background:#F2F4F7; display:flex; align-items:center; padding:0 14px; font-size:13px; color:#98A2B3;">Stil et spørgsmål…</div>
+              <div style="width:38px; height:38px; border-radius:50%; background:#1E5FFF; display:grid; place-items:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4v9m0 0-3-3m3 3 3-3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M6 16c0 3 2.7 4 6 4s6-1 6-4" stroke="#fff" stroke-width="2" stroke-linecap="round"></path></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 2 — Calculators -->
+  <section style="padding:clamp(80px,12vw,150px) 24px; background:#F9FAFB;">
+    <div style="max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:clamp(40px,6vw,90px); align-items:center;" class="bygFeatRow bygReverse">
+      <div data-reveal class="bygTextCol">
+        <div class="byg-eyebrow">Beregnere</div>
+        <h2 style="margin:0; font-size:clamp(2rem,3.6vw,3.1rem); line-height:1.08; font-weight:800; letter-spacing:-.025em; color:#101828;">Indtast målene.<br>Vi tjekker BR18 for dig.</h2>
+        <p style="margin:22px 0 0; font-size:1.125rem; line-height:1.6; color:#475467; max-width:42ch;">U-værdier, ventilation, energiramme og brand. 81 beregnere fordelt på 16 fagområder — fra fundament til aflevering.</p>
+      </div>
+      <div data-reveal data-reveal-delay="90" class="bygDeviceWrap bygDevice2">
+        <div style="width:380px; max-width:100%; margin:0 auto; background:#fff; border-radius:24px; padding:24px; box-shadow:0 30px 70px -30px rgba(16,24,40,.3); border:1px solid #F2F4F7;" id="bygCalc">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+            <div style="font-size:16px; font-weight:700; color:#101828;">U-værdi beregner</div>
+            <div style="font-size:12px; color:#98A2B3; font-weight:500;">Ydervæg</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div id="bygCalcRow1" style="display:flex; justify-content:space-between; align-items:center; padding:13px 15px; background:#F9FAFB; border-radius:12px; border:1px solid #F2F4F7;"><span style="font-size:13.5px; color:#475467;">Isolering</span><span id="bygCalcIso" style="font-size:13.5px; font-weight:600; color:#101828; font-variant-numeric:tabular-nums;">250 mm</span></div>
+            <div id="bygCalcRow2" style="display:flex; justify-content:space-between; align-items:center; padding:13px 15px; background:#F9FAFB; border-radius:12px; border:1px solid #F2F4F7;"><span style="font-size:13.5px; color:#475467;">λ-værdi</span><span id="bygCalcLambda" style="font-size:13.5px; font-weight:600; color:#101828; font-variant-numeric:tabular-nums;">0,034 W/mK</span></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:15px; background:#101828; border-radius:12px;"><span style="font-size:13.5px; color:rgba(255,255,255,.7);">Resultat U-værdi</span><span id="bygCalcResult" style="font-size:18px; font-weight:800; color:#fff; font-variant-numeric:tabular-nums;">0,14</span></div>
+          </div>
+          <div id="bygCalcBadge" style="margin-top:16px; display:flex; align-items:center; gap:10px; padding:13px 15px; background:rgba(18,183,106,.1); border:1px solid rgba(18,183,106,.25); border-radius:12px;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#12B76A"></circle><path d="M5.6 10.2 8.4 13l5.4-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span style="font-size:14px; font-weight:600; color:#027A48;">Overholder BR18 (krav ≤ 0,18)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 3 — Planning -->
+  <section style="padding:clamp(80px,12vw,150px) 24px; background:#ffffff;">
+    <div style="max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:clamp(40px,6vw,90px); align-items:center;" class="bygFeatRow">
+      <div data-reveal>
+        <div class="byg-eyebrow">Planlægning</div>
+        <h2 style="margin:0; font-size:clamp(2rem,3.6vw,3.1rem); line-height:1.08; font-weight:800; letter-spacing:-.025em; color:#101828;">Planlæg som en proff.</h2>
+        <p style="margin:22px 0 0; font-size:1.125rem; line-height:1.6; color:#475467; max-width:42ch;">Gantt, kalender og opgaver – ét sted. Træk i tidslinjen, fordel sjak og se afhængigheder, før de bliver til forsinkelser.</p>
+      </div>
+      <div data-reveal data-reveal-delay="90" class="bygDeviceWrap bygDevice2">
+        <div style="width:440px; max-width:100%; margin:0 auto; background:#fff; border-radius:18px; padding:20px; box-shadow:0 30px 70px -30px rgba(16,24,40,.3); border:1px solid #F2F4F7;" id="bygGantt">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;"><div style="font-size:15px; font-weight:700;">Tidsplan · Tilbygning</div><div style="font-size:12px; color:#98A2B3;">Uge 18–24</div></div>
+          <div style="display:flex; flex-direction:column; gap:11px;">
+            <div style="display:flex; align-items:center; gap:12px;"><span style="width:84px; font-size:12.5px; color:#475467;">Fundament</span><div style="flex:1; height:14px; background:#F2F4F7; border-radius:7px; overflow:hidden;"><div class="bygBar" data-gantt-w="38" style="height:100%; width:0; background:#00529B; border-radius:7px; transition:width .9s cubic-bezier(.2,0,0,1);"></div></div></div>
+            <div style="display:flex; align-items:center; gap:12px;"><span style="width:84px; font-size:12.5px; color:#475467;">Råhus</span><div style="flex:1; height:14px; background:#F2F4F7; border-radius:7px; overflow:hidden;"><div class="bygBar" data-gantt-w="55" style="height:100%; width:0; margin-left:30%; background:#1E5FFF; border-radius:7px; transition:width 1s cubic-bezier(.2,0,0,1) .1s;"></div></div></div>
+            <div style="display:flex; align-items:center; gap:12px;"><span style="width:84px; font-size:12.5px; color:#475467;">Tag</span><div style="flex:1; height:14px; background:#F2F4F7; border-radius:7px; overflow:hidden;"><div class="bygBar" data-gantt-w="40" style="height:100%; width:0; margin-left:52%; background:#1E5FFF; border-radius:7px; transition:width 1s cubic-bezier(.2,0,0,1) .2s;"></div></div></div>
+            <div style="display:flex; align-items:center; gap:12px;"><span style="width:84px; font-size:12.5px; color:#475467;">El &amp; VVS</span><div style="flex:1; height:14px; background:#F2F4F7; border-radius:7px; overflow:hidden;"><div class="bygBar" data-gantt-w="45" style="height:100%; width:0; margin-left:62%; background:#FFB020; border-radius:7px; transition:width 1s cubic-bezier(.2,0,0,1) .3s;"></div></div></div>
+            <div style="display:flex; align-items:center; gap:12px;"><span style="width:84px; font-size:12.5px; color:#475467;">Aflevering</span><div style="flex:1; height:14px; background:#F2F4F7; border-radius:7px; overflow:hidden;"><div class="bygBar" data-gantt-w="18" style="height:100%; width:0; margin-left:82%; background:#12B76A; border-radius:7px; transition:width 1s cubic-bezier(.2,0,0,1) .4s;"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 4 — RoomMapper -->
+  <section style="padding:clamp(80px,12vw,150px) 24px; background:#0F172A; position:relative; overflow:hidden;">
+    <div class="bygGrain"></div>
+    <div style="max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:clamp(40px,6vw,90px); align-items:center;" class="bygFeatRow bygReverse">
+      <div data-reveal class="bygTextCol">
+        <div style="font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#5B8CFF; margin-bottom:16px;">3D &amp; AR · RoomMapper</div>
+        <h2 style="margin:0; font-size:clamp(2rem,3.6vw,3.1rem); line-height:1.08; font-weight:800; letter-spacing:-.025em; color:#fff;">Se rummet,<br>før du bygger.</h2>
+        <p style="margin:22px 0 0; font-size:1.125rem; line-height:1.6; color:#94A3B8; max-width:42ch;">Kortlæg rum i 3D og augmented reality direkte fra telefonen. Mål, planlæg og placér – med fuld fornemmelse for proportionerne.</p>
+      </div>
+      <div data-reveal data-reveal-delay="90" class="bygDeviceWrap">
+        <div style="width:100%; max-width:440px; margin:0 auto; aspect-ratio:4/3; border-radius:24px; background:radial-gradient(120% 120% at 50% 0%, #1E293B 0%, #0B1220 100%); border:1px solid rgba(255,255,255,.08); position:relative; overflow:hidden; display:grid; place-items:center; box-shadow:0 40px 80px -30px rgba(0,0,0,.6);">
+          <div style="position:absolute; top:16px; right:16px; font-size:11px; font-weight:700; letter-spacing:.1em; color:#0F172A; background:#FFB020; padding:5px 10px; border-radius:7px;">AR</div>
+          <div style="perspective:700px;">
+            <div style="width:150px; height:100px; position:relative; transform-style:preserve-3d; animation:bygSpin 16s linear infinite;">
+              <div style="position:absolute; inset:0; border:1.5px solid #5B8CFF; transform:translateZ(60px); border-radius:4px; box-shadow:0 0 24px rgba(91,140,255,.25) inset;"></div>
+              <div style="position:absolute; inset:0; border:1.5px solid rgba(91,140,255,.5); transform:translateZ(-60px); border-radius:4px;"></div>
+              <div style="position:absolute; inset:0; border:1.5px solid rgba(91,140,255,.35); transform:rotateY(90deg) translateZ(75px); border-radius:4px;"></div>
+              <div style="position:absolute; inset:0; border:1.5px solid rgba(91,140,255,.35); transform:rotateY(90deg) translateZ(-75px); border-radius:4px;"></div>
+              <div style="position:absolute; left:50%; top:50%; width:10px; height:10px; margin:-5px; border-radius:50%; background:#5B8CFF; transform:translateZ(60px); box-shadow:0 0 18px #5B8CFF;"></div>
+            </div>
+          </div>
+          <div style="position:absolute; bottom:16px; left:16px; font-size:12px; color:#94A3B8; font-variant-numeric:tabular-nums;">4,2 × 3,6 × 2,5 m · 15,1 m²</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 5 — Quotation -->
+  <section style="padding:clamp(80px,12vw,150px) 24px; background:#ffffff;">
+    <div style="max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:clamp(40px,6vw,90px); align-items:center;" class="bygFeatRow">
+      <div data-reveal>
+        <div class="byg-eyebrow">Tilbud &amp; indkøb</div>
+        <h2 style="margin:0; font-size:clamp(2rem,3.6vw,3.1rem); line-height:1.08; font-weight:800; letter-spacing:-.025em; color:#101828;">Fra idé til faktura.</h2>
+        <p style="margin:22px 0 0; font-size:1.125rem; line-height:1.6; color:#475467; max-width:42ch;">Byg tilbud, styr indkøb og generér rapporter. Send et professionelt tilbud som PDF – på minutter, ikke aftener.</p>
+      </div>
+      <div data-reveal data-reveal-delay="90" class="bygDeviceWrap">
+        <div style="width:300px; max-width:100%; margin:0 auto; border-radius:36px; background:#101828; padding:11px; box-shadow:0 40px 80px -30px rgba(16,24,40,.45); position:relative; overflow:hidden;">
+          <div style="border-radius:27px; background:#F2F4F7; overflow:hidden; height:540px; position:relative;"><div class="bygIsland"></div><div class="bygGlare"></div>
+            <div style="position:absolute; left:18px; right:18px; bottom:-6px; background:#fff; border-radius:16px 16px 0 0; box-shadow:0 -20px 50px -20px rgba(16,24,40,.25); padding:22px; animation:bygFloat 4s ease-in-out infinite;">
+              <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:18px;"><div><div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#98A2B3; font-weight:600;">Tilbud</div><div style="font-size:17px; font-weight:800; color:#101828; margin-top:2px;">#2026-184</div></div><div style="width:30px; height:30px; border-radius:8px; background:#00529B; display:grid; place-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 11.2 12 4l9 7.2" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M5.4 10.3V20h13.2v-9.7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div></div>
+              <div style="display:flex; flex-direction:column; gap:11px;">
+                <div style="display:flex; justify-content:space-between; font-size:13px;"><span style="color:#475467;">Nedrivning</span><span style="font-weight:600; font-variant-numeric:tabular-nums;">14.500 kr</span></div>
+                <div style="height:1px; background:#F2F4F7;"></div>
+                <div style="display:flex; justify-content:space-between; font-size:13px;"><span style="color:#475467;">Murerarbejde</span><span style="font-weight:600; font-variant-numeric:tabular-nums;">62.000 kr</span></div>
+                <div style="height:1px; background:#F2F4F7;"></div>
+                <div style="display:flex; justify-content:space-between; font-size:13px;"><span style="color:#475467;">Materialer</span><span style="font-weight:600; font-variant-numeric:tabular-nums;">28.300 kr</span></div>
+              </div>
+              <div style="margin-top:18px; padding-top:16px; border-top:2px solid #101828; display:flex; justify-content:space-between; align-items:center;"><span style="font-size:14px; font-weight:600; color:#101828;">I alt inkl. moms</span><span style="font-size:20px; font-weight:800; color:#00529B; font-variant-numeric:tabular-nums;">130.875 kr</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BENTO ================= -->
+  <section style="padding:clamp(80px,12vw,150px) 24px; background:#F9FAFB;">
+    <div style="max-width:1120px; margin:0 auto;">
+      <div data-reveal style="text-align:center; margin-bottom:56px;">
+        <div class="byg-eyebrow">Alt-i-én</div>
+        <h2 class="byg-h2">Hele byggepladsen i én app</h2>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:170px; gap:16px;" id="bygBento">
+        <div data-reveal style="grid-column:span 2; grid-row:span 2; background:linear-gradient(150deg,#00529B 0%,#1E5FFF 100%); border-radius:20px; padding:28px; color:#fff; position:relative; overflow:hidden; box-shadow:0 24px 60px -30px rgba(0,82,155,.5);"><div class="bygGrain"></div><div aria-hidden="true" style="position:absolute; top:14px; left:14px; width:16px; height:16px; border-left:1.5px solid rgba(255,255,255,.45); border-top:1.5px solid rgba(255,255,255,.45);"></div><div aria-hidden="true" style="position:absolute; bottom:14px; right:14px; width:16px; height:16px; border-right:1.5px solid rgba(255,255,255,.45); border-bottom:1.5px solid rgba(255,255,255,.45);"></div>
+          <div style="position:absolute; right:-30px; bottom:-30px; width:220px; height:220px; border-radius:50%; background:radial-gradient(closest-side, rgba(255,176,32,.35), transparent);"></div>
+          <div style="position:relative;">
+            <div style="width:46px; height:46px; border-radius:13px; background:rgba(255,255,255,.16); display:grid; place-items:center; margin-bottom:auto; animation:bygPulse 2.6s ease-in-out infinite;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" stroke="#fff" stroke-width="1.6"></path><circle cx="9" cy="11" r="1.4" fill="#fff"></circle><circle cx="15" cy="11" r="1.4" fill="#fff"></circle><path d="M9 15c1.8 1.3 4.2 1.3 6 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round"></path></svg></div>
+            <div style="position:absolute; bottom:0; left:0; right:0; top:64px; display:flex; flex-direction:column; justify-content:flex-end;">
+              <h3 style="margin:0; font-size:1.5rem; font-weight:800; letter-spacing:-.02em;">AI-assistent med stemme</h3>
+              <p style="margin:10px 0 0; font-size:14.5px; line-height:1.5; color:rgba(255,255,255,.82); max-width:34ch;">Hands-free hjælp på pladsen. Spørg, og få svar med BR18-viden indbygget.</p>
+            </div>
+          </div>
+        </div>
+        <div data-reveal data-reveal-delay="60" class="bygTile"><div class="bygIco"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.3" stroke="#00529B" stroke-width="1.7"></circle><path d="m20 20-3.5-3.5" stroke="#00529B" stroke-width="1.7" stroke-linecap="round"></path></svg></div><div class="bygTileTitle">Daglig briefing på projekterne</div><div class="bygTileSub">AI studerer alle dine projekter og leverer en intelligent briefing</div></div>
+        <div data-reveal data-reveal-delay="120" class="bygTile"><div class="bygIco"><svg viewBox="0 0 24 24" fill="none"><path d="M16.4 9.2a4.2 4.2 0 0 1 .3 8.3H8.2A4.5 4.5 0 0 1 7.5 8.6a5 5 0 0 1 8.9.6Z" stroke="#00529B" stroke-width="1.7" stroke-linejoin="round"></path></svg></div><div class="bygTileTitle">Vejr på pladsen</div><div class="bygTileSub">Appen checker vejret på byggepladserne</div></div>
+        <div data-reveal data-reveal-delay="60" class="bygTile"><div class="bygIco"><svg viewBox="0 0 24 24" fill="none"><rect x="5.5" y="5" width="13" height="14.5" rx="2.5" stroke="#00529B" stroke-width="1.7"></rect><path d="M9 5V4.2A1.2 1.2 0 0 1 10.2 3h3.6A1.2 1.2 0 0 1 15 4.2V5M9 11h6M9 14.5h4" stroke="#00529B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="bygTileTitle">Afleveringsrapport</div><div class="bygTileSub">Klar dokumentation</div></div>
+        <div data-reveal data-reveal-delay="120" class="bygTile"><div class="bygIco"><svg viewBox="0 0 24 24" fill="none"><path d="M10.5 7H19M10.5 12H19M10.5 17H19" stroke="#00529B" stroke-width="1.7" stroke-linecap="round"></path><path d="m4.5 6.6 1.1 1.1 2-2.2M4.5 11.6l1.1 1.1 2-2.2M4.5 16.6l1.1 1.1 2-2.2" stroke="#00529B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="bygTileTitle">Mangelliste</div><div class="bygTileSub">Upload plantegning og lad teamet indsætte kommentarer med billeder</div></div>
+        <div data-reveal data-reveal-delay="60" class="bygTile"><div class="bygIco"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7.6a2 2 0 0 1 2-2h3.1l1.6 1.8H18a2 2 0 0 1 2 2v6.9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7.6Z" stroke="#00529B" stroke-width="1.7" stroke-linejoin="round"></path></svg></div><div class="bygTileTitle">Cloud-filer</div><div class="bygTileSub">Tegninger altid med</div></div>
+        <div data-reveal data-reveal-delay="120" class="bygTile"><div class="bygIco"><svg viewBox="0 0 24 24" fill="none"><path d="M16.4 8.6a4.2 4.2 0 0 1 .3 8.3H8.2A4.5 4.5 0 0 1 7.5 8a5 5 0 0 1 8.9.6Z" stroke="#00529B" stroke-width="1.7" stroke-linejoin="round"></path><path d="M12 11.4v4.3m0 0-1.6-1.5M12 15.7l1.6-1.5" stroke="#00529B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="bygTileTitle">AI arbejder for dig</div><div class="bygTileSub">Hjælper dig med at oprette opgaver og indkøb</div></div>
+        <div data-reveal data-reveal-delay="180" style="grid-column:span 2; background:#101828; border-radius:20px; padding:26px; color:#fff; display:flex; align-items:center; justify-content:space-between; gap:18px;">
+          <div><div style="font-size:1.15rem; font-weight:800; letter-spacing:-.01em;">Dansk &amp; mørk tilstand</div><div style="font-size:14px; color:#94A3B8; margin-top:6px;">Bygget til danske forhold – dag og nat.</div></div>
+          <div style="display:flex; gap:8px;"><span style="width:30px; height:30px; border-radius:8px; background:#fff; border:1px solid #475467;"></span><span style="width:30px; height:30px; border-radius:8px; background:#1E293B; border:1px solid #475467;"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= REAL PRODUCT SCREENSHOT ================= -->
+  <section style="padding:clamp(80px,12vw,150px) 24px 0; background:#ffffff;">
+    <div style="max-width:1120px; margin:0 auto;">
+      <div data-reveal style="text-align:center; margin-bottom:56px;">
+        <div class="byg-eyebrow" style="display:flex; justify-content:center;">Ikke en mockup</div>
+        <h2 class="byg-h2">Sådan ser BYG SMART faktisk ud</h2>
+        <p style="margin:18px auto 0; max-width:56ch; font-size:1.05rem; line-height:1.6; color:#475467;">Et rigtigt projektoverblik fra platformen — færdiggørelse, performance-score, budget og team, samlet ét sted.</p>
+      </div>
+      <div data-reveal data-reveal-delay="90" style="max-width:760px; margin:0 auto; position:relative;">
+        <div aria-hidden="true" style="position:absolute; inset:-15% -10%; background:radial-gradient(60% 60% at 50% 40%, rgba(30,95,255,.14), transparent 70%); z-index:0;"></div>
+        <img src="assets/app-screenshot.jpg" alt="Skærmbillede af BYG SMART – projektoverblik med performance, budget og team" width="1400" height="1050" loading="lazy" style="width:100%; height:auto; border-radius:20px; box-shadow:0 50px 100px -40px rgba(16,24,40,.35); position:relative; z-index:1; display:block;">
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SÅDAN VIRKER DET ================= -->
+  <section id="saadan" style="padding:clamp(80px,12vw,150px) 24px; background:#ffffff; position:relative; overflow:hidden;">
+    <div aria-hidden="true" class="bygBlueprint" style="position:absolute; inset:0; opacity:.4; -webkit-mask-image:radial-gradient(120% 90% at 50% 0%, #000, transparent 72%); mask-image:radial-gradient(120% 90% at 50% 0%, #000, transparent 72%);"></div>
+    <div style="max-width:1040px; margin:0 auto; position:relative;">
+      <div data-reveal style="text-align:center; margin-bottom:64px;">
+        <div class="byg-eyebrow">Sådan virker det</div>
+        <h2 class="byg-h2">Tre skridt til styr på projektet</h2>
+      </div>
+      <div style="position:relative;" id="bygSteps">
+        <div style="position:absolute; left:8%; right:8%; top:34px; height:3px; background:#F2F4F7; border-radius:3px; z-index:0;" class="bygStepLineWrap"><div id="bygStepFill" style="height:100%; width:0; background:linear-gradient(90deg,#00529B,#1E5FFF); border-radius:3px; transition:width 1.1s cubic-bezier(.2,0,0,1);"></div><div style="position:absolute; left:0; top:-3px; width:2px; height:9px; background:#D0D5DD; border-radius:2px;"></div><div style="position:absolute; right:0; top:-3px; width:2px; height:9px; background:#D0D5DD; border-radius:2px;"></div></div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:34px; position:relative; z-index:1;" class="bygStepGrid">
+          <div data-reveal style="text-align:center;"><div class="bygStep" data-accent="#00529B" data-fg="#00529B" style="width:68px; height:68px; margin:0 auto 22px; border-radius:50%; background:#fff; border:3px solid #00529B; color:#00529B; display:grid; place-items:center; font-size:24px; font-weight:800; transition:background .45s cubic-bezier(.34,1.3,.64,1), color .45s, transform .45s cubic-bezier(.34,1.3,.64,1), box-shadow .45s;">1</div><h3 style="margin:0; font-size:1.25rem; font-weight:700; color:#101828;">Opret projekt</h3><p style="margin:10px 0 0; font-size:15px; line-height:1.55; color:#475467;">Slå adressen op i BBR og hent bygningens data automatisk.</p></div>
+          <div data-reveal data-reveal-delay="120" style="text-align:center;"><div class="bygStep" data-accent="#1E5FFF" data-fg="#1E5FFF" style="width:68px; height:68px; margin:0 auto 22px; border-radius:50%; background:#fff; border:3px solid #1E5FFF; color:#1E5FFF; display:grid; place-items:center; font-size:24px; font-weight:800; transition:background .45s cubic-bezier(.34,1.3,.64,1), color .45s, transform .45s cubic-bezier(.34,1.3,.64,1), box-shadow .45s;">2</div><h3 style="margin:0; font-size:1.25rem; font-weight:700; color:#101828;">Planlæg &amp; beregn</h3><p style="margin:10px 0 0; font-size:15px; line-height:1.55; color:#475467;">Læg tidsplan, beregn BR18 og byg dit tilbud – ét sted.</p></div>
+          <div data-reveal data-reveal-delay="240" style="text-align:center;"><div class="bygStep" data-accent="#FFB020" data-fg="#B25E00" style="width:68px; height:68px; margin:0 auto 22px; border-radius:50%; background:#fff; border:3px solid #FFB020; color:#B25E00; display:grid; place-items:center; font-size:24px; font-weight:800; transition:background .45s cubic-bezier(.34,1.3,.64,1), color .45s, transform .45s cubic-bezier(.34,1.3,.64,1), box-shadow .45s;">3</div><h3 style="margin:0; font-size:1.25rem; font-weight:700; color:#101828;">Byg med styr på det hele</h3><p style="margin:10px 0 0; font-size:15px; line-height:1.55; color:#475467;">Følg fremdrift, dokumentér og aflevér med rapport og mangelliste.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GUIDE TEASER ================= -->
+  <section id="guide" style="padding:clamp(80px,12vw,150px) 24px; background:#F9FAFB;">
+    <div style="max-width:1040px; margin:0 auto; text-align:center;">
+      <div data-reveal>
+        <div class="byg-eyebrow">Byggeguide &amp; enheder</div>
+        <h2 style="margin:0 0 16px; font-size:clamp(2rem,4vw,3.25rem); font-weight:800; letter-spacing:-.025em; color:#101828;">Din byggeplads – i lommen</h2>
+        <p style="margin:0 auto; max-width:46ch; font-size:1.125rem; line-height:1.6; color:#475467;">Tegninger, regler og rapporter følger med, hvor end arbejdet er. Online som offline.</p>
+      </div>
+      <div data-reveal data-reveal-delay="120" style="margin-top:60px; display:flex; align-items:flex-end; justify-content:center; gap:clamp(20px,4vw,56px); position:relative;">
+        <div aria-hidden="true" style="position:absolute; bottom:-28px; left:50%; transform:translateX(-50%); width:62%; height:56px; background:radial-gradient(ellipse at center, rgba(16,24,40,.22), rgba(16,24,40,0) 70%); filter:blur(22px); pointer-events:none; z-index:0;"></div>
+        <div class="bygTablet" style="width:340px; max-width:38vw; border-radius:26px; background:#101828; padding:12px; box-shadow:0 40px 90px -34px rgba(16,24,40,.45); position:relative; z-index:1;">
+          <div style="border-radius:16px; overflow:hidden; aspect-ratio:4/3; position:relative;"><div class="bygGlare"></div><img src="assets/hero-kitchen.jpg" alt="BYG SMART på tablet" style="width:100%; height:100%; object-fit:cover;"><div style="position:absolute; inset:0; background:linear-gradient(180deg,transparent 40%, rgba(255,255,255,.65));"></div><div style="position:absolute; left:16px; bottom:16px; right:16px; display:flex; gap:8px;"><span style="font-size:11px; font-weight:600; background:#fff; color:#00529B; padding:6px 10px; border-radius:8px; box-shadow:0 6px 16px -8px rgba(16,24,40,.4);">Byggeguide</span><span style="font-size:11px; font-weight:600; background:#00529B; color:#fff; padding:6px 10px; border-radius:8px;">BR18-katalog</span></div></div>
+        </div>
+        <div style="width:208px; max-width:30vw; border-radius:32px; background:#101828; padding:9px; box-shadow:0 40px 90px -30px rgba(16,24,40,.5); position:relative; z-index:2;">
+          <div style="border-radius:24px; overflow:hidden; aspect-ratio:9/19; background:#F9FAFB; position:relative;"><div class="bygIsland"></div><div class="bygGlare"></div>
+            <div style="padding:30px 16px 20px; background:linear-gradient(160deg,#00529B,#1E5FFF); color:#fff;"><div style="font-size:11px; opacity:.85; letter-spacing:.08em; text-transform:uppercase; font-weight:600;">I dag · Byggeplads</div><div style="font-size:18px; font-weight:800; margin-top:6px;">Villa, Risskov</div></div>
+            <div style="padding:14px; display:flex; flex-direction:column; gap:10px;">
+              <div style="background:#fff; border:1px solid #F2F4F7; border-radius:12px; padding:12px; display:flex; align-items:center; gap:10px;"><span style="width:30px; height:30px; border-radius:8px; background:rgba(18,183,106,.14);" class="bygMiniIco"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.6 4 4 10-10.6" stroke="#12B76A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><div><div style="font-size:12.5px; font-weight:700; color:#101828;">3 opgaver i dag</div><div style="font-size:11px; color:#475467;">2 udført · 1 i gang</div></div></div>
+              <div style="background:#fff; border:1px solid #F2F4F7; border-radius:12px; padding:12px; display:flex; align-items:center; gap:10px;"><span style="width:30px; height:30px; border-radius:8px; background:rgba(255,176,32,.16);" class="bygMiniIco"><svg viewBox="0 0 24 24" fill="none"><path d="M16.4 11a3.6 3.6 0 0 1 .3 7.1H8.5A3.9 3.9 0 0 1 8 10.3a4.4 4.4 0 0 1 8.4.7Z" stroke="#B25E00" stroke-width="1.8" stroke-linejoin="round"></path></svg></span><div><div style="font-size:12.5px; font-weight:700; color:#101828;">7° · tørt</div><div style="font-size:11px; color:#475467;">Godt støbevejr</div></div></div>
+              <div style="background:#101828; border-radius:12px; padding:12px; display:flex; align-items:center; gap:10px;"><span style="width:30px; height:30px; border-radius:8px; background:rgba(255,255,255,.12);" class="bygMiniIco"><svg viewBox="0 0 24 24" fill="none"><path d="M5.5 15.5a3.4 3.4 0 0 1 .5-6.7A4.4 4.4 0 0 1 14 8.2" stroke="#fff" stroke-width="1.8" stroke-linecap="round"></path><path d="M12 12.6v4.4m0 0-1.6-1.5M12 17l1.6-1.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><div><div style="font-size:12.5px; font-weight:700; color:#fff;">Offline-klar</div><div style="font-size:11px; color:#94A3B8;">Synker når du er online</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="byggeguide.html" data-reveal style="display:inline-block; margin-top:48px; font-size:15px; font-weight:700; color:#00529B;">Se den fulde byggeguide →</a>
+    </div>
+  </section>
+
+  <!-- ================= PRICING TEASER ================= -->
+  <section id="priser" style="padding:clamp(80px,12vw,150px) 24px; background:#ffffff;">
+    <div style="max-width:1040px; margin:0 auto; text-align:center;">
+      <div data-reveal>
+        <div class="byg-eyebrow">Priser</div>
+        <h2 class="byg-h2">Fra gratis til fuld virksomhedsløsning</h2>
+        <p style="margin:22px auto 0; max-width:52ch; font-size:1.125rem; line-height:1.6; color:#475467;">Start gratis som bygherre, eller væk hele teamet op med Mester og Entreprise. Ingen binding, ingen overraskelser.</p>
+      </div>
+      <div data-reveal data-reveal-delay="100" style="display:flex; flex-wrap:wrap; gap:16px; justify-content:center; margin-top:40px;">
+        <div style="background:#F9FAFB; border:1px solid #F2F4F7; border-radius:16px; padding:18px 26px; min-width:150px;"><div style="font-size:13px; font-weight:700; color:#475467;">Start</div><div style="font-size:1.6rem; font-weight:800; color:#101828;">0 kr</div></div>
+        <div style="background:#F9FAFB; border:2px solid #00529B; border-radius:16px; padding:18px 26px; min-width:150px;"><div style="font-size:13px; font-weight:700; color:#00529B;">Mester</div><div style="font-size:1.6rem; font-weight:800; color:#101828;">199 kr<span style="font-size:13px; font-weight:600; color:#98A2B3;">/md</span></div></div>
+        <div style="background:#F9FAFB; border:1px solid #F2F4F7; border-radius:16px; padding:18px 26px; min-width:150px;"><div style="font-size:13px; font-weight:700; color:#475467;">Entreprise</div><div style="font-size:1.6rem; font-weight:800; color:#101828;">499 kr<span style="font-size:13px; font-weight:600; color:#98A2B3;">/md</span></div></div>
+        <div style="background:#F9FAFB; border:1px solid #F2F4F7; border-radius:16px; padding:18px 26px; min-width:150px;"><div style="font-size:13px; font-weight:700; color:#475467;">Koncern</div><div style="font-size:1.6rem; font-weight:800; color:#101828;">Kontakt os</div></div>
+      </div>
+      <a href="priser.html" data-reveal data-reveal-delay="160" class="byg-btn byg-btn-primary" style="margin-top:40px;">Se alle priser &amp; detaljer</a>
+    </div>
+  </section>
+
+  <!-- ================= TRUST (replaces fabricated testimonials) ================= -->
+  <section style="padding:clamp(80px,12vw,150px) 24px; background:#F9FAFB; overflow:hidden;">
+    <div style="max-width:840px; margin:0 auto; text-align:center;">
+      <div data-reveal class="byg-eyebrow" style="margin-bottom:36px;">Derfor BYG SMART</div>
+      <div data-reveal data-reveal-delay="80" id="bygQuoteCard" style="position:relative; min-height:230px;">
+        <div class="bygQuote" data-i="0" style="opacity:1; transition:opacity .5s cubic-bezier(.2,0,0,1);">
+          <p style="margin:0; font-size:clamp(1.3rem,2.6vw,1.9rem); line-height:1.45; font-weight:600; letter-spacing:-.01em; color:#101828; text-wrap:balance;">"Bygget på det virkelige BR18-regelsæt — 71 regler og standarder indekseret fra Bygningsreglementet, SBi-anvisninger, Dansk Standard, AB18 og Arbejdstilsynet."</p>
+          <div style="display:flex; align-items:center; justify-content:center; gap:13px; margin-top:28px;"><span style="width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#1E5FFF,#00529B); color:#fff; display:grid; place-items:center; font-weight:700;">§</span><div style="text-align:left;"><div style="font-size:15px; font-weight:700; color:#101828;">Regelgrundlag</div><div style="font-size:13px; color:#475467;">Se hele kataloget</div></div></div>
+        </div>
+        <div class="bygQuote" data-i="1" style="opacity:0; position:absolute; inset:0; transition:opacity .5s cubic-bezier(.2,0,0,1); pointer-events:none;">
+          <p style="margin:0; font-size:clamp(1.3rem,2.6vw,1.9rem); line-height:1.45; font-weight:600; letter-spacing:-.01em; color:#101828; text-wrap:balance;">"81 beregnere, ikke én generisk formel — hver beregner er bygget til en specifik BR18-kontrol, fra U-værdi til redningsåbninger og bærende bjælker."</p>
+          <div style="display:flex; align-items:center; justify-content:center; gap:13px; margin-top:28px;"><span style="width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#FFB020,#B25E00); color:#fff; display:grid; place-items:center; font-weight:700;">∑</span><div style="text-align:left;"><div style="font-size:15px; font-weight:700; color:#101828;">16 fagområder</div><div style="font-size:13px; color:#475467;">Areal til VVS</div></div></div>
+        </div>
+        <div class="bygQuote" data-i="2" style="opacity:0; position:absolute; inset:0; transition:opacity .5s cubic-bezier(.2,0,0,1); pointer-events:none;">
+          <p style="margin:0; font-size:clamp(1.3rem,2.6vw,1.9rem); line-height:1.45; font-weight:600; letter-spacing:-.01em; color:#101828; text-wrap:balance;">"Hosted i Danmark, bygget til danske forhold — 2-faktor sikkerhed, GDPR-fundament og dansk support fra dag ét."</p>
+          <div style="display:flex; align-items:center; justify-content:center; gap:13px; margin-top:28px;"><span style="width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#12B76A,#027A48); color:#fff; display:grid; place-items:center; font-weight:700;">DK</span><div style="text-align:left;"><div style="font-size:15px; font-weight:700; color:#101828;">Sikkerhed &amp; drift</div><div style="font-size:13px; color:#475467;">Hosted i Danmark</div></div></div>
+        </div>
+      </div>
+      <div style="display:flex; gap:9px; justify-content:center; margin-top:36px;" id="bygDots">
+        <button type="button" data-dot="0" style="width:24px; height:9px; border-radius:999px; border:none; padding:0; cursor:pointer; background:#00529B; transition:background .3s, width .3s;"></button>
+        <button type="button" data-dot="1" style="width:9px; height:9px; border-radius:50%; border:none; padding:0; cursor:pointer; background:#D0D5DD; transition:background .3s, width .3s;"></button>
+        <button type="button" data-dot="2" style="width:9px; height:9px; border-radius:50%; border:none; padding:0; cursor:pointer; background:#D0D5DD; transition:background .3s, width .3s;"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FINAL CTA ================= -->
+  <section style="padding:24px;">
+    <div data-reveal style="max-width:1120px; margin:0 auto; border-radius:32px; background:linear-gradient(135deg,#00529B 0%,#1E5FFF 100%); padding:clamp(56px,9vw,110px) 24px; text-align:center; position:relative; overflow:hidden;">
+      <div class="bygGrain"></div>
+      <div aria-hidden="true" class="bygBlueprintDark" style="position:absolute; inset:0; opacity:.6; -webkit-mask-image:radial-gradient(90% 90% at 15% 12%, #000, transparent 68%); mask-image:radial-gradient(90% 90% at 15% 12%, #000, transparent 68%);"></div>
+      <div style="position:absolute; right:-60px; top:-60px; width:300px; height:300px; border-radius:50%; background:radial-gradient(closest-side, rgba(255,176,32,.3), transparent);" aria-hidden="true"></div>
+      <div style="position:relative;">
+        <h2 style="margin:0; font-size:clamp(2.2rem,5vw,4rem); font-weight:800; letter-spacing:-.03em; color:#fff; line-height:1.04;">Klar til at bygge smartere?</h2>
+        <p style="margin:20px auto 0; max-width:42ch; font-size:1.2rem; line-height:1.55; color:rgba(255,255,255,.88);">Start dit projekt i dag. Gratis at komme i gang – ingen binding.</p>
+        <a href="https://app.bygsmart.com/#/register" style="display:inline-block; margin-top:36px; font-size:17px; font-weight:700; color:#00529B; background:#fff; padding:17px 38px; border-radius:12px; box-shadow:0 20px 50px -16px rgba(0,0,0,.4); transition:transform .2s, box-shadow .2s;">Start dit projekt</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="byg-footer">
+    <div style="max-width:1120px; margin:0 auto;">
+      <div class="bygFootGrid">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;"><span style="display:grid; place-items:center; width:32px; height:32px; border-radius:9px; overflow:hidden;"><img src="assets/logo-mark.png" alt="BYG SMART logo" width="32" height="32" style="display:block;"></span><span style="font-weight:700; font-size:17px; letter-spacing:.12em; color:#1D2939;">BYG SMART</span></div>
+          <p style="margin:0; font-size:14px; line-height:1.6; color:#475467; max-width:32ch;">Byggestyring for danske håndværkere og bygherrer. Planlæg, byg og renovér – Overblikket er lige ved hånden.</p>
+        </div>
+        <div><div class="bygFootHead">Produkt</div><a class="bygFootLink" href="#funktioner">Funktioner</a><a class="bygFootLink" href="om-bygsmart.html">Om BYG SMART</a><a class="bygFootLink" href="priser.html">Priser</a><a class="bygFootLink" href="byggeguide.html">Byggeguide</a><a class="bygFootLink" href="#saadan">Sådan virker det</a></div>
+        <div><div class="bygFootHead">Ressourcer</div><a class="bygFootLink" href="hjaelp.html">Hjælp</a><a class="bygFootLink" href="br18-katalog.html">BR18-katalog</a><a class="bygFootLink" href="kontakt.html">Kontakt</a><a class="bygFootLink" href="https://app.bygsmart.com/#/register">BBR-opslag</a><a class="bygFootLink" href="status.html">Status</a></div>
+        <div><div class="bygFootHead">Juridisk</div><a class="bygFootLink" href="privatliv.html">Privatliv</a><a class="bygFootLink" href="vilkaar.html">Vilkår</a><a class="bygFootLink" href="gdpr.html">GDPR</a><a class="bygFootLink" href="cookies.html">Cookies</a></div>
+      </div>
+      <div style="margin-top:48px; padding-top:24px; border-top:1px solid #F2F4F7;">
+        <div style="font-size:13px; color:#98A2B3;">© 2026 BYG SMART ApS · Bygget i Danmark</div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="bygMobileCta"><a href="https://app.bygsmart.com/#/register">Start gratis</a></div>
+</div>
+<script src="assets/script.js"></script>
+</body>
+</html>

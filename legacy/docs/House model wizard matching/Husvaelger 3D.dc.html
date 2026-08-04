@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  html, body { margin: 0; padding: 0; background: #060c14; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", "Helvetica Neue", system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #60a5fa; text-decoration: none; }
+  a:hover { color: #93c5fd; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-thumb { background: rgba(96,165,250,0.28); border-radius: 99px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+</style>
+</helmet>
+<div data-screen-label="Trin 2 – Vælg område" style="display:flex;width:100%;height:100vh;min-height:0;background:#060c14;color:#e8eef6;overflow:hidden">
+
+  <nav style="width:88px;flex:0 0 88px;min-height:0;background:#080e18;border-right:1px solid rgba(148,180,220,0.08);display:flex;flex-direction:column;align-items:center;padding:18px 0 20px;gap:18px;overflow-y:auto;overflow-x:hidden">
+    <div style="flex:0 0 auto;width:46px;height:46px;border-radius:14px;background:#2563eb;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;box-shadow:0 8px 20px rgba(37,99,235,0.45)">B</div>
+    <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:6px;width:100%;align-items:center">
+      <sc-for list="{{ navTop }}" as="item" hint-placeholder-count="5">
+        <div style="width:64px;padding:9px 0 7px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;background:{{ item.bg }};border-left:3px solid {{ item.mark }}" style-hover="background:rgba(96,165,250,0.10)">
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="{{ item.color }}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ item.icon }}"></path></svg>
+          <span style="font-size:10.5px;letter-spacing:0.01em;color:{{ item.color }}">{{ item.label }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="flex:1 1 auto;min-height:8px"></div>
+    <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:10px;width:100%;align-items:center">
+      <sc-for list="{{ navBottom }}" as="item" hint-placeholder-count="2">
+        <div style="width:64px;padding:9px 0 7px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer" style-hover="background:rgba(96,165,250,0.10)">
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#7d93ac" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ item.icon }}"></path></svg>
+          <span style="font-size:10.5px;color:#7d93ac">{{ item.label }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </nav>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+
+    <header style="height:{{ chromeH }};flex:0 0 {{ chromeH }};display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid rgba(148,180,220,0.07)">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:34px;height:34px;border-radius:50%;background:#1b2a3f;border:1px solid rgba(148,180,220,0.18);display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;letter-spacing:0.03em;color:#c9d8ea">MS</div>
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#8fa8c2" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 3 10.5l7 2.5 2.5 7L21 3Z"></path></svg>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <div onClick="{{ onToggleQuality }}" title="{{ qualityTitle }}" style="display:flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:8px;cursor:pointer;background:{{ qualityBg }};border:1px solid {{ qualityBorder }}" style-hover="border-color:rgba(96,165,250,0.55)">
+          <div style="width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;background:{{ qualityTick }};border:1.5px solid {{ qualityTickBorder }}">
+            <sc-if value="{{ qualityHigh }}" hint-placeholder-val="{{ true }}">
+              <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-10"></path></svg>
+            </sc-if>
+          </div>
+          <span style="font-size:12px;font-weight:600;color:{{ qualityColor }}">Kvalitet: {{ qualityLabel }}</span>
+        </div>
+        <div style="padding:5px 11px;border-radius:7px;background:#2563eb;font-size:10.5px;font-weight:700;letter-spacing:0.09em;color:#fff">PREMIUM</div>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#8fa8c2" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 9a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6M13.7 20a2 2 0 0 1-3.4 0"></path></svg>
+      </div>
+    </header>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 26px 0">
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#c3d3e6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer"><path d="M19 12H5m6-7-7 7 7 7"></path></svg>
+      <div style="font-size:17px;font-weight:600;letter-spacing:-0.01em">Nyt Projekt</div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="display:flex;align-items:center;gap:7px;padding:9px 15px;border-radius:9px;background:rgba(24,40,64,0.85);border:1px solid rgba(148,180,220,0.16);font-size:13px;font-weight:500;cursor:pointer" style-hover="border-color:rgba(96,165,250,0.5)">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"></path></svg>
+          Opret Hurtig Opgave
+        </div>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c3d3e6" stroke-width="1.8" stroke-linecap="round" style="cursor:pointer"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+      </div>
+    </div>
+
+    <sc-if value="{{ roomyChrome }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:10px 26px 0;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:12.5px;color:#93a9c2">Trin 2 / 5</span>
+        <span style="font-size:12.5px;color:#60a5fa;cursor:pointer">Vælg område ⌄</span>
+      </div>
+      <div style="margin:8px 26px 0;height:3px;border-radius:99px;background:rgba(148,180,220,0.13)">
+        <div style="width:40%;height:100%;border-radius:99px;background:#2563eb"></div>
+      </div>
+    </sc-if>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;padding:{{ tabsPad }}">
+      <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="3">
+        <div onClick="{{ tab.onSelect }}" style="height:{{ tabH }};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;cursor:pointer;background:{{ tab.bg }};color:{{ tab.color }};border:1px solid {{ tab.border }}">{{ tab.label }}</div>
+      </sc-for>
+    </div>
+
+    <div style="flex:1;min-height:0;position:relative;margin:0 26px;border-radius:16px;overflow:hidden;background:{{ stageBg }}">
+      <x-import component-from-global-scope="house-stage" from="./house-scene.js?v=33" hint-size="100%,100%"></x-import>
+
+      <sc-if value="{{ showLevels }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;top:16px;left:16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;gap:5px;padding:5px;border-radius:12px;background:rgba(10,20,34,0.88);border:1px solid rgba(148,180,220,0.14)">
+            <sc-for list="{{ levels }}" as="lv" hint-placeholder-count="3">
+              <div onClick="{{ lv.onSelect }}" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:9px;cursor:pointer;background:{{ lv.bg }}" style-hover="background:rgba(96,165,250,0.12)">
+                <span style="font-size:10.5px;font-weight:700;letter-spacing:0.06em;color:{{ lv.numColor }}">{{ lv.num }}</span>
+                <span style="font-size:12.5px;font-weight:600;color:{{ lv.color }}">{{ lv.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="padding:7px 11px;border-radius:9px;background:rgba(10,20,34,0.8);border:1px solid rgba(148,180,220,0.12);font-size:11.5px;color:#8ba2bd;max-width:230px;text-wrap:pretty">Tag og etager over den valgte plan er skjult. Zoom med hjulet.</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ insideRoom }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ onExitRoom }}" style="position:absolute;top:16px;left:16px;z-index:30;display:flex;align-items:center;gap:9px;height:44px;padding:0 16px 0 13px;border-radius:12px;cursor:pointer;background:rgba(10,20,34,0.92);border:1px solid rgba(96,165,250,0.32);box-shadow:0 12px 28px rgba(3,8,16,0.5)" style-hover="border-color:rgba(96,165,250,0.7)">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#93c5fd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-7-7 7 7 7"></path></svg>
+          <span style="font-size:13px;font-weight:600;color:#dce8f6">Tilbage</span>
+          <span style="font-size:12px;color:#8ba2bd">· {{ insideRoomName }}</span>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ roomMenu }}" hint-placeholder-val="{{ false }}">
+        <div style="position:fixed;z-index:45;left:{{ roomMenuX }}px;top:{{ roomMenuY }}px;transform:translate(-50%,-118%);width:212px;padding:6px;border-radius:12px;background:rgba(11,22,38,0.97);border:1px solid rgba(96,165,250,0.3);box-shadow:0 18px 40px rgba(3,8,16,0.62)">
+          <div style="padding:7px 9px 6px;font-size:10.5px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#6d829a">{{ roomMenuName }}</div>
+          <div onClick="{{ onEnterRoom }}" style="display:flex;align-items:center;gap:9px;min-height:40px;padding:8px 9px;border-radius:9px;cursor:pointer" style-hover="background:rgba(96,165,250,0.12)">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#93c5fd" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V9.5l8-6 8 6V20M10 20v-6h4v6"></path></svg>
+            <span style="font-size:13px;font-weight:600;color:#eaf1f9">Gå ind i rummet</span>
+          </div>
+          <div onClick="{{ onCloseRoomMenu }}" style="display:flex;align-items:center;gap:9px;min-height:36px;padding:6px 9px;border-radius:9px;cursor:pointer" style-hover="background:rgba(148,180,220,0.1)">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#8ba2bd" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            <span style="font-size:12.5px;color:#a8bdd4">Annullér</span>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ panelCollapsed }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ onTogglePanel }}" title="Vis bygningsdele" aria-label="Vis bygningsdele" style="position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(10,20,34,0.9);border:1px solid rgba(96,165,250,0.28);box-shadow:0 12px 28px rgba(3,8,16,0.5)">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h7v7H4zM13 5.5h7v7h-7zM4 14.5h7v5H4zM13 14.5h7v5h-7z"></path></svg>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ panelVisible }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;top:16px;right:16px;width:292px;max-height:{{ panelMax }};display:flex;flex-direction:column;overflow:hidden;border-radius:14px;background:rgba(10,20,34,0.9);border:1px solid rgba(96,165,250,0.24);backdrop-filter:blur(9px);box-shadow:0 22px 50px rgba(3,8,16,0.55)">
+        <div style="flex:0 1 auto;padding:13px 15px 10px;border-bottom:1px solid rgba(148,180,220,0.1)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;min-width:0;font-size:15px;font-weight:650;letter-spacing:-0.01em">{{ panelTitle }}</div>
+            <sc-if value="{{ compactPanel }}" hint-placeholder-val="{{ false }}">
+              <div onClick="{{ onTogglePanel }}" title="Skjul panel" aria-label="Skjul panel" style="width:26px;height:26px;flex:0 0 26px;border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(148,180,220,0.1)">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#a8bdd4" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </div>
+            </sc-if>
+          </div>
+          <sc-if value="{{ showPanelSub }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size:11.5px;color:#8ba2bd;margin-top:3px">{{ panelSub }}</div>
+          </sc-if>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:9px;padding:3px;border-radius:9px;background:rgba(148,180,220,0.08)">
+            <sc-for list="{{ panelTabs }}" as="pt" hint-placeholder-count="2">
+              <div onClick="{{ pt.onSelect }}" style="height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-size:12px;font-weight:600;background:{{ pt.bg }};color:{{ pt.color }}">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="{{ pt.color }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ pt.icon }}"></path></svg>
+                <sc-if value="{{ showPanelSub }}" hint-placeholder-val="{{ true }}"><span>{{ pt.label }}</span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;padding:6px 8px 4px">
+          <sc-if value="{{ deleTab }}" hint-placeholder-val="{{ true }}">
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="9">
+            <div style="margin-bottom:2px">
+              <div onClick="{{ g.onToggleAll }}" onMouseEnter="{{ g.onEnter }}" onMouseLeave="{{ g.onLeave }}" style="display:flex;align-items:center;gap:11px;padding:8px;border-radius:10px;cursor:pointer" style-hover="background:rgba(96,165,250,0.09)">
+                <div style="width:34px;height:34px;flex:0 0 34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:{{ g.tint }};border:1px solid {{ g.edge }}">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="{{ g.color }}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ g.icon }}"></path></svg>
+                </div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13.5px;font-weight:600;letter-spacing:-0.01em">{{ g.title }}</div>
+                  <div style="font-size:11px;color:#89a0bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ g.desc }}</div>
+                </div>
+                <div onClick="{{ g.onExpand }}" style="width:20px;height:20px;display:flex;align-items:center;justify-content:center;color:#7d93ac">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate({{ g.caret }}deg)"><path d="m6 9 6 6 6-6"></path></svg>
+                </div>
+                <div style="width:19px;height:19px;flex:0 0 19px;border-radius:5px;display:flex;align-items:center;justify-content:center;background:{{ g.boxBg }};border:1.6px solid {{ g.boxBorder }}">
+                  <sc-if value="{{ g.checked }}" hint-placeholder-val="{{ true }}">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-10"></path></svg>
+                  </sc-if>
+                  <sc-if value="{{ g.partial }}" hint-placeholder-val="{{ false }}">
+                    <div style="width:9px;height:2.4px;border-radius:2px;background:#60a5fa"></div>
+                  </sc-if>
+                </div>
+              </div>
+              <sc-if value="{{ g.expanded }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:2px;padding:2px 6px 8px 46px">
+                  <sc-for list="{{ g.zones }}" as="z" hint-placeholder-count="2">
+                    <div>
+                      <div onClick="{{ z.onToggle }}" onMouseEnter="{{ z.onEnter }}" onMouseLeave="{{ z.onLeave }}" style="display:flex;align-items:center;gap:8px;padding:6px 7px;border-radius:8px;cursor:pointer;background:{{ z.bg }}" style-hover="background:rgba(96,165,250,0.1)">
+                        <div style="width:7px;height:7px;border-radius:50%;flex:0 0 7px;background:{{ z.dot }}"></div>
+                        <div style="flex:1;min-width:0;font-size:12px;color:{{ z.textColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ z.name }}</div>
+                        <div onClick="{{ z.onExpand }}" style="display:flex;align-items:center;gap:3px;padding:1px 4px;border-radius:5px;color:{{ z.taskColor }}">
+                          <span style="font-size:10px;font-weight:700;letter-spacing:0.03em">{{ z.taskBadge }}</span>
+                          <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate({{ z.caret }}deg)"><path d="m6 9 6 6 6-6"></path></svg>
+                        </div>
+                        <div style="width:15px;height:15px;flex:0 0 15px;border-radius:4px;display:flex;align-items:center;justify-content:center;background:{{ z.boxBg }};border:1.5px solid {{ z.boxBorder }}">
+                          <sc-if value="{{ z.selected }}" hint-placeholder-val="{{ true }}">
+                            <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-10"></path></svg>
+                          </sc-if>
+                        </div>
+                      </div>
+                      <sc-if value="{{ z.expanded }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex;flex-direction:column;gap:1px;padding:3px 4px 7px 15px">
+                          <sc-for list="{{ z.tasks }}" as="t" hint-placeholder-count="3">
+                            <div onClick="{{ t.onToggle }}" style="display:flex;align-items:center;gap:8px;min-height:32px;padding:5px 7px;border-radius:7px;cursor:pointer;background:{{ t.bg }}" style-hover="background:rgba(96,165,250,0.09)">
+                              <div style="width:13px;height:13px;flex:0 0 13px;border-radius:3.5px;display:flex;align-items:center;justify-content:center;background:{{ t.boxBg }};border:1.4px solid {{ t.boxBorder }}">
+                                <sc-if value="{{ t.on }}" hint-placeholder-val="{{ true }}">
+                                  <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-10"></path></svg>
+                                </sc-if>
+                              </div>
+                              <div style="flex:1;min-width:0;font-size:11.5px;line-height:1.25;color:{{ t.color }};text-wrap:pretty">{{ t.label }}</div>
+                            </div>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+          </sc-if>
+          <sc-if value="{{ lagTab }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ layers }}" as="la" hint-placeholder-count="8">
+                <div onClick="{{ la.onSelect }}" style="display:flex;align-items:center;gap:11px;min-height:44px;padding:8px;border-radius:10px;cursor:pointer;background:{{ la.bg }}" style-hover="background:rgba(96,165,250,0.09)">
+                  <div style="width:32px;height:32px;flex:0 0 32px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:{{ la.tint }};border:1px solid {{ la.edge }}">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="{{ la.color }}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ la.icon }}"></path></svg>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:12.5px;font-weight:600;color:{{ la.titleColor }}">{{ la.label }}</div>
+                    <div style="font-size:10.5px;color:#89a0bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ la.desc }}</div>
+                  </div>
+                  <div style="width:16px;height:16px;flex:0 0 16px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.6px solid {{ la.dotBorder }}">
+                    <sc-if value="{{ la.active }}" hint-placeholder-val="{{ false }}">
+                      <div style="width:8px;height:8px;border-radius:50%;background:#3b82f6"></div>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+        <sc-if value="{{ showPanelSub }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 13px;border-top:1px solid rgba(148,180,220,0.1)">
+          <span style="font-size:11.5px;color:#8ba2bd">{{ countLabel }}</span>
+          <div style="display:flex;gap:8px">
+            <div onClick="{{ onSelectAll }}" style="font-size:11.5px;font-weight:600;color:#60a5fa;cursor:pointer">Vælg alle</div>
+            <div onClick="{{ onSelectNone }}" style="font-size:11.5px;font-weight:600;color:#7d93ac;cursor:pointer">Fravælg alle</div>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <div style="position:absolute;left:20px;right:20px;bottom:20px;display:flex;align-items:center;gap:14px">
+      <div style="display:flex;gap:6px;padding:6px;border-radius:14px;background:rgba(10,20,34,0.86);border:1px solid rgba(148,180,220,0.14)">
+        <sc-for list="{{ modes }}" as="m" hint-placeholder-count="3">
+          <div onClick="{{ m.onSelect }}" title="{{ m.title }}" style="width:44px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ m.bg }}">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="{{ m.color }}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ m.icon }}"></path></svg>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="flex:1 1 0;min-width:0;display:flex;justify-content:center;overflow:hidden;pointer-events:none">
+        <div style="max-width:100%;padding:6px 14px;border-radius:99px;background:rgba(8,16,28,0.6);font-size:13px;color:#94aac2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ hint }}</div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="display:flex;gap:4px;padding:4px;border-radius:99px;background:rgba(10,20,34,0.88);border:1px solid rgba(148,180,220,0.16)">
+          <sc-for list="{{ lightModes }}" as="lm" hint-placeholder-count="2">
+            <div onClick="{{ lm.onSelect }}" title="{{ lm.title }}" style="display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:99px;cursor:pointer;background:{{ lm.bg }}">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="{{ lm.color }}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ lm.icon }}"></path></svg>
+              <span style="font-size:12px;font-weight:600;color:{{ lm.color }}">{{ lm.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-for list="{{ tools }}" as="t" hint-placeholder-count="4">
+          <div onClick="{{ t.onClick }}" title="{{ t.title }}" style="width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ t.bg }};border:1px solid rgba(148,180,220,0.16)" style-hover="border-color:rgba(96,165,250,0.55)">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="{{ t.color }}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ t.icon }}"></path></svg>
+          </div>
+        </sc-for>
+      </div>
+      </div>
+
+      <sc-if value="{{ listTab }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;background:#08111c">
+          <div style="flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(148,180,220,0.1)">
+            <div style="flex:1;min-width:0;display:flex;align-items:center;gap:9px;height:38px;padding:0 12px;border-radius:10px;background:rgba(148,180,220,0.07);border:1px solid rgba(148,180,220,0.16)">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#7d93ac" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><path d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13ZM15.5 15.5 21 21"></path></svg>
+              <input type="text" value="{{ search }}" onInput="{{ onSearch }}" placeholder="Søg i kategorier, bygningsdele og opgaver" aria-label="Søg" style="flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:#e8eef6;font-family:inherit;font-size:13px" />
+              <sc-if value="{{ hasSearch }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ onClearSearch }}" title="Ryd søgning" style="width:22px;height:22px;flex:0 0 22px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(148,180,220,0.12)">
+                  <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#a8bdd4" stroke-width="2.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+                </div>
+              </sc-if>
+            </div>
+            <span style="flex:0 0 auto;font-size:11.5px;color:#8ba2bd">{{ countLabel }}</span>
+            <div onClick="{{ onSelectNone }}" style="flex:0 0 auto;height:34px;display:flex;align-items:center;padding:0 13px;border-radius:9px;cursor:pointer;background:rgba(148,180,220,0.08);border:1px solid rgba(148,180,220,0.16);font-size:12px;font-weight:600;color:#a8bdd4" style-hover="border-color:rgba(96,165,250,0.5);color:#dce8f6">Fravælg alle</div>
+          </div>
+          <div style="flex:1;min-height:0;display:grid;grid-template-columns:{{ listCols }};grid-template-rows:minmax(0, 1fr)">
+        <div style="min-width:0;min-height:0;display:flex;flex-direction:column;border-right:1px solid rgba(148,180,220,0.09)">
+          <div style="flex:0 0 auto;padding:10px 14px 8px;font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6d829a">Kategori</div>
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:0 8px 10px">
+            <sc-for list="{{ listCats }}" as="lc" hint-placeholder-count="4">
+              <div onClick="{{ lc.onSelect }}" style="display:flex;align-items:center;gap:10px;min-height:44px;padding:7px 9px;border-radius:9px;cursor:pointer;background:{{ lc.bg }}" style-hover="background:rgba(96,165,250,0.09)">
+                <div onClick="{{ lc.onCheck }}" style="width:18px;height:18px;flex:0 0 18px;border-radius:5px;display:flex;align-items:center;justify-content:center;background:{{ lc.boxBg }};border:1.6px solid {{ lc.boxBorder }}">
+                  <sc-if value="{{ lc.checked }}" hint-placeholder-val="{{ false }}">
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-10"></path></svg>
+                  </sc-if>
+                  <sc-if value="{{ lc.partial }}" hint-placeholder-val="{{ false }}">
+                    <div style="width:9px;height:2.4px;border-radius:2px;background:#60a5fa"></div>
+                  </sc-if>
+                </div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12.5px;font-weight:{{ lc.weight }};color:{{ lc.color }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ lc.name }}</div>
+                  <sc-if value="{{ lc.hasSub }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:10.5px;color:#89a0bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ lc.sub }}</div>
+                  </sc-if>
+                </div>
+                <sc-if value="{{ lc.hasCount }}" hint-placeholder-val="{{ false }}">
+                  <span style="flex:0 0 auto;font-size:10px;font-weight:700;color:{{ lc.countColor }}">{{ lc.count }}</span>
+                </sc-if>
+                <sc-if value="{{ lc.drill }}" hint-placeholder-val="{{ false }}">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="{{ lc.arrowColor }}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><path d="m9 6 6 6-6 6"></path></svg>
+                </sc-if>
+              </div>
+            </sc-for>
+            <sc-if value="{{ catsEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:10px 9px;font-size:11.5px;line-height:1.4;color:#6d829a;text-wrap:pretty">{{ catsHint }}</div>
+            </sc-if>
+          </div>
+        </div>
+        <sc-if value="{{ showZoneCol }}" hint-placeholder-val="{{ false }}">
+        <div style="min-width:0;min-height:0;display:flex;flex-direction:column;border-right:1px solid rgba(148,180,220,0.09)">
+          <div style="flex:0 0 auto;padding:10px 14px 8px;font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6d829a">Bygningsdel</div>
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:0 8px 10px">
+            <sc-for list="{{ listZones }}" as="lz" hint-placeholder-count="4">
+              <div onClick="{{ lz.onSelect }}" style="display:flex;align-items:center;gap:10px;min-height:44px;padding:7px 9px;border-radius:9px;cursor:pointer;background:{{ lz.bg }}" style-hover="background:rgba(96,165,250,0.09)">
+                <div onClick="{{ lz.onCheck }}" style="width:18px;height:18px;flex:0 0 18px;border-radius:5px;display:flex;align-items:center;justify-content:center;background:{{ lz.boxBg }};border:1.6px solid {{ lz.boxBorder }}">
+                  <sc-if value="{{ lz.checked }}" hint-placeholder-val="{{ false }}">
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-10"></path></svg>
+                  </sc-if>
+                  <sc-if value="{{ lz.partial }}" hint-placeholder-val="{{ false }}">
+                    <div style="width:9px;height:2.4px;border-radius:2px;background:#60a5fa"></div>
+                  </sc-if>
+                </div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12.5px;font-weight:{{ lz.weight }};color:{{ lz.color }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ lz.name }}</div>
+                  <sc-if value="{{ lz.hasSub }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:10.5px;color:#89a0bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ lz.sub }}</div>
+                  </sc-if>
+                </div>
+                <sc-if value="{{ lz.hasCount }}" hint-placeholder-val="{{ false }}">
+                  <span style="flex:0 0 auto;font-size:10px;font-weight:700;color:{{ lz.countColor }}">{{ lz.count }}</span>
+                </sc-if>
+                <sc-if value="{{ lz.drill }}" hint-placeholder-val="{{ false }}">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="{{ lz.arrowColor }}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><path d="m9 6 6 6-6 6"></path></svg>
+                </sc-if>
+              </div>
+            </sc-for>
+            <sc-if value="{{ zonesEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:10px 9px;font-size:11.5px;line-height:1.4;color:#6d829a;text-wrap:pretty">{{ zonesHint }}</div>
+            </sc-if>
+          </div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ showTaskCol }}" hint-placeholder-val="{{ false }}">
+        <div style="min-width:0;min-height:0;display:flex;flex-direction:column;border-right:1px solid rgba(148,180,220,0.09)">
+          <div style="flex:0 0 auto;padding:10px 14px 8px;font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6d829a">Opgaver</div>
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:0 8px 10px">
+            <sc-for list="{{ listTasks }}" as="lt" hint-placeholder-count="4">
+              <div onClick="{{ lt.onSelect }}" style="display:flex;align-items:center;gap:10px;min-height:44px;padding:7px 9px;border-radius:9px;cursor:pointer;background:{{ lt.bg }}" style-hover="background:rgba(96,165,250,0.09)">
+                <div onClick="{{ lt.onCheck }}" style="width:18px;height:18px;flex:0 0 18px;border-radius:5px;display:flex;align-items:center;justify-content:center;background:{{ lt.boxBg }};border:1.6px solid {{ lt.boxBorder }}">
+                  <sc-if value="{{ lt.checked }}" hint-placeholder-val="{{ false }}">
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4 10-10"></path></svg>
+                  </sc-if>
+                  <sc-if value="{{ lt.partial }}" hint-placeholder-val="{{ false }}">
+                    <div style="width:9px;height:2.4px;border-radius:2px;background:#60a5fa"></div>
+                  </sc-if>
+                </div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12.5px;font-weight:{{ lt.weight }};color:{{ lt.color }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ lt.name }}</div>
+                  <sc-if value="{{ lt.hasSub }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:10.5px;color:#89a0bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ lt.sub }}</div>
+                  </sc-if>
+                </div>
+                <sc-if value="{{ lt.hasCount }}" hint-placeholder-val="{{ false }}">
+                  <span style="flex:0 0 auto;font-size:10px;font-weight:700;color:{{ lt.countColor }}">{{ lt.count }}</span>
+                </sc-if>
+                <sc-if value="{{ lt.drill }}" hint-placeholder-val="{{ false }}">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="{{ lt.arrowColor }}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><path d="m9 6 6 6-6 6"></path></svg>
+                </sc-if>
+              </div>
+            </sc-for>
+            <sc-if value="{{ tasksEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:10px 9px;font-size:11.5px;line-height:1.4;color:#6d829a;text-wrap:pretty">{{ tasksHint }}</div>
+            </sc-if>
+          </div>
+        </div>
+        </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ hoverCard }}" hint-placeholder-val="{{ false }}">
+        <div style="position:fixed;z-index:40;left:{{ hoverX }}px;top:{{ hoverY }}px;transform:translate(-50%,-118%);pointer-events:none;width:210px;padding:13px 14px;border-radius:12px;background:rgba(11,22,38,0.96);border:1px solid rgba(96,165,250,0.3);box-shadow:0 18px 40px rgba(3,8,16,0.6)">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13.5px;font-weight:650;letter-spacing:-0.01em;color:#eaf1f9">{{ hoverName }}</div>
+              <div style="font-size:11.5px;line-height:1.35;color:#93a9c2;margin-top:3px;text-wrap:pretty">{{ hoverDesc }}</div>
+            </div>
+            <div style="width:26px;height:26px;flex:0 0 26px;border-radius:50%;background:rgba(96,165,250,0.16);display:flex;align-items:center;justify-content:center">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#93c5fd" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-7 7 7-7 7"></path></svg>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ showRecap }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 26px 0">
+        <span style="flex:0 0 auto;font-size:11.5px;font-weight:600;letter-spacing:0.03em;color:#8ba2bd">{{ recapLabel }}</span>
+        <div style="flex:1;min-width:0;display:flex;gap:6px;overflow-x:auto;padding-bottom:2px">
+          <sc-for list="{{ recap }}" as="rc" hint-placeholder-count="3">
+            <div onClick="{{ rc.onRemove }}" title="Fjern fra projektet" style="flex:0 0 auto;display:flex;align-items:center;gap:7px;height:28px;padding:0 10px;border-radius:99px;cursor:pointer;background:rgba(37,99,235,0.14);border:1px solid rgba(96,165,250,0.28)" style-hover="background:rgba(37,99,235,0.24)">
+              <div style="width:7px;height:7px;border-radius:50%;background:{{ rc.dot }}"></div>
+              <span style="font-size:11.5px;font-weight:500;color:#dce8f6;white-space:nowrap">{{ rc.name }}</span>
+              <sc-if value="{{ rc.hasTasks }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:10px;font-weight:700;color:#93c5fd">{{ rc.tasks }}</span>
+              </sc-if>
+              <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#8ba2bd" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            </div>
+          </sc-for>
+        </div>
+        <span onClick="{{ onSelectNone }}" style="flex:0 0 auto;font-size:11.5px;font-weight:600;color:#7d93ac;cursor:pointer">Ryd alle</span>
+      </div>
+    </sc-if>
+
+    <div style="padding:{{ ctaPad }}">
+      <div style="height:{{ ctaH }};border-radius:12px;background:#2563eb;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:650;color:#fff;cursor:pointer;box-shadow:0 12px 30px rgba(37,99,235,0.32)" style-hover="background:#1d4ed8">
+        Vælg opgaver
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-7 7 7-7 7"></path></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const ZONES = {
+  tag_og_skorsten: { name: 'Tag & Skorsten', desc: 'Tagbelægning, tagkonstruktion', color: '#f97316' },
+  loft_tagetage: { name: 'Loft & Tagetage', desc: 'Spær, undertag, isolering', color: '#fb923c' },
+  solceller_energi: { name: 'Solceller & Energi', desc: 'Solceller, inverter, kabling', color: '#facc15' },
+  facade_overetage: { name: 'Facade 1. Sal', desc: 'Beklædning, isolering, puds, maleri', color: '#38bdf8' },
+  facade_stueetage: { name: 'Facade Stueetage', desc: 'Murværk, isolering, facade', color: '#22d3ee' },
+  vinduer_overetage: { name: 'Vinduer 1. Sal', desc: 'Vinduer, karme, lysninger', color: '#a78bfa' },
+  vinduer_doere_stueetage: { name: 'Vinduer & Døre Stue', desc: 'Vinduer, døre, porte', color: '#c084fc' },
+  altan_balkon: { name: 'Altan & Balkon', desc: 'Dæk, værn, membran', color: '#34d399' },
+  garage_carport: { name: 'Garage & Carport', desc: 'Port, gulv, tag', color: '#4ade80' },
+  terrasse_udendoers: { name: 'Terrasse & Udendørs', desc: 'Trædæk, trapper, værn', color: '#2dd4bf' },
+  indkoersel_belaegning: { name: 'Indkørsel & Belægning', desc: 'Fliser, asfalt, grus', color: '#94a3b8' },
+  fundament_sokkel: { name: 'Fundament & Sokkel', desc: 'Gravearbejde, fundament', color: '#f472b6' },
+  kaelder_udvendig: { name: 'Kælder Udvendig', desc: 'Kælderydervægge, gulv', color: '#60a5fa' },
+  kloak_forsyning: { name: 'Kloak & Forsyning', desc: 'El, VVS, ventilation, afløb', color: '#f87171' },
+  ladestander_elbil: { name: 'Ladestander & Elbil', desc: 'Ladeboks, kabling, gruppe', color: '#22c55e' },
+  skorsten_aftraek: { name: 'Skorsten & Aftræk', desc: 'Skorsten, inddækning, hat', color: '#fdba74' },
+  tagrender_nedloeb: { name: 'Tagrender & Nedløb', desc: 'Render, nedløb, brønde', color: '#fcd34d' },
+  ovenlys_tagvinduer: { name: 'Ovenlys & Tagvinduer', desc: 'Tagvinduer, inddækning', color: '#818cf8' },
+  pergola_solafskaermning: { name: 'Pergola & Solafskærmning', desc: 'Pergola, markise, screens', color: '#2dd4bf' },
+  hegn_laage: { name: 'Hegn & Låge', desc: 'Stolper, rækværk, låge', color: '#a3e635' },
+  beplantning: { name: 'Beplantning', desc: 'Træer, buske, bede', color: '#4d7c0f' },
+  udebelysning: { name: 'Udebelysning', desc: 'Havelamper, facadelamper', color: '#fde68a' },
+  koekken: { name: 'Køkken', desc: 'Skabe, bordplade, hvidevarer', color: '#fb923c' },
+  badevaerelse: { name: 'Badeværelse', desc: 'Fliser, sanitet, bruseniche', color: '#38bdf8' },
+  trapper_indvendig: { name: 'Trapper Indvendig', desc: 'Trappeløb, trin, gelænder', color: '#d8b4fe' },
+  ventilation_anlaeg: { name: 'Ventilationsanlæg', desc: 'Aggregat, kanaler, hætter', color: '#67e8f9' },
+  varme_vvs: { name: 'Varme & VVS', desc: 'Varmtvandsbeholder, rør', color: '#fca5a5' },
+  varmepumpe_udedel: { name: 'Varmepumpe', desc: 'Udedel, sokkel, rørføring', color: '#f43f5e' },
+  graesplaene: { name: 'Græsplæne', desc: 'Såning, muld, klipning', color: '#65a30d' },
+  haek_levende: { name: 'Hæk & Levende Hegn', desc: 'Hæk, klipning, rødder', color: '#3f6212' },
+  stier_traedesten: { name: 'Stier & Trædesten', desc: 'Trædesten, grus, kantsten', color: '#a8a29e' },
+  indvendige_vaegge: { name: 'Indvendige Vægge', desc: 'Skillevægge, foring, puds', color: '#e879f9' },
+  etagedaek_gulve: { name: 'Etagedæk & Gulve', desc: 'Bjælkelag, dæk, gulvopbygning', color: '#c084fc' },
+  skabe_garderobe: { name: 'Skabe & Garderobe', desc: 'Garderobe, reoler, opbevaring', color: '#f0abfc' },
+  hvidevarer: { name: 'Hvidevarer', desc: 'Køl, ovn, kogeplade, emhætte', color: '#94a3b8' },
+  indvendig_belysning: { name: 'Indvendig Belysning', desc: 'Pendler, spots, lamper', color: '#fef08a' },
+  skure_udhus: { name: 'Skur & Udhus', desc: 'Redskabsskur, tag, dør', color: '#0d9488' },
+  regnvand_faskine: { name: 'Regnvand & Faskine', desc: 'Regnvandstønde, faskine, dræn', color: '#22d3ee' },
+  baerende_bjaelker: { name: 'Bærende Bjælker', desc: 'Overliggere, remme, udveksling', color: '#a855f7' },
+  soejler_baerende: { name: 'Søjler & Bærelinjer', desc: 'Søjler, understøtning', color: '#7c3aed' },
+  el_installation: { name: 'El-installation', desc: 'Tavle, grupper, føringsveje', color: '#fbbf24' },
+  stikledninger_forsyning: { name: 'Stikledninger & Målere', desc: 'Vand, el, fiber, målerskab', color: '#06b6d4' },
+  stillads_adgang: { name: 'Stillads & Adgang', desc: 'Stillads, stiger, adgangsveje', color: '#f97316' },
+  byggepladshegn: { name: 'Byggepladshegn', desc: 'Afskærmning, låge, skiltning', color: '#eab308' },
+  skurvogn_materialer: { name: 'Skurvogn & Materialer', desc: 'Skurvogn, oplag, paller', color: '#78716c' },
+  container_affald: { name: 'Container & Affald', desc: 'Container, bortkørsel, deponi', color: '#ea580c' },
+  sortering_genbrug: { name: 'Sortering & Genbrug', desc: 'Fraktioner, big bags, genbrug', color: '#84cc16' },
+  nedrivning_indvendig: { name: 'Nedrivning Indvendig', desc: 'Nedrivning, støvvægge, rydning', color: '#f87171' },
+  asbest_miljosanering: { name: 'Asbest & Miljøsanering', desc: 'Asbest, PCB, bly, skimmel', color: '#dc2626' },
+  bortkoersel_jord: { name: 'Bortkørsel af Jord', desc: 'Opgravet jord, analyser, deponi', color: '#92400e' },
+  inventar_moebler: { name: 'Inventar & Møbler', desc: 'Køkken, bad, fast inventar', color: '#fbbf24' }
+};
+
+const TASKS = {
+  tag_og_skorsten: ['Ny tagbelægning', 'Udskiftning af undertag', 'Nye tagsten / tagpap', 'Rygning & grater', 'Vindskeder & stern', 'Taghætter & gennemføringer'],
+  loft_tagetage: ['Efterisolering af loft', 'Reparation af spær', 'Gangbro & loftlem', 'Ventilation af tagrum'],
+  solceller_energi: ['Montering af solceller', 'Inverter & tilslutning', 'Batteri & styring', 'Nyt gruppeafbryderfelt'],
+  facade_overetage: ['Ny facadepuds', 'Malerbehandling', 'Udvendig isolering', 'Reparation af murværk'],
+  facade_stueetage: ['Omfugning af murværk', 'Ny facadebeklædning', 'Udvendig isolering', 'Sokkelpuds & vandskuring', 'Reparation af revner', 'Algebehandling & rens'],
+  vinduer_overetage: ['Nye vinduer 1. sal', 'Lysninger & fuger', 'Maling af karme', 'Nyt ovenlysvindue'],
+  vinduer_doere_stueetage: ['Ny hoveddør', 'Skydedøre til terrasse', 'Nye vinduer stueetage', 'Fugning & tætningslister', 'Nye greb & låsetøj', 'Insektnet'],
+  altan_balkon: ['Nyt trædæk', 'Membran & afløb', 'Nyt værn i glas', 'Pergola & solafskærmning'],
+  garage_carport: ['Ny garageport', 'Portautomatik', 'Nyt gulv i garage', 'Tag på carport', 'El, lys & stikkontakter', 'Opbevaring & reoler'],
+  terrasse_udendoers: ['Nyt trædæk', 'Trappe & trin', 'Værn & gelænder', 'Udendørs belysning'],
+  indkoersel_belaegning: ['Nye fliser', 'Asfalt eller grus', 'Kantsten & afgrænsning', 'Ny garagerampe', 'Linjeafløb ved port', 'Dræn i indkørsel'],
+  fundament_sokkel: ['Understøbning', 'Fugtsikring af sokkel', 'Omfangsdræn', 'Fundament til tilbygning'],
+  kaelder_udvendig: ['Udvendig fugtsikring', 'Kælderdræn', 'Ny kældertrappe', 'Radonsikring'],
+  kloak_forsyning: ['Kloak & faldstamme', 'TV-inspektion af kloak', 'Ny eltavle', 'Nye grupper & stikkontakter', 'Vandmåler & stophane', 'Regnvandsafledning'],
+  ladestander_elbil: ['Ladeboks på væg', 'Ladestander i indkørsel', 'Kabelføring & ny gruppe', 'Lastbalancering'],
+  inventar_moebler: ['Garderobe & skabe', 'Indbyggede skabe', 'Nye gulve', 'Fodpaneler & lister', 'Indvendige døre'],
+  skorsten_aftraek: ['Ommuring af skorsten', 'Ny inddækning', 'Skorstensfoder', 'Ny skorstenshat', 'Aftræk til brændeovn'],
+  tagrender_nedloeb: ['Nye tagrender', 'Nye nedløbsrør', 'Rensning & justering', 'Nedløbsbrønde', 'Løvfang'],
+  ovenlys_tagvinduer: ['Nyt tagvindue', 'Ny inddækning', 'Udskiftning af rude', 'Motor & fjernbetjening', 'Mørklægningsgardin'],
+  pergola_solafskaermning: ['Ny pergola', 'Markise', 'Screens & solsejl', 'Overfladebehandling', 'Lys i pergola'],
+  hegn_laage: ['Nyt hegn', 'Ny låge', 'Nye stolper', 'Maling & træbeskyttelse', 'Postkasse & nummer'],
+  beplantning: ['Nye træer', 'Buske & hæk', 'Staudebed', 'Højbed & køkkenhave', 'Muld & jordforbedring', 'Vanding'],
+  udebelysning: ['Havelamper', 'Facadelamper', 'Sensor & timer', 'Kabler & gruppe', 'Lys i indkørsel'],
+  koekken: ['Nye køkkenskabe', 'Ny bordplade', 'Vask & armatur', 'Hvidevarer', 'Emhætte & aftræk', 'Fliser & stænkpanel', 'El & stikkontakter'],
+  badevaerelse: ['Nye gulvfliser', 'Nye vægfliser', 'Vådrumsmembran', 'Ny bruseniche', 'Nyt toilet', 'Ny vask & armatur', 'Gulvvarme', 'Ventilation i bad'],
+  trapper_indvendig: ['Ny trappe', 'Nye trin', 'Gelænder & værn', 'Overfladebehandling', 'Lys i trappe'],
+  ventilation_anlaeg: ['Nyt ventilationsaggregat', 'Kanaler & ventiler', 'Tagventilationshætte', 'Filterskift & service', 'Køkkenudsugning'],
+  varme_vvs: ['Ny varmtvandsbeholder', 'Vandrør & stigstrenge', 'Gulvvarmefordeler', 'Radiatorer & termostater', 'Isolering af rør', 'Cirkulationspumpe'],
+  varmepumpe_udedel: ['Ny luft/vand-varmepumpe', 'Luft/luft-varmepumpe', 'Sokkel & vibrationsdæmpning', 'Rør & kondensafløb', 'El-tilslutning & gruppe', 'Service & årligt tjek'],
+  graesplaene: ['Ny græsplæne (rullegræs)', 'Såning & efterså', 'Muld & topdressing', 'Vertikalskæring', 'Kantskæring', 'Robotplæneklipper'],
+  haek_levende: ['Ny hæk', 'Fældning af gammel hæk', 'Klipning & formning', 'Rodfræsning', 'Gødning & vanding'],
+  stier_traedesten: ['Nye trædesten', 'Grussti', 'Flisesti', 'Kantsten & afgrænsning', 'Ukrudtssikring'],
+  indvendige_vaegge: ['Ny skillevæg', 'Nedrivning af væg', 'Forsatsvæg & isolering', 'Spartling & maling', 'Nye dørhuller', 'Lydisolering'],
+  etagedaek_gulve: ['Nyt bjælkelag', 'Efterisolering af dæk', 'Nyt trægulv', 'Slibning & lakering', 'Klinkegulv', 'Gulvvarme i dæk', 'Trinlydsdæmpning'],
+  skabe_garderobe: ['Ny garderobe', 'Indbygget skab', 'Walk-in garderobe', 'Reoler & opbevaring', 'Skydedøre'],
+  hvidevarer: ['Køle-/fryseskab', 'Ovn & mikroovn', 'Kogeplade (induktion)', 'Emhætte', 'Opvaskemaskine', 'Vaskemaskine & tørretumbler'],
+  indvendig_belysning: ['Ny loftbelysning', 'Spots & downlights', 'Pendler over køkkenø', 'Lysdæmpere', 'Skinnespots', 'Trappebelysning'],
+  skure_udhus: ['Nyt redskabsskur', 'Nyt tag på skur', 'Ny dør & lås', 'Gulv i skur', 'Maling & træbeskyttelse', 'El & lys i skur'],
+  regnvand_faskine: ['Faskine til regnvand', 'Regnvandstønde', 'Omfangsdræn', 'Rensebrønd', 'Afkobling af regnvand', 'Nedløbsbrønde'],
+  baerende_bjaelker: ['Ny overligger / udveksling', 'Understøtning under arbejdet', 'Ny rem', 'Stålbjælke ved nedrivning', 'Statisk beregning', 'Brandmaling af stål'],
+  soejler_baerende: ['Ny bærende søjle', 'Understøbning af søjle', 'Udskiftning af søjle', 'Punktfundament', 'Inddækning & finish'],
+  el_installation: ['Ny eltavle', 'Nye grupper & HPFI', 'Nye stikkontakter', 'Føringsveje & kabelbakker', 'Netværk & fiber indvendigt', 'El-tjek & dokumentation'],
+  stikledninger_forsyning: ['Ny vandstikledning', 'Ny elstikledning', 'Fiber / bredbånd', 'Målerskab udvendigt', 'Stophane & vandmåler', 'Kabelgrav & retablering'],
+  stillads_adgang: ['Stilladsleje', 'Opstilling & nedtagning', 'Facadestillads', 'Rullestillads indvendigt', 'Stiger & adgangsveje', 'Affaldsskakt', 'Overdækning & inddækning'],
+  byggepladshegn: ['Byggepladshegn', 'Låge & aflåsning', 'Skiltning & afmærkning', 'Sikring mod nedfald', 'Beskyttelse af belægning', 'Vejafspærring & tilladelse'],
+  skurvogn_materialer: ['Skurvogn / mandskabsvogn', 'Toiletvogn', 'Materialeoplag & paller', 'Byggestrøm & byggevand', 'Aflåst værktøjscontainer', 'Vinterforanstaltninger'],
+  container_affald: ['Containerleje', 'Bortkørsel af byggeaffald', 'Ekstra tømninger', 'Deponiafgift', 'Byggeaffald blandet', 'Nedknusning på stedet', 'Anmeldelse af byggeaffald'],
+  sortering_genbrug: ['Sortering i fraktioner', 'Big bags til småt affald', 'Genbrug af tegl & beton', 'Metal & jern til genbrug', 'Træ & gips separat', 'Farligt affald separat', 'Dokumentation af bortskaffelse'],
+  nedrivning_indvendig: ['Nedrivning af skillevægge', 'Nedrivning af køkken', 'Nedrivning af badeværelse', 'Fjernelse af gulve', 'Støvvægge & afdækning', 'Støvsugning & slutrengøring', 'Rydning af kælder & loft'],
+  asbest_miljosanering: ['Miljøscreening før nedrivning', 'Asbestsanering (eternit)', 'Fjernelse af asbestrør', 'PCB-sanering af fuger', 'Blyholdig maling', 'Skimmelsanering', 'Radonsikring', 'Slutkontrol & måling'],
+  bortkoersel_jord: ['Opgravning af jord', 'Bortkørsel af rene jord', 'Jordanalyser & klassificering', 'Forurenet jord til deponi', 'Tilkørsel af ny muld', 'Retablering af terræn']
+};
+
+const LAYERS = [
+  { id: 'alle', label: 'Alle lag', desc: 'Hele modellen', color: '#60a5fa', icon: 'M12 3 3 8l9 5 9-5-9-5M3 13l9 5 9-5' },
+  { id: 'terraen', label: 'Terræn & Have', desc: 'Jord, græs, belægning', color: '#84cc16', icon: 'M3 16h18v4.5H3zM3 16l4.5-6h9l4.5 6' },
+  { id: 'fundament', label: 'Fundament & Kælder', desc: 'Sokkel, kælderydervægge', color: '#f472b6', icon: 'M3 15.5h18V20H3zM6 15.5V8h12v7.5' },
+  { id: 'konstruktion', label: 'Bærende konstruktion', desc: 'Dæk, spær, søjler', color: '#c084fc', icon: 'M4 20V6l8-3 8 3v14M8 20V11h8v9M4 11h16' },
+  { id: 'klimaskaerm', label: 'Klimaskærm', desc: 'Tag, facade, vinduer, isolering', color: '#38bdf8', icon: 'M2.5 11.5 12 4l9.5 7.5M5.5 12.5V20h13v-7.5M9.5 20v-5h5v5' },
+  { id: 'tilbygning', label: 'Uderum & Tilbygning', desc: 'Garage, altan, terrasse', color: '#34d399', icon: 'M3 10h18v10H3zM6.5 10V5h11v5' },
+  { id: 'installationer', label: 'Installationer', desc: 'VVS, el, ventilation, lader', color: '#f87171', icon: 'M6.5 3.5v7a3 3 0 0 0 6 0v-7M9.5 16.5v4M17.5 20.5V14a2.8 2.8 0 0 0-5.5 0' },
+  { id: 'inventar', label: 'Overflader & Inventar', desc: 'Gulve, skillevægge, møbler', color: '#fbbf24', icon: 'M3.5 12.5v6h17v-6M6 12.5V7.5h12v5M6 12.5h12' },
+  { id: 'byggeplads', label: 'Byggeplads & Affald', desc: 'Stillads, hegn, container, sanering', color: '#ea580c', icon: 'M3 20h18M6 20V8l6-4 6 4v12M6 12h12' }
+];
+
+const GROUPS = [
+  { id: 'tag', title: 'Tag', desc: 'Tagbelægning, skorsten, render', color: '#f97316', icon: 'M2.5 11.5 12 4l9.5 7.5M5.5 12.5V20h13v-7.5', zones: ['tag_og_skorsten', 'skorsten_aftraek', 'tagrender_nedloeb', 'loft_tagetage'] },
+  { id: 'ydervaegge', title: 'Ydervægge', desc: 'Murværk, isolering, facade', color: '#f59e0b', icon: 'M3 4.5h18v15H3zM3 9.5h18M3 14.5h18M9 4.5v5M15 9.5v5M9 14.5v5', zones: ['facade_overetage', 'facade_stueetage'] },
+  { id: 'vinduer', title: 'Vinduer & Døre', desc: 'Vinduer, døre, ovenlys', color: '#a78bfa', icon: 'M4 4h16v16H4zM12 4v16M4 12h16', zones: ['vinduer_overetage', 'vinduer_doere_stueetage', 'ovenlys_tagvinduer'] },
+  { id: 'konstruktion', title: 'Konstruktion & Dæk', desc: 'Skillevægge, etagedæk, gulve', color: '#c084fc', icon: 'M4 20V6l8-3 8 3v14M8 20V11h8v9M4 11h16', zones: ['indvendige_vaegge', 'etagedaek_gulve', 'baerende_bjaelker', 'soejler_baerende'] },
+  { id: 'uderum', title: 'Tilbygninger & Uderum', desc: 'Altan, garage, terrasse, skur', color: '#34d399', icon: 'M3 10h18v10H3zM6.5 10V5h11v5M8 20v-5h5v5', zones: ['altan_balkon', 'garage_carport', 'terrasse_udendoers', 'pergola_solafskaermning', 'skure_udhus'] },
+  { id: 'grund', title: 'Grund & Belægning', desc: 'Indkørsel, fliser, stier', color: '#94a3b8', icon: 'M3 16h18v4.5H3zM3 16l4.5-6h9l4.5 6M9 10v6M15 10v6', zones: ['indkoersel_belaegning', 'stier_traedesten'] },
+  { id: 'have', title: 'Have & Grønt', desc: 'Græs, hæk, planter, hegn', color: '#84cc16', icon: 'M12 20V9M12 9a4 4 0 1 0-4-4 4 4 0 0 0 4 4ZM12 13l4-3M12 15l-4-3', zones: ['graesplaene', 'haek_levende', 'beplantning', 'hegn_laage'] },
+  { id: 'fundament', title: 'Fundament', desc: 'Gravearbejde, fundament', color: '#f472b6', icon: 'M3 15.5h18V20H3zM6 15.5V8h12v7.5M9.5 8V4.5h5V8', zones: ['fundament_sokkel'] },
+  { id: 'kaelder', title: 'Kælder', desc: 'Kælderydervægge, gulv', color: '#60a5fa', icon: 'M4 4.5h16v15H4zM4 12h16M12 12v7.5', zones: ['kaelder_udvendig'] },
+  { id: 'installationer', title: 'Installationer', desc: 'El, VVS, ventilation, afløb', color: '#f87171', icon: 'M6.5 3.5v7a3 3 0 0 0 6 0v-7M9.5 16.5v4M17.5 20.5v-6.5a2.8 2.8 0 0 0-5.5 0', zones: ['el_installation', 'ventilation_anlaeg', 'udebelysning', 'indvendig_belysning'] },
+  { id: 'energi', title: 'Energi & Varme', desc: 'Solceller, varme, ladestander', color: '#facc15', icon: 'M13 2.5 4.5 13.5H10l-1 8 9-11.5h-5.5l.5-7.5Z', zones: ['solceller_energi', 'varme_vvs', 'varmepumpe_udedel', 'ladestander_elbil'] },
+  { id: 'inventar', title: 'Inventar & Overflader', desc: 'Køkken, bad, trapper, skabe', color: '#fbbf24', icon: 'M3.5 12.5v6h17v-6M6 12.5V7.5h12v5M6 12.5h12', zones: ['koekken', 'hvidevarer', 'badevaerelse', 'trapper_indvendig', 'skabe_garderobe', 'inventar_moebler'] },
+  { id: 'forsyning', title: 'Forsyning & Infrastruktur', desc: 'Stik, kloak, regnvand', color: '#06b6d4', icon: 'M4 20V9.5l8-6 8 6V20M9.5 20v-6h5v6M2 20h20', zones: ['stikledninger_forsyning', 'kloak_forsyning', 'regnvand_faskine'] },
+  { id: 'byggeplads', title: 'Byggeplads & Sikkerhed', desc: 'Stillads, hegn, skurvogn', color: '#f97316', icon: 'M3 20h18M6 20V8l6-4 6 4v12M6 12h12M10 20v-5h4v5', zones: ['stillads_adgang', 'byggepladshegn', 'skurvogn_materialer'] },
+  { id: 'affald', title: 'Byggeaffald & Sanering', desc: 'Container, nedrivning, miljø', color: '#ea580c', icon: 'M5 7.5h14M9.5 7.5V5h5v2.5M6.5 7.5 7.5 20h9l1-12.5M10 11v5.5M14 11v5.5', zones: ['container_affald', 'sortering_genbrug', 'nedrivning_indvendig', 'asbest_miljosanering', 'bortkoersel_jord'] }
+];
+
+const NAV_TOP = [
+  { label: 'Hjem', icon: 'M3 10.5 12 3.5l9 7M5.5 11.5V20h13v-8.5' },
+  { label: 'Projekter', icon: 'M3 7.5a2 2 0 0 1 2-2h4l2 2.5h6a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z', active: true },
+  { label: 'Tid', icon: 'M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16ZM12 8v4.5l3 1.8' },
+  { label: 'Opgaver', icon: 'M4 5.5h16v15H4zM8 11l2.5 2.5L16 8' },
+  { label: 'Værktøj', icon: 'M5 4.5h14v15H5zM8.5 9h7M8.5 13h4' }
+];
+const NAV_BOTTOM = [
+  { label: 'Team', icon: 'M8.5 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2.5 20c0-3.2 2.7-5.5 6-5.5s6 2.3 6 5.5M16.5 8.5a2.5 2.5 0 1 1 0 5M18 14.5c2 .7 3.5 2.6 3.5 5' },
+  { label: 'Indstil.', icon: 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM19.5 12a7.5 7.5 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7.6 7.6 0 0 0-2-1.2L14.7 3H9.3l-.4 2.7a7.6 7.6 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5a7.5 7.5 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-1a7.6 7.6 0 0 0 2 1.2l.4 2.7h5.4l.4-2.7a7.6 7.6 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.06-.4.1-.8.1-1.2Z' }
+];
+
+class Component extends DCLogic {
+  state = {
+    selected: ['facade_overetage'],
+    expanded: {},
+    hover: null,
+    hoverX: 0,
+    hoverY: 0,
+    tab: 'Udvendig',
+    level: 'stue',
+    panelTab: 'dele',
+    layer: 'alle',
+    listCat: null,
+    listZone: null,
+    search: '',
+    // seeded so a short window starts collapsed instead of flashing docked-then-collapsed
+    compact: window.innerHeight < 740,
+    panelOpen: window.innerHeight >= 740,
+    quality: (function () {
+      try {
+        const v = localStorage.getItem('byggeapp.house3d.kvalitet');
+        if (v === 'hoj' || v === 'mobil') return v;
+      } catch (e) { /* private mode */ }
+      const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+      const small = Math.min(window.innerWidth, window.innerHeight) <= 700;
+      return (coarse && small) || (navigator.deviceMemory || 8) <= 4 ? 'mobil' : 'hoj';
+    })(),
+    openZones: {},
+    tasks: {},
+    mode: 'orbit',
+    light: 'nat',
+    auto: false
+  };
+
+  componentDidMount() {
+    /* Below ~420px of stage the panel follows the manual's drawer contract:
+       collapsed off-screen, only a 44x44 reopen button. Measured on the stage
+       element itself, so it holds however the height is constrained. */
+    this._watchStage = () => {
+      const el = document.querySelector('house-stage');
+      if (!el) { this._stageTimer = setTimeout(this._watchStage, 400); return; }
+      if (this._stageRO) this._stageRO.disconnect();
+      this._stageRO = new ResizeObserver((entries) => {
+        const h = entries[0].contentRect.height;
+        if (h <= 0) return;
+        // functional setState, deferred out of the observer callback: the guard
+        // must compare against current state, not a snapshot from mount
+        requestAnimationFrame(() => this.setState((p) => {
+          const compact = h < 420;
+          if (compact === p.compact) return null;
+          return { compact, panelOpen: !compact, shortStage: compact };
+        }));
+      });
+      this._stageRO.observe(el);
+    };
+    this._watchStage();
+    /* Chrome density keys off viewport height — a stable input. Keying it off the
+       stage height would feed back: smaller chrome grows the stage, which would
+       flip the flag again. */
+    this._watchRoot = () => {
+      const root = document.querySelector('[data-screen-label]');
+      if (!root) { this._rootTimer = setTimeout(this._watchRoot, 400); return; }
+      if (this._rootRO) this._rootRO.disconnect();
+      this._rootRO = new ResizeObserver((e) => {
+        const h = e[0].contentRect.height;
+        if (h <= 0) return;
+        requestAnimationFrame(() => this.setState((p) => {
+          const roomy = h >= 560;
+          if (roomy === p.roomyChrome) return null;
+          return { roomyChrome: roomy };
+        }));
+      });
+      this._rootRO.observe(root);
+    };
+    this._watchRoot();
+    this._onReady = () => {
+      this._stageRef = null;          // the stage rebuilds when quality changes
+      const s = window.__houseStage;
+      if (s && s.quality && s.quality !== this.state.quality) this.setState({ quality: s.quality });
+      this._sync();
+    };
+    this._onHover = (e) => {
+      const d = e.detail;
+      if (d.zoneId === this.state.hover) return;
+      this.setState({ hover: d.zoneId, hoverX: d.x, hoverY: d.y });
+    };
+    this._onToggle = (e) => this.toggleZone(e.detail.zoneId);
+    this._onLongPress = (e) => this.setState({
+      roomMenu: true, roomIndex: e.detail.index, roomMenuName: e.detail.room,
+      roomMenuX: e.detail.x, roomMenuY: e.detail.y
+    });
+    window.addEventListener('housestage:longpress', this._onLongPress);
+    // the stage owns inside-room state; the host only mirrors what it announces
+    this._onRoom = (e) => this.setState({
+      insideRoomName: e.detail ? e.detail.room : null,
+      roomMenu: false
+    });
+    window.addEventListener('housestage:room', this._onRoom);
+    window.addEventListener('housestage:ready', this._onReady);
+    window.addEventListener('housestage:hover', this._onHover);
+    window.addEventListener('housestage:toggle', this._onToggle);
+    if (window.__houseStage) this._sync();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('housestage:longpress', this._onLongPress);
+    window.removeEventListener('housestage:room', this._onRoom);
+    clearTimeout(this._rootTimer);
+    if (this._rootRO) this._rootRO.disconnect();
+    clearTimeout(this._stageTimer);
+    if (this._stageRO) this._stageRO.disconnect();
+    window.removeEventListener('housestage:ready', this._onReady);
+    window.removeEventListener('housestage:hover', this._onHover);
+    window.removeEventListener('housestage:toggle', this._onToggle);
+  }
+
+  componentDidUpdate() { this._sync(); }
+
+  _sync() {
+    const s = window.__houseStage;
+    if (!s || !s.scene) return;
+    s.setSelected(this.state.selected);
+    s.setHover(this.state.hover);
+    s.setLighting(this.state.light);
+    s.setAutoRotate(this.state.auto);
+    s.setViewMode(this.state.mode);
+    const fresh = s !== this._stageRef;   // the stage element may remount
+    if (fresh) this._stageRef = s;
+    if (fresh || this._layerKey !== this.state.layer) {
+      this._layerKey = this.state.layer;
+      s.setLayer(this.state.layer);
+    }
+    // only move the camera when the view actually changes, so the user keeps control
+    const wanted = this.state.tab === 'Indvendig' ? 'plan' : 'udvendig';
+    const key = wanted + '|' + this.state.level;
+    if (fresh || key !== this._viewKey) {
+      this._viewKey = key;
+      s.setStageMode(wanted, this.state.level);
+    }
+  }
+
+  toggleZone(id) {
+    this.setState((st) => {
+      const has = st.selected.indexOf(id) >= 0;
+      if (!has && window.__houseStage) window.__houseStage.flashMarker(id);
+      return { selected: has ? st.selected.filter((z) => z !== id) : st.selected.concat([id]) };
+    });
+  }
+
+  toggleTask(zone, i) {
+    const key = zone + '|' + i;
+    this.setState((st) => {
+      const tasks = Object.assign({}, st.tasks);
+      if (tasks[key]) delete tasks[key]; else tasks[key] = true;
+      const anyLeft = Object.keys(tasks).some((k) => k.indexOf(zone + '|') === 0);
+      let selected = st.selected;
+      if (anyLeft && selected.indexOf(zone) < 0) {
+        selected = selected.concat([zone]);
+        if (window.__houseStage) window.__houseStage.flashMarker(zone);
+      }
+      return { tasks, selected };
+    });
+  }
+
+  toggleGroup(g) {
+    this.setState((st) => {
+      const all = g.zones.every((z) => st.selected.indexOf(z) >= 0);
+      if (all) return { selected: st.selected.filter((z) => g.zones.indexOf(z) < 0) };
+      const next = st.selected.slice();
+      g.zones.forEach((z) => { if (next.indexOf(z) < 0) next.push(z); });
+      if (window.__houseStage) window.__houseStage.flashMarker(g.zones[0]);
+      return { selected: next };
+    });
+  }
+
+  renderVals() {
+    const st = this.state;
+    const sel = st.selected;
+    const inSel = (z) => sel.indexOf(z) >= 0;
+    const hoverZone = st.hover ? ZONES[st.hover] : null;
+
+    const groups = GROUPS.map((g) => {
+      const n = g.zones.filter(inSel).length;
+      const expanded = !!st.expanded[g.id];
+      return {
+        id: g.id,
+        title: g.title,
+        desc: g.desc,
+        color: g.color,
+        icon: g.icon,
+        tint: 'rgba(' + this._rgb(g.color) + ',0.13)',
+        edge: 'rgba(' + this._rgb(g.color) + ',0.4)',
+        checked: n === g.zones.length,
+        partial: n > 0 && n < g.zones.length,
+        expanded,
+        caret: expanded ? 180 : 0,
+        boxBg: n === g.zones.length ? '#2563eb' : 'transparent',
+        boxBorder: n > 0 ? '#3b82f6' : 'rgba(148,180,220,0.35)',
+        onToggleAll: () => this.toggleGroup(g),
+        onExpand: (e) => {
+          e.stopPropagation();
+          this.setState((s) => ({ expanded: Object.assign({}, s.expanded, { [g.id]: !s.expanded[g.id] }) }));
+        },
+        onEnter: () => this.setState({ hover: g.zones[0] }),
+        onLeave: () => this.setState({ hover: null }),
+        zones: g.zones.map((z) => {
+          const on = inSel(z);
+          const list = TASKS[z] || [];
+          const picked = list.filter((_, i) => st.tasks[z + '|' + i]).length;
+          const zOpen = !!st.openZones[z];
+          return {
+            id: z,
+            name: ZONES[z].name,
+            dot: ZONES[z].color,
+            selected: on,
+            expanded: zOpen,
+            caret: zOpen ? 180 : 0,
+            taskBadge: picked ? picked + '/' + list.length : String(list.length),
+            taskColor: picked ? '#60a5fa' : '#6d829a',
+            bg: on ? 'rgba(37,99,235,0.14)' : 'transparent',
+            textColor: on ? '#dce8f6' : '#a3b6cc',
+            boxBg: on ? '#2563eb' : 'transparent',
+            boxBorder: on ? '#3b82f6' : 'rgba(148,180,220,0.32)',
+            onToggle: (e) => { e.stopPropagation(); this.toggleZone(z); },
+            onExpand: (e) => {
+              e.stopPropagation();
+              this.setState((p) => ({ openZones: Object.assign({}, p.openZones, { [z]: !p.openZones[z] }) }));
+            },
+            onEnter: () => this.setState({ hover: z }),
+            onLeave: () => this.setState({ hover: null }),
+            tasks: list.map((label, i) => {
+              const key = z + '|' + i;
+              const tOn = !!st.tasks[key];
+              return {
+                label,
+                on: tOn,
+                bg: tOn ? 'rgba(37,99,235,0.12)' : 'transparent',
+                color: tOn ? '#dce8f6' : '#9db2c9',
+                boxBg: tOn ? '#2563eb' : 'transparent',
+                boxBorder: tOn ? '#3b82f6' : 'rgba(148,180,220,0.3)',
+                onToggle: (e) => { e.stopPropagation(); this.toggleTask(z, i); }
+              };
+            })
+          };
+        })
+      };
+    });
+
+    /* ---- Listevisning: sideways tree, category → part → task ---- */
+    const q = (st.search || '').trim().toLowerCase();
+    const hit = (t) => !q || String(t).toLowerCase().indexOf(q) >= 0;
+    const zoneHit = (z) => hit(ZONES[z].name) || hit(ZONES[z].desc) || (TASKS[z] || []).some(hit);
+    const catHit = (g) => hit(g.title) || hit(g.desc) || g.zones.some(zoneHit);
+    const catsF = GROUPS.filter(catHit);
+    // progressive disclosure: a level only opens once its parent is chosen
+    // (a search drills automatically, otherwise the hit would stay hidden)
+    const explicitCat = catsF.find((g) => g.id === st.listCat) || null;
+    const activeCat = explicitCat || (q ? catsF[0] : null);
+    const zonesF = activeCat ? activeCat.zones.filter(zoneHit) : [];
+    const explicitZone = zonesF.indexOf(st.listZone) >= 0 ? st.listZone : null;
+    const activeZone = explicitZone || (q ? zonesF[0] : null);
+    const tasksF = activeZone
+      ? (TASKS[activeZone] || []).map((label, i) => ({ label, i }))
+        .filter((t) => !q || hit(t.label) || hit(ZONES[activeZone].name))
+      : [];
+    const box = (on, part) => ({
+      checked: on,
+      partial: !on && part,
+      boxBg: on ? '#2563eb' : 'transparent',
+      boxBorder: on || part ? '#3b82f6' : 'rgba(148,180,220,0.32)'
+    });
+    const listCats = catsF.map((g) => {
+      const n = g.zones.filter(inSel).length;
+      const act = activeCat && activeCat.id === g.id;
+      return Object.assign({
+        name: g.title,
+        sub: g.desc,
+        hasSub: true,
+        weight: act ? '650' : '500',
+        color: act ? '#eaf1f9' : '#c3d3e6',
+        bg: act ? 'rgba(37,99,235,0.16)' : 'transparent',
+        hasCount: n > 0,
+        count: n + '/' + g.zones.length,
+        countColor: '#60a5fa',
+        drill: true,
+        arrowColor: act ? '#93c5fd' : '#5c7285',
+        onSelect: () => this.setState({ listCat: g.id, listZone: null }),
+        onCheck: (e) => { e.stopPropagation(); this.toggleGroup(g); }
+      }, box(n === g.zones.length, n > 0));
+    });
+    const listZones = zonesF.map((z) => {
+      const on = inSel(z);
+      const list = TASKS[z] || [];
+      const picked = list.filter((_, i) => st.tasks[z + '|' + i]).length;
+      const act = activeZone === z;
+      return Object.assign({
+        name: ZONES[z].name,
+        sub: ZONES[z].desc,
+        hasSub: true,
+        weight: act ? '650' : '500',
+        color: act ? '#eaf1f9' : '#c3d3e6',
+        bg: act ? 'rgba(37,99,235,0.16)' : 'transparent',
+        hasCount: picked > 0,
+        count: picked + '/' + list.length,
+        countColor: '#60a5fa',
+        drill: true,
+        arrowColor: act ? '#93c5fd' : '#5c7285',
+        onSelect: () => this.setState({ listZone: z }),
+        onCheck: (e) => { e.stopPropagation(); this.toggleZone(z); }
+      }, box(on, picked > 0));
+    });
+    const listTasks = tasksF.map((t) => {
+      const on = !!st.tasks[activeZone + '|' + t.i];
+      return Object.assign({
+        name: t.label,
+        sub: '',
+        hasSub: false,
+        weight: '500',
+        color: on ? '#eaf1f9' : '#c3d3e6',
+        bg: on ? 'rgba(37,99,235,0.12)' : 'transparent',
+        hasCount: false,
+        count: '',
+        countColor: '#60a5fa',
+        drill: false,
+        arrowColor: '#5c7285',
+        onSelect: () => this.toggleTask(activeZone, t.i),
+        onCheck: (e) => { e.stopPropagation(); this.toggleTask(activeZone, t.i); }
+      }, box(on, false));
+    });
+
+    const tabs = ['Udvendig', 'Indvendig', 'Listevisning'].map((label) => ({
+      label,
+      bg: st.tab === label ? '#2563eb' : 'rgba(19,32,50,0.75)',
+      color: st.tab === label ? '#ffffff' : '#a8bdd4',
+      border: st.tab === label ? '#2563eb' : 'rgba(148,180,220,0.14)',
+      onSelect: () => this.setState({ tab: label })
+    }));
+
+    const modes = [
+      { id: 'orbit', title: 'Drej', icon: 'M12 3.5a8.5 8.5 0 1 0 8.5 8.5M12 8v4.5l3.5 2' },
+      { id: 'pan', title: 'Panorér', icon: 'M9 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0v4.5a5 5 0 0 1-5 5h-1.5a5 5 0 0 1-5-5V13a1.5 1.5 0 0 1 2.5-1' },
+      { id: 'grid', title: 'Vis grid', icon: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z' }
+    ].map((m) => ({
+      title: m.title,
+      icon: m.icon,
+      bg: st.mode === m.id ? 'rgba(37,99,235,0.9)' : 'transparent',
+      color: st.mode === m.id ? '#ffffff' : '#8ba2bd',
+      onSelect: () => this.setState({ mode: m.id })
+    }));
+
+    const lightModes = [
+      { id: 'nat', label: 'Aften', title: 'Aftenlys med varmt indeklima', icon: 'M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z' },
+      { id: 'dag', label: 'Dagslys', title: 'Dagslys over hele modellen', icon: 'M12 5V3M12 21v-2M5 12H3M21 12h-2M6.4 6.4 5 5M19 19l-1.4-1.4M17.6 6.4 19 5M5 19l1.4-1.4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z' }
+    ].map((m) => ({
+      label: m.label,
+      title: m.title,
+      icon: m.icon,
+      bg: st.light === m.id ? (m.id === 'dag' ? 'rgba(251,191,36,0.18)' : 'rgba(37,99,235,0.85)') : 'transparent',
+      color: st.light === m.id ? (m.id === 'dag' ? '#fbbf24' : '#ffffff') : '#8ba2bd',
+      onSelect: () => this.setState({ light: m.id })
+    }));
+
+    const levels = [
+      { id: 'kaelder', num: 'K', label: 'Kælder' },
+      { id: 'stue', num: 'ST', label: 'Stueetage' },
+      { id: 'etage1', num: '1', label: '1. sal' }
+    ].map((l) => ({
+      num: l.num,
+      label: l.label,
+      bg: st.level === l.id ? 'rgba(37,99,235,0.9)' : 'transparent',
+      color: st.level === l.id ? '#ffffff' : '#a3b6cc',
+      numColor: st.level === l.id ? 'rgba(255,255,255,0.72)' : '#6d829a',
+      onSelect: () => this.setState({ level: l.id })
+    }));
+
+    const tools = [
+      {
+        title: 'Hjælp', icon: 'M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17M9.8 9.3a2.2 2.2 0 1 1 3.2 2c-.7.5-1 1-1 1.9M12 16.6h.01',
+        color: '#8ba2bd', bg: 'rgba(10,20,34,0.86)', onClick: () => {}
+      },
+      {
+        title: st.auto ? 'Stop rotation' : 'Auto-rotér', icon: 'M12 3.2 3.5 7.6v8.8L12 20.8l8.5-4.4V7.6ZM3.5 7.6 12 12m0 0 8.5-4.4M12 12v8.8',
+        color: st.auto ? '#60a5fa' : '#8ba2bd',
+        bg: st.auto ? 'rgba(37,99,235,0.2)' : 'rgba(10,20,34,0.86)',
+        onClick: () => this.setState({ auto: !st.auto })
+      },
+      {
+        title: 'Nulstil visning', icon: 'M4 9V4.5m0 4.5h4.5M4 9a8 8 0 1 1 2.6 8.8',
+        color: '#8ba2bd', bg: 'rgba(10,20,34,0.86)',
+        onClick: () => { if (window.__houseStage) window.__houseStage.resetView(); }
+      }
+    ];
+
+    const planMode = st.tab === 'Indvendig';
+    const taskCount = Object.keys(st.tasks).length;
+    const high = st.quality === 'hoj';
+    const recap = sel.map((z) => {
+      const n = Object.keys(st.tasks).filter((k) => k.indexOf(z + '|') === 0).length;
+      return {
+        name: ZONES[z] ? ZONES[z].name : z,
+        dot: ZONES[z] ? ZONES[z].color : '#60a5fa',
+        hasTasks: n > 0,
+        tasks: n + ' opg.',
+        onRemove: () => this.setState((p) => {
+          const tasks = Object.assign({}, p.tasks);
+          Object.keys(tasks).forEach((k) => { if (k.indexOf(z + '|') === 0) delete tasks[k]; });
+          return { selected: p.selected.filter((x) => x !== z), tasks };
+        })
+      };
+    });
+    const panelTabs = [
+      { id: 'dele', label: 'Dele', icon: 'M4 5.5h7v7H4zM13 5.5h7v7h-7zM4 14.5h7v5H4zM13 14.5h7v5h-7z' },
+      { id: 'lag', label: 'Lag', icon: 'M12 3 3 7.5l9 4.5 9-4.5L12 3M3 12.5l9 4.5 9-4.5M3 17l9 4.5 9-4.5' }
+    ].map((t) => ({
+      label: t.label,
+      icon: t.icon,
+      bg: st.panelTab === t.id ? '#2563eb' : 'transparent',
+      color: st.panelTab === t.id ? '#ffffff' : '#9db2c9',
+      onSelect: () => this.setState({ panelTab: t.id })
+    }));
+    const layers = LAYERS.map((l) => ({
+      label: l.label,
+      desc: l.desc,
+      icon: l.icon,
+      color: l.color,
+      active: st.layer === l.id,
+      bg: st.layer === l.id ? 'rgba(37,99,235,0.16)' : 'transparent',
+      titleColor: st.layer === l.id ? '#eaf1f9' : '#c3d3e6',
+      tint: 'rgba(' + this._rgb(l.color) + ',0.13)',
+      edge: 'rgba(' + this._rgb(l.color) + ',0.4)',
+      dotBorder: st.layer === l.id ? '#3b82f6' : 'rgba(148,180,220,0.32)',
+      onSelect: () => this.setState({ layer: l.id })
+    }));
+    return {
+      panelTabs,
+      layers,
+      recap,
+      hasRecap: recap.length > 0,
+      recapLabel: 'I projektet (' + recap.length + ')',
+      listTab: st.tab === 'Listevisning',
+      listCats,
+      listZones,
+      listTasks,
+      search: st.search || '',
+      hasSearch: !!q,
+      onSearch: (e) => this.setState({ search: e.target.value }),
+      onClearSearch: () => this.setState({ search: '' }),
+      catsEmpty: listCats.length === 0,
+      catsHint: 'Ingen kategorier matcher søgningen.',
+      zonesEmpty: listZones.length === 0,
+      zonesHint: 'Ingen bygningsdele matcher søgningen.',
+      tasksEmpty: listTasks.length === 0,
+      tasksHint: 'Ingen opgaver matcher søgningen.',
+      showZoneCol: !!activeCat,
+      showTaskCol: !!activeZone,
+      listCols: activeZone ? '1fr 1fr 1.15fr' : (activeCat ? '1fr 1.2fr' : '1fr'),
+      qualityHigh: high,
+      qualityLabel: high ? 'Høj' : 'Mobil',
+      qualityTitle: high
+        ? 'Fuld kvalitet — slå fra for bedre ydelse på mobil'
+        : 'Mobil-tilstand — lettere teksturer, skygger og lys. Slå til for fuld kvalitet',
+      qualityBg: high ? 'rgba(37,99,235,0.16)' : 'rgba(24,40,64,0.85)',
+      qualityBorder: high ? 'rgba(96,165,250,0.45)' : 'rgba(148,180,220,0.16)',
+      qualityTick: high ? '#2563eb' : 'transparent',
+      qualityTickBorder: high ? '#3b82f6' : 'rgba(148,180,220,0.35)',
+      qualityColor: high ? '#dce8f6' : '#a8bdd4',
+      onToggleQuality: () => {
+        const q = high ? 'mobil' : 'hoj';
+        this.setState({ quality: q });
+        if (window.__houseStage && window.__houseStage.setQuality) window.__houseStage.setQuality(q);
+      },
+      deleTab: st.panelTab === 'dele',
+      lagTab: st.panelTab === 'lag',
+      panelTitle: st.panelTab === 'lag' ? 'Vis lag i modellen' : 'Vælg bygningsdele',
+      roomMenu: !!st.roomMenu,
+      roomMenuName: st.roomMenuName || '',
+      roomMenuX: st.roomMenuX || 0,
+      roomMenuY: st.roomMenuY || 0,
+      insideRoom: !!st.insideRoomName,
+      insideRoomName: st.insideRoomName || '',
+      onEnterRoom: () => {
+        this.setState({ roomMenu: false });
+        if (window.__houseStage) window.__houseStage.enterRoom(st.roomIndex);
+      },
+      onCloseRoomMenu: () => this.setState({ roomMenu: false }),
+      onExitRoom: () => {
+        if (window.__houseStage) window.__houseStage.exitRoom();
+      },
+      showLevels: planMode && !st.insideRoomName,
+      showPanelSub: !st.compact,
+      panelMax: st.compact ? 'calc(100% - 16px)' : 'min(470px, calc(100% - 76px))',
+      roomyChrome: st.roomyChrome !== false,
+      chromeH: st.roomyChrome === false ? '48px' : '64px',
+      tabsPad: st.roomyChrome === false ? '10px 26px 8px' : '16px 26px 14px',
+      tabH: st.roomyChrome === false ? '36px' : '44px',
+      ctaPad: st.roomyChrome === false ? '10px 26px 12px' : '16px 26px 18px',
+      ctaH: st.roomyChrome === false ? '46px' : '54px',
+      showRecap: recap.length > 0 && st.roomyChrome !== false,
+      compactPanel: !!st.compact,
+      panelVisible: !st.compact || st.panelOpen !== false,
+      panelCollapsed: !!st.compact && st.panelOpen === false,
+      onTogglePanel: () => this.setState((p) => ({ panelOpen: p.panelOpen === false })),
+      panelSub: st.panelTab === 'lag'
+        ? 'Vælg et lag for at se husets opbygning'
+        : 'Klik på en del i modellen eller åbn en kategori',
+      groups,
+      tabs,
+      modes,
+      tools,
+      lightModes,
+      levels,
+      planMode,
+      stageBg: st.light === 'dag'
+        ? 'radial-gradient(120% 90% at 58% 22%, #2f5679 0%, #1d3a56 40%, #14283c 100%)'
+        : 'radial-gradient(120% 90% at 62% 30%, #0f2033 0%, #091524 45%, #060d16 100%)',
+      navTop: NAV_TOP.map((n) => ({
+        label: n.label,
+        icon: n.icon,
+        color: n.active ? '#60a5fa' : '#7d93ac',
+        bg: n.active ? 'rgba(37,99,235,0.14)' : 'transparent',
+        mark: n.active ? '#2563eb' : 'transparent'
+      })),
+      navBottom: NAV_BOTTOM,
+      hint: st.insideRoomName ? 'Du er inde i ' + st.insideRoomName + ' — drej for at se rundt, tryk Tilbage'
+        : planMode ? 'Vælg etage til venstre — zoom og drej planen med musen'
+        : 'Venstre træk drejer · højre træk eller to fingre flytter · hold for at gå ind i rummet',
+      countLabel: st.panelTab === 'lag'
+        ? (st.layer === 'alle' ? 'Alle lag vises' : 'Ét lag vist')
+        : sel.length + '/' + Object.keys(ZONES).length + ' dele · ' + taskCount + ' opgaver',
+      onSelectAll: () => this.setState({ selected: Object.keys(ZONES) }),
+      onSelectNone: () => this.setState({ selected: [], tasks: {} }),
+      hoverCard: !!hoverZone,
+      hoverName: hoverZone ? hoverZone.name : '',
+      hoverDesc: hoverZone ? hoverZone.desc : '',
+      hoverX: st.hoverX,
+      hoverY: st.hoverY
+    };
+  }
+
+  _rgb(hex) {
+    const h = hex.replace('#', '');
+    return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16)).join(',');
+  }
+}
+
+</script>
+</body>
+</html>

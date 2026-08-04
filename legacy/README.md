@@ -1,14 +1,72 @@
-# legacy/ — vendored BygSmart 2.1 (placeholder)
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-This directory will hold the **entire BygSmart 2.1 tree, vendored as ONE snapshot commit**
-at repo cutover (task 0.7), taken from the tag `v2.1.0-final` on the 2.1 repository.
+# BygSmart 2.0 - Construction Management PWA
 
-It is a **parts bin, read-only**:
-- Harvested for `packages/core`, `packages/calc-engine`, Danish domain copy, and the
-  90+ migrations of hard-won schema/RLS knowledge (as a *specification*, not executable history).
-- **Never imported by shipping code** — the boundaries lint rule forbids it.
-- **Deleted at G5**, once everything worth keeping has been harvested. A parts bin nobody
-  throws away becomes a source of accidental imports.
+BygSmart 2.0 is a React + TypeScript + Vite application with Supabase for auth/data and a server-side API proxy for Gemini and Stripe.
 
-The snapshot is not yet vendored: it is applied when the new repo is wired to its GitHub
-remote and the 2.1 tag is cut.
+## Local Development
+
+Prerequisites: Node.js 20+
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Copy env file and fill values:
+```bash
+cp .env.example .env
+```
+
+3. Start frontend:
+```bash
+npm run dev
+```
+
+4. Start API service (optional in local dev):
+```bash
+npm run api
+```
+
+## Quality & Tests
+
+```bash
+npm run typecheck
+npm run lint
+npm run test
+npm run test:coverage
+npm run test:e2e
+```
+
+## Production Build
+
+```bash
+npm run build
+# Output: dist/
+```
+
+## Deploy
+
+Production targets are `bygsmart.com` (landing) and `app.bygsmart.com` (SPA + API).
+See [deploy/simply/README.md](deploy/simply/README.md) for full steps.
+
+Quick deploy:
+```bash
+bash deploy/deploy-simply.sh
+```
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 18, TypeScript, Vite 6 |
+| Styling | Tailwind CSS v4 |
+| API Service | Node.js + Express |
+| Backend | Supabase (PostgreSQL + Auth + Storage) |
+| AI | Google Gemini 2.5 Flash (server-side key) |
+| Payments | Stripe Checkout + Webhook |
+| Observability | Sentry + Web Vitals |
+| PWA | Service Worker |
+| 3D/AR | Three.js, @react-three/fiber |

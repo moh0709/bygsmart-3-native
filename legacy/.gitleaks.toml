@@ -1,0 +1,14 @@
+title = "BygSmart Gitleaks config"
+
+# Build on Gitleaks' maintained default ruleset, then add narrow,
+# project-specific allowlisting so the scan stays high-signal.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Secret-free templates, lockfiles and docs"
+paths = [
+  '''(^|/)\.env\.example$''',
+  '''(^|/)package-lock\.json$''',
+  '''(^|/)docs/''',
+]

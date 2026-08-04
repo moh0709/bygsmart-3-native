@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "defaultMode": "auto",
+    "allow": [
+      "PowerShell(New-Item *)",
+      "Bash(npx tsc *)",
+      "Bash(mkdir -p ~/.traycer/yolo_artifacts)",
+      "Bash(echo '{}')",
+      "Bash(Get-ChildItem -Path \"E:\\\\01PROJEKTER\\\\04 Mobil APPS\\\\bygsmart 2.1\\\\Byggeapp-2.1\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(Get-ChildItem -Path \"E:\\\\01PROJEKTER\\\\04 Mobil APPS\\\\bygsmart 2.1\\\\Byggeapp-2.1\" -Directory -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -First 20)",
+      "Bash(Get-ChildItem *)",
+      "Bash(rtk npm *)",
+      "Read(//c/Users/MOH/.traycer/yolo_artifacts/**)",
+      "Bash(npm run *)",
+      "Bash(mkdir -p 'C:\\\\Users\\\\MOH/.traycer/yolo_artifacts')"
+    ]
+  },
+  "CLAUDE_CODE_ENABLE_AUTO_MODE": "1"
+}

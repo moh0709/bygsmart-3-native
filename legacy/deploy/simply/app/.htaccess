@@ -1,0 +1,21 @@
+# app.bygsmart.com — static React SPA (HashRouter). Docroot: ~/app
+RewriteEngine On
+
+# /api/* is owned by api/.htaccess → proxy.php. Never rewrite it here.
+RewriteRule ^api(/|$) - [L]
+
+# Serve existing files/dirs as-is (index.html, hashed assets, sw.js, manifest…)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# SPA fallback → index.html. HashRouter keeps app routes after '#', so this only
+# matters for a stray non-hash deep link / hard refresh; still good to have.
+RewriteRule ^ index.html [L]
+
+# Long-cache immutable, content-hashed build assets
+<IfModule mod_headers.c>
+  <FilesMatch "\.[0-9a-fA-F]{8,}\.(js|css|woff2?|png|jpe?g|svg|webp)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>

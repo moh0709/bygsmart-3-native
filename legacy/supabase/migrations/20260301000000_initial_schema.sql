@@ -1,0 +1,6 @@
+-- Baseline migration marker for migration-based workflow.
+-- The full schema is already present in earlier migrations:
+--   20260218000000_drop_old_tables.sql
+--   20260218000001_sections_6_to_20.sql
+--
+-- Keep this file as a reference anchor for Phase 2+ migrations.

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="da" class="antialiased">
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- %BASE_URL% is substituted by Vite only — either the dev server (port 3000) or
+       a production build. Never serve this raw template through a static file server;
+       development proxies must forward requests to the Vite dev server instead. -->
+  <link rel="icon" type="image/svg+xml" href="%BASE_URL%pwa-icon.svg" />
+  <link rel="manifest" href="%BASE_URL%manifest.json" />
+  <link rel="apple-touch-icon" href="%BASE_URL%pwa-icon.svg" />
+  <!-- viewport-fit=cover is required for env(safe-area-inset-*) to resolve on
+       notched devices — the safe-area utilities in src/index.css depend on it. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1E5FFF" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="BygSmart" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>BYG SMART</title>
+</head>
+
+<body class="bg-bg-subtle dark:bg-bg-dark text-text-primary dark:text-text-dark-primary transition-colors duration-300">
+  <div id="root"></div>
+  <script type="module" src="./index.tsx"></script>
+</body>
+
+</html>

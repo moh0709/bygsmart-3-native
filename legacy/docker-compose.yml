@@ -1,0 +1,53 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID}
+        VITE_DROPBOX_CLIENT_ID: ${VITE_DROPBOX_CLIENT_ID}
+        VITE_ONEDRIVE_CLIENT_ID: ${VITE_ONEDRIVE_CLIENT_ID}
+        VITE_BOX_CLIENT_ID: ${VITE_BOX_CLIENT_ID}
+        VITE_APP_NAME: ${VITE_APP_NAME}
+        VITE_SENTRY_DSN: ${VITE_SENTRY_DSN}
+        VITE_PUBLIC_BASE_PATH: ${VITE_PUBLIC_BASE_PATH:-/byggeapp/}
+    image: bygsmart-web:latest
+    container_name: bygsmart-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:3030:80"
+    environment:
+      - TZ=Europe/Copenhagen
+
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: bygsmart-api:latest
+    container_name: bygsmart-api
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3031:3001"
+    environment:
+      - TZ=Europe/Copenhagen
+      - PORT=3001
+      - NODE_ENV=production
+      - ALLOWED_ORIGIN=${ALLOWED_ORIGIN}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - STRIPE_PRICE_PRO_MONTHLY=${STRIPE_PRICE_PRO_MONTHLY}
+      - STRIPE_PRICE_PRO_YEARLY=${STRIPE_PRICE_PRO_YEARLY}
+      - STRIPE_PRICE_PREMIUM_MONTHLY=${STRIPE_PRICE_PREMIUM_MONTHLY}
+      - STRIPE_PRICE_PREMIUM_YEARLY=${STRIPE_PRICE_PREMIUM_YEARLY}
+      - DEMO_LOGIN_EMAIL_DOMAIN=${DEMO_LOGIN_EMAIL_DOMAIN:-}
+      - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY:-}
+      - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY:-}
+      - VAPID_SUBJECT=${VAPID_SUBJECT:-}
+      - AI_KEYS_SECRET=${AI_KEYS_SECRET}

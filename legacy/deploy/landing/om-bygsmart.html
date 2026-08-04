@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Om BYG SMART — alle funktioner, moduler & sikkerhed</title>
+<meta name="description" content="Detaljeret gennemgang af alt i BYG SMART: AI-assistent, 81 fagberegnere, BR18-katalog, planlægning, 3D/AR-opmåling, tilbud, team og sikkerhed.">
+<link rel="canonical" href="https://bygsmart.com/om-bygsmart.html">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BYG SMART">
+<meta property="og:title" content="Om BYG SMART — alle funktioner, moduler & sikkerhed">
+<meta property="og:description" content="Detaljeret gennemgang af alt i BYG SMART: AI-assistent, 81 fagberegnere, BR18-katalog, planlægning, 3D/AR-opmåling, tilbud, team og sikkerhed.">
+<meta property="og:url" content="https://bygsmart.com/om-bygsmart.html">
+<meta property="og:image" content="https://bygsmart.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="da_DK">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Om BYG SMART — alle funktioner, moduler & sikkerhed">
+<meta name="twitter:description" content="Detaljeret gennemgang af alt i BYG SMART: AI-assistent, 81 fagberegnere, BR18-katalog, planlægning, 3D/AR-opmåling, tilbud, team og sikkerhed.">
+<meta name="twitter:image" content="https://bygsmart.com/assets/og-image.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Om BYG SMART",
+  "url": "https://bygsmart.com/om-bygsmart.html",
+  "description": "Detaljeret gennemgang af alle funktioner og moduler i BYG SMART samt platformens sikkerhedsforanstaltninger.",
+  "isPartOf": { "@type": "WebSite", "name": "BYG SMART", "url": "https://bygsmart.com/" }
+}
+</script>
+<style>
+  .om-layout { max-width: var(--byg-max-wide); margin: 0 auto; padding: 64px 24px 0; display: grid; grid-template-columns: 250px 1fr; gap: 56px; align-items: start; }
+  .om-toc { position: sticky; top: 96px; max-height: calc(100vh - 130px); overflow-y: auto; padding-right: 8px; }
+  .om-toc-label { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--byg-muted); margin-bottom: 14px; }
+  .om-toc a { display: block; font-size: 14px; color: var(--byg-text); padding: 7px 0 7px 14px; border-left: 2px solid var(--byg-border); transition: color .15s, border-color .15s; line-height: 1.4; }
+  .om-toc a:hover { color: var(--byg-ink); }
+  .om-toc a.active { color: var(--byg-accent); font-weight: 600; border-left-color: var(--byg-accent); }
+  .om-content { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .om-module { padding: 46px 0; border-bottom: 1px solid var(--byg-border); scroll-margin-top: 96px; }
+  .om-module:last-of-type { border-bottom: none; }
+  .om-module-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
+  .om-module-ico { flex: none; width: 48px; height: 48px; border-radius: 14px; background: rgba(0,82,155,.08); display: grid; place-items: center; }
+  .om-module-head h2 { margin: 0 0 6px; font-size: 1.5rem; font-weight: 800; color: #101828; letter-spacing: -.01em; }
+  .om-module-head p { margin: 0; font-size: 15px; color: var(--byg-text); line-height: 1.6; max-width: 62ch; }
+  .om-cap-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-top: 22px; }
+  .om-cap { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; background: var(--byg-bg-alt); border-radius: 12px; border: 1px solid var(--byg-border); }
+  .om-cap svg { flex: none; margin-top: 2px; }
+  .om-cap span { font-size: 13.5px; color: var(--byg-text-2); line-height: 1.5; }
+  .om-stat-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
+  .om-stat { flex: 1; min-width: 130px; padding: 18px; background: var(--byg-dark-2); border-radius: 14px; text-align: center; }
+  .om-stat b { display: block; font-size: 1.7rem; font-weight: 800; color: #fff; }
+  .om-stat span { font-size: 12px; color: #94A3B8; }
+  .om-flow { display: flex; align-items: center; gap: 0; margin-top: 24px; flex-wrap: wrap; }
+  .om-flow-step { flex: 1; min-width: 140px; padding: 16px; background: #fff; border: 1px solid var(--byg-border); border-radius: 12px; text-align: center; }
+  .om-flow-step b { display: block; font-size: 13.5px; color: #101828; margin-bottom: 3px; }
+  .om-flow-step span { font-size: 12px; color: var(--byg-muted); }
+  .om-flow-arrow { flex: none; width: 28px; text-align: center; color: var(--byg-border-2); font-size: 18px; }
+  .om-sec-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 22px; }
+  .om-sec-card { padding: 20px; background: #fff; border: 1px solid var(--byg-border); border-radius: 16px; }
+  .om-sec-card .om-module-ico { width: 40px; height: 40px; border-radius: 11px; margin-bottom: 12px; }
+  .om-sec-card h3 { margin: 0 0 5px; font-size: 14.5px; font-weight: 700; color: #101828; }
+  .om-sec-card p { margin: 0; font-size: 13px; color: var(--byg-text); line-height: 1.55; }
+  .om-processors { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .om-processor-pill { font-size: 12.5px; font-weight: 600; padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--byg-border-2); color: var(--byg-text-2); }
+  @media (max-width: 960px) {
+    .om-layout { grid-template-columns: 1fr; padding-top: 40px; }
+    .om-toc { position: static; max-height: none; display: flex; overflow-x: auto; gap: 4px; padding-bottom: 12px; border-bottom: 1px solid var(--byg-border); margin-bottom: 8px; }
+    .om-toc-label { display: none; }
+    .om-toc a { border-left: none; border-bottom: 2px solid var(--byg-border); white-space: nowrap; padding: 8px 12px; }
+    .om-toc a.active { border-left: none; border-bottom-color: var(--byg-accent); }
+    .om-cap-grid { grid-template-columns: 1fr; }
+    .om-sec-grid { grid-template-columns: 1fr 1fr; }
+    .om-flow { flex-direction: column; align-items: stretch; }
+    .om-flow-arrow { transform: rotate(90deg); padding: 2px 0; }
+  }
+  @media (max-width: 560px) { .om-sec-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div style="position:relative; width:100%; overflow-x:clip;">
+
+  <nav id="bygNav" class="byg-solid">
+    <div id="bygNavInner">
+      <a href="index.html" id="bygBrand">
+        <span id="bygMark"><img src="assets/logo-mark.png" alt="BYG SMART logo" width="34" height="34"></span>
+        <span id="bygWordmark">BYG SMART</span>
+      </a>
+      <div id="bygNavLinks">
+        <a href="om-bygsmart.html" class="bygNavLink">Om BYG SMART</a>
+        <a href="index.html#saadan" class="bygNavLink">Sådan virker det</a>
+        <a href="priser.html" class="bygNavLink">Priser</a>
+        <a href="byggeguide.html" class="bygNavLink">Guide</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px;">
+        <a href="https://app.bygsmart.com/#/login" id="bygLogin">Log ind</a>
+        <a href="https://app.bygsmart.com/#/register" class="bygNavCta">Start gratis</a>
+        <button id="bygNavToggle" aria-label="Åbn menu"><span></span></button>
+      </div>
+    </div>
+  </nav>
+  <div id="bygMobileMenu">
+    <button class="byg-mm-close" aria-label="Luk menu">✕</button>
+    <a href="om-bygsmart.html">Om BYG SMART</a>
+    <a href="index.html#funktioner">Funktioner</a>
+    <a href="priser.html">Priser</a>
+    <a href="byggeguide.html">Guide</a>
+    <a href="hjaelp.html">Hjælp</a>
+    <a href="kontakt.html">Kontakt</a>
+    <a href="https://app.bygsmart.com/#/login">Log ind</a>
+    <a href="https://app.bygsmart.com/#/register" class="byg-mm-cta">Start gratis</a>
+  </div>
+
+  <header class="byg-page-hero">
+    <div class="byg-wrap">
+      <div class="byg-eyebrow">Om BYG SMART</div>
+      <h1>Alt hvad platformen kan — i detaljer</h1>
+      <p>En komplet gennemgang af hvert modul i BYG SMART: fra AI-assistenten og de 81 fagberegnere til planlægning, 3D-opmåling, team-samarbejde og sikkerheden bag det hele.</p>
+    </div>
+  </header>
+
+  <div class="om-layout">
+    <aside class="om-toc" id="bygToc">
+      <div class="om-toc-label">Indholdsfortegnelse</div>
+      <a href="#overblik">Overblik</a>
+      <a href="#ai">AI-assistent &amp; briefing</a>
+      <a href="#beregnere">Fagberegnere</a>
+      <a href="#regler">Regler &amp; standarder</a>
+      <a href="#planlaegning">Planlægning &amp; Gantt</a>
+      <a href="#opmaaling">3D/AR-opmåling</a>
+      <a href="#tilbud">Tilbud &amp; økonomi</a>
+      <a href="#dokumenter">Dokumenter &amp; filer</a>
+      <a href="#mangler">Mangelliste &amp; aflevering</a>
+      <a href="#team">Team &amp; roller</a>
+      <a href="#vejr">Vejr &amp; pladsoverblik</a>
+      <a href="#mobil">Mobil, offline &amp; mørk tilstand</a>
+      <a href="#sikkerhed">Sikkerhed &amp; databeskyttelse</a>
+    </aside>
+
+    <div class="om-content">
+
+      <section class="om-module" id="overblik">
+        <div class="om-module-head">
+          <div>
+            <h2>Én platform, hele byggeprocessen</h2>
+            <p>BYG SMART samler de værktøjer, danske håndværkere og bygherrer ellers spreder ud over regneark, papirtegninger og løse apps — beregninger, regler, planlægning, opmåling, tilbud og team i én sammenhængende platform, tilgængelig på både desktop og mobil.</p>
+          </div>
+        </div>
+        <div class="om-stat-row">
+          <div class="om-stat"><b>81</b><span>fagberegnere</span></div>
+          <div class="om-stat"><b>71</b><span>regler &amp; standarder</span></div>
+          <div class="om-stat"><b>16</b><span>fagområder</span></div>
+          <div class="om-stat"><b>5</b><span>brugerroller</span></div>
+        </div>
+      </section>
+
+      <section class="om-module" id="ai">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3a5 5 0 0 0-5 5c0 1.6.7 2.6 1.5 3.5.6.7 1 1.2 1 2.5v1h5v-1c0-1.3.4-1.8 1-2.5.8-.9 1.5-1.9 1.5-3.5a5 5 0 0 0-5-5Z" stroke="#00529B" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.5 18h5M10.2 20.5h3.6" stroke="#00529B" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <div>
+            <h2>AI-byggeassistent &amp; daglig briefing</h2>
+            <p>En indbygget AI-assistent (drevet af Google Gemini) svarer på spørgsmål om byggeregler, beregninger og projektstatus — med tekst, tale eller ved at vedhæfte billeder og filer. Hver dag genererer den desuden en kort briefing med det vigtigste i dine projekter.</p>
+          </div>
+        </div>
+        <div class="om-cap-grid">
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Håndfri tale-til-tekst — stil spørgsmål mens hænderne er fulde på pladsen.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Vedhæft billeder og filer, så AI'en kan svare ud fra konkret dokumentation.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Daglig briefing opsummerer status, opgaver og risici på tværs af projekter.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Svar kan kopieres eller downloades direkte til rapporter og mails.</span></div>
+        </div>
+      </section>
+
+      <section class="om-module" id="beregnere">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="14" height="18" rx="2" stroke="#00529B" stroke-width="1.7"/><path d="M8 7h8M8 11h2m3 0h2m-7 4h2m3 0h2" stroke="#00529B" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <div>
+            <h2>81 fagberegnere på tværs af 16 fagområder</h2>
+            <p>Fra beton og armering til el, VVS, energi og statik — beregnerne er bygget til danske normer og standarder, så du får korrekte tal uden at slå op i flere kilder.</p>
+          </div>
+        </div>
+        <div class="om-cap-grid">
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Beton &amp; armering, statik, konstruktion</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>El, VVS &amp; ventilation (HVAC)</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Energi &amp; klima, tag &amp; lofter</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Døre &amp; vinduer, gulve &amp; overflader</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Trapper, vægge &amp; skillevægge</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Udgravning, jord &amp; udenomsarealer</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Areal &amp; rumfang, geometri</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Pris &amp; budget-beregninger</span></div>
+        </div>
+      </section>
+
+      <section class="om-module" id="regler">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 4h9l3 3v13H6V4Z" stroke="#00529B" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke="#00529B" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <div>
+            <h2>71 indbyggede regler &amp; standarder</h2>
+            <p>Alle 35 kapitler af BR18 (Bygningsreglementet 2018) plus 36 referencer til SBi-anvisninger, Dansk Standard (DS), AB18 og Arbejdstilsynets regler — søgbart direkte i appen, så du slipper for at lede i PDF'er.</p>
+          </div>
+        </div>
+        <div class="om-cap-grid">
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>BR18 — alle 35 kapitler, se <a href="br18-katalog.html" style="color:var(--byg-accent); font-weight:600;">det fulde katalog</a>.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>SBi-anvisninger og Dansk Standard (DS)</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>AB18 — standardvilkår for byggekontrakter</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Arbejdstilsynets (AT) sikkerhedsregler</span></div>
+        </div>
+      </section>
+
+      <section class="om-module" id="planlaegning">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#00529B" stroke-width="1.7"/><path d="M4 9.5h16M8 3v3m8-3v3" stroke="#00529B" stroke-width="1.7" stroke-linecap="round"/><rect x="7" y="12" width="6" height="2.4" rx="1" fill="#00529B"/><rect x="7" y="16" width="10" height="2.4" rx="1" fill="#00529B" opacity=".45"/></svg></div>
+          <div>
+            <h2>Planlægning &amp; Gantt-tidsplan</h2>
+            <p>Visualiser hele projektforløbet i en Gantt-visning med uge-, måneds- og kvartalszoom. Se opgavers status og hvem i teamet der er tildelt, direkte i tidslinjen.</p>
+          </div>
+        </div>
+        <div class="om-flow">
+          <div class="om-flow-step"><b>Opret opgaver</b><span>Med start-/slutdato</span></div>
+          <div class="om-flow-arrow">→</div>
+          <div class="om-flow-step"><b>Tildel team</b><span>Ansvarlig pr. opgave</span></div>
+          <div class="om-flow-arrow">→</div>
+          <div class="om-flow-step"><b>Følg i Gantt</b><span>Uge/måned/kvartal-zoom</span></div>
+          <div class="om-flow-arrow">→</div>
+          <div class="om-flow-step"><b>Justér løbende</b><span>Status opdateres live</span></div>
+        </div>
+      </section>
+
+      <section class="om-module" id="opmaaling">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2m8-16h2a2 2 0 0 1 2 2v2m-4 12h2a2 2 0 0 0 2-2v-2" stroke="#00529B" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="3.2" stroke="#00529B" stroke-width="1.7"/></svg></div>
+          <div>
+            <h2>3D/AR-opmåling (RoomMapper)</h2>
+            <p>Mål rum, vægge, døre og vinduer direkte med telefonens kamera. På AR-understøttede browsere bruges WebXR til at placere målpunkter i rummet i 3D; ellers falder værktøjet tilbage til kamera-baseret opmåling.</p>
+          </div>
+        </div>
+        <div class="om-cap-grid">
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Placér og mål vægge, døre og vinduer i AR.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Fungerer også uden AR-understøttelse via kamera-fallback.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mål føres direkte videre til relevante beregnere.</span></div>
+        </div>
+      </section>
+
+      <section class="om-module" id="tilbud">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M7 3h10v18l-2.5-1.6L12 21l-2.5-1.6L7 21V3Z" stroke="#00529B" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.5 8h5M9.5 11.5h5" stroke="#00529B" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <div>
+            <h2>Tilbud, indkøb &amp; økonomi</h2>
+            <p>Byg tilbud med linjer, moms og betalingsvilkår, og eksportér som PDF med signaturfelt. Hold styr på indkøb og materialer op mod projektets budget.</p>
+          </div>
+        </div>
+        <div class="om-cap-grid">
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tilbud med linjer, moms og vilkår — eksportér til PDF.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Indkøb registreres og holdes op mod projektbudgettet.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Avancerede økonomiværktøjer fra Mester-planen (se <a href="priser.html" style="color:var(--byg-accent); font-weight:600;">priser</a>).</span></div>
+        </div>
+      </section>
+
+      <section class="om-module" id="dokumenter">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M7 18a4 4 0 0 1-1-7.9 5 5 0 0 1 9.6-1.9A4.5 4.5 0 0 1 17 18H7Z" stroke="#00529B" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+          <div>
+            <h2>Dokumenter &amp; filer i skyen</h2>
+            <p>Upload tegninger, kontrakter og billeder direkte til projektet. Del med adgangsniveauer, så følsomme dokumenter kun er synlige for de rigtige roller.</p>
+          </div>
+        </div>
+        <div class="om-cap-grid">
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Upload og organisér filer pr. projekt.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Adgangsniveauer: offentlig, kun ledere eller udvalgte brugere.</span></div>
+        </div>
+      </section>
+
+      <section class="om-module" id="mangler">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="17" rx="2" stroke="#00529B" stroke-width="1.7"/><path d="M9 3.5h6v2H9z" fill="#00529B"/><path d="m8.5 11 2 2 4-4M8.5 16h7" stroke="#00529B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <h2>Mangelliste &amp; aflevering</h2>
+            <p>Registrér mangler undervejs, følg dem til de er lukket, og generér en samlet afleveringsrapport med statusoverblik, resterende opgaver og signaturfelt ved projektafslutning.</p>
+          </div>
+        </div>
+        <div class="om-cap-grid">
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mangelliste med status pr. punkt.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Afleveringsrapport som PDF med signaturfelt.</span></div>
+        </div>
+      </section>
+
+      <section class="om-module" id="team">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="#00529B" stroke-width="1.7"/><path d="M3.5 20v-1.5A4 4 0 0 1 7.5 14.5h3A4 4 0 0 1 14.5 18.5V20" stroke="#00529B" stroke-width="1.7" stroke-linecap="round"/><circle cx="17" cy="7.5" r="2.6" stroke="#00529B" stroke-width="1.7"/><path d="M15.7 13c2.2.3 3.8 1.7 3.8 4.4V20" stroke="#00529B" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <div>
+            <h2>Team, roller &amp; samarbejde</h2>
+            <p>Invitér kolleger, kunder og underentreprenører til projektet med differentierede rettigheder, så alle ser præcis det, der er relevant for dem.</p>
+          </div>
+        </div>
+        <div class="om-cap-grid">
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Ejer &amp; leder</b> — fuld adgang til projekt og økonomi.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Medarbejder</b> — adgang til tildelte projekter og opgaver.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Kunde</b> — begrænset indblik i eget projekts fremdrift.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Underentreprenør (ekstern)</b> — adgang afgrænset til egne opgaver.</span></div>
+        </div>
+      </section>
+
+      <section class="om-module" id="vejr">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="8.5" cy="8.5" r="3" stroke="#00529B" stroke-width="1.7"/><path d="M8.5 3v1.4M8.5 12.6V14M3 8.5h1.4M12.6 8.5H14M4.9 4.9l1 1M11.1 11.1l1 1M4.9 12.1l1-1M11.1 5.9l1-1" stroke="#00529B" stroke-width="1.6" stroke-linecap="round"/><path d="M9 20a3.6 3.6 0 0 1-.6-7.15A4.5 4.5 0 0 1 17 14.5 3.5 3.5 0 0 1 16.5 20H9Z" stroke="#00529B" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+          <div>
+            <h2>Vejr &amp; pladsoverblik</h2>
+            <p>Se aktuelt vejr, nedbør og vind for hvert projekts adresse direkte på dashboardet — hentet automatisk ud fra projektets lokation, så du kan planlægge udendørsarbejde bedre.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="om-module" id="mobil">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="7" y="2.5" width="10" height="19" rx="2.2" stroke="#00529B" stroke-width="1.7"/><path d="M10.5 18.5h3" stroke="#00529B" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <div>
+            <h2>Mobil, offline &amp; mørk tilstand</h2>
+            <p>BYG SMART er bygget som en Progressive Web App (PWA) — installér direkte fra browseren på mobilen uden App Store. Appen er offline-first: data gemmes lokalt på enheden og synkroniseres automatisk, når forbindelsen er tilbage. Mørk tilstand kan slås til i indstillinger.</p>
+          </div>
+        </div>
+        <div class="om-cap-grid">
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Installér som app på hjemmeskærmen (iOS &amp; Android).</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Virker uden dækning i kælder og på pladsen — synkroniserer bagefter.</span></div>
+          <div class="om-cap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12A8 8 0 1 1 12 4" stroke="#12B76A" stroke-width="2" stroke-linecap="round"/><path d="m9 12 2 2 4-4" stroke="#12B76A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mørk tilstand skåner øjnene på tidlige/sene vagter.</span></div>
+        </div>
+      </section>
+
+      <section class="om-module" id="sikkerhed">
+        <div class="om-module-head">
+          <div class="om-module-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3 5 6v6c0 4.6 3 7.9 7 9 4-1.1 7-4.4 7-9V6l-7-3Z" stroke="#00529B" stroke-width="1.7" stroke-linejoin="round"/><path d="m9.5 12 1.8 1.8 3.2-3.6" stroke="#00529B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <h2>Sikkerhed &amp; databeskyttelse</h2>
+            <p>Byggeprojekter indeholder følsomme oplysninger om ejendomme, økonomi og mennesker. Sikkerhed er derfor indbygget på flere niveauer — fra login til hosting.</p>
+          </div>
+        </div>
+        <div class="om-sec-grid">
+          <div class="om-sec-card">
+            <div class="om-module-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="10.5" width="14" height="9.5" rx="2" stroke="#00529B" stroke-width="1.6"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" stroke="#00529B" stroke-width="1.6"/><circle cx="12" cy="15" r="1.4" fill="#00529B"/></svg></div>
+            <h3>To-faktor login (2FA)</h3>
+            <p>TOTP-baseret to-faktor-godkendelse via authenticator-app kan aktiveres på din konto for et ekstra sikkerhedslag.</p>
+          </div>
+          <div class="om-sec-card">
+            <div class="om-module-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M4 8l8-5 8 5M4 8v9a2 2 0 0 0 2 2h2m10-11v9a2 2 0 0 1-2 2h-2" stroke="#00529B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Hosted i Danmark</h3>
+            <p>Platformen og dens data hostes på servere i Danmark.</p>
+          </div>
+          <div class="om-sec-card">
+            <div class="om-module-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="#00529B" stroke-width="1.6"/><path d="m8 12 2.5 2.5L16 9" stroke="#00529B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Kryptering</h3>
+            <p>Al trafik sendes krypteret via TLS/HTTPS. Følsomme data som API-nøgler og mailadgangskoder er derudover AES-256-krypteret i databasen.</p>
+          </div>
+          <div class="om-sec-card">
+            <div class="om-module-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2" stroke="#00529B" stroke-width="1.6"/><path d="M5.5 20v-1.2A4.8 4.8 0 0 1 10.3 14h3.4a4.8 4.8 0 0 1 4.8 4.8V20" stroke="#00529B" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+            <h3>Rollebaseret adgang</h3>
+            <p>Hver bruger ser kun det, deres rolle giver adgang til — fra fuld projektøkonomi til afgrænsede opgavelister.</p>
+          </div>
+          <div class="om-sec-card">
+            <div class="om-module-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 4h9l3 3v13H6V4Z" stroke="#00529B" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke="#00529B" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+            <h3>GDPR-overholdelse</h3>
+            <p>Du kan altid se, eksportere og bede om sletning af dine data. Se <a href="gdpr.html" style="color:var(--byg-accent); font-weight:600;">dine rettigheder</a>.</p>
+          </div>
+          <div class="om-sec-card">
+            <div class="om-module-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3a5 5 0 0 0-5 5c0 1.6.7 2.6 1.5 3.5.6.7 1 1.2 1 2.5v1h5v-1c0-1.3.4-1.8 1-2.5.8-.9 1.5-1.9 1.5-3.5a5 5 0 0 0-5-5Z" stroke="#00529B" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+            <h3>Ansvarlig brug af AI</h3>
+            <p>AI-funktioner er hjælpeværktøjer — juridisk og teknisk ansvar for byggeprojektet forbliver altid hos brugeren.</p>
+          </div>
+        </div>
+        <p style="margin-top:22px; font-size:13.5px; color:var(--byg-text);">Databehandlere brugt til at levere platformen:</p>
+        <div class="om-processors">
+          <span class="om-processor-pill">Supabase (database &amp; login)</span>
+          <span class="om-processor-pill">Stripe (betaling)</span>
+          <span class="om-processor-pill">Google Gemini (AI)</span>
+        </div>
+        <p style="margin-top:18px; font-size:13.5px; color:var(--byg-text);">Læs mere i <a href="privatliv.html" style="color:var(--byg-accent); font-weight:600;">privatlivspolitikken</a>, <a href="gdpr.html" style="color:var(--byg-accent); font-weight:600;">GDPR-rettighederne</a> og <a href="vilkaar.html" style="color:var(--byg-accent); font-weight:600;">handelsbetingelserne</a>.</p>
+      </section>
+
+      <div style="margin-top:12px; padding:36px; background:var(--byg-bg-alt); border-radius:20px; text-align:center;">
+        <div style="font-size:1.2rem; font-weight:800; color:#101828;">Klar til at prøve det selv?</div>
+        <p style="margin:10px 0 22px; color:var(--byg-text);">Kom i gang gratis — ingen kreditkort krævet.</p>
+        <a href="https://app.bygsmart.com/#/register" class="byg-btn byg-btn-primary">Start gratis</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="byg-footer" style="margin-top:64px;">
+    <div style="max-width:1120px; margin:0 auto;">
+      <div class="bygFootGrid">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;"><span style="display:grid; place-items:center; width:32px; height:32px; border-radius:9px; overflow:hidden;"><img src="assets/logo-mark.png" alt="BYG SMART logo" width="32" height="32" style="display:block;"></span><span style="font-weight:700; font-size:17px; letter-spacing:.12em; color:#1D2939;">BYG SMART</span></div>
+          <p style="margin:0; font-size:14px; line-height:1.6; color:#475467; max-width:32ch;">Byggestyring for danske håndværkere og bygherrer. Planlæg, byg og renovér – Overblikket er lige ved hånden.</p>
+        </div>
+        <div><div class="bygFootHead">Produkt</div><a class="bygFootLink" href="index.html#funktioner">Funktioner</a><a class="bygFootLink" href="om-bygsmart.html">Om BYG SMART</a><a class="bygFootLink" href="priser.html">Priser</a><a class="bygFootLink" href="byggeguide.html">Byggeguide</a></div>
+        <div><div class="bygFootHead">Ressourcer</div><a class="bygFootLink" href="hjaelp.html">Hjælp</a><a class="bygFootLink" href="br18-katalog.html">BR18-katalog</a><a class="bygFootLink" href="kontakt.html">Kontakt</a><a class="bygFootLink" href="status.html">Status</a></div>
+        <div><div class="bygFootHead">Juridisk</div><a class="bygFootLink" href="privatliv.html">Privatliv</a><a class="bygFootLink" href="vilkaar.html">Vilkår</a><a class="bygFootLink" href="gdpr.html">GDPR</a><a class="bygFootLink" href="cookies.html">Cookies</a></div>
+      </div>
+      <div style="margin-top:48px; padding-top:24px; border-top:1px solid #F2F4F7;">
+        <div style="font-size:13px; color:#98A2B3;">© 2026 BYG SMART ApS · Bygget i Danmark</div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="bygMobileCta"><a href="https://app.bygsmart.com/#/register">Start gratis</a></div>
+</div>
+<script src="assets/script.js"></script>
+</body>
+</html>
