@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "BygSmart",
-    "slug": "bygsmart",
+    "slug": "byggeapp-native",
     "scheme": "bygsmart",
     "version": "0.0.0",
     "orientation": "portrait",
@@ -23,6 +23,13 @@
     },
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ce8fcd14-2ce4-4956-8c21-c8c34175cb21"
+      }
+    },
+    "owner": "waypays-team"
   }
 }
