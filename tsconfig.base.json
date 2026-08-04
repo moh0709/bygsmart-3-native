@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@bygsmart/core": ["packages/core/src"],
+      "@bygsmart/calc-engine": ["packages/calc-engine/src"],
+      "@bygsmart/ui": ["packages/ui/src"],
+      "@bygsmart/tokens": ["packages/tokens/src"],
+      "@bygsmart/api-client": ["packages/api-client/src"]
+    }
+  },
+  "exclude": ["node_modules", "dist", ".expo", "web-build", "legacy"]
+}

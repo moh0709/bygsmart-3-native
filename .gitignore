@@ -1,0 +1,35 @@
+# deps
+node_modules/
+.pnpm-store/
+
+# builds
+dist/
+.expo/
+web-build/
+*.tsbuildinfo
+
+# turbo
+.turbo/
+
+# test / coverage
+coverage/
+
+# env & secrets — never commit
+.env
+.env.*
+!.env.example
+
+# native
+apps/app/ios/
+apps/app/android/
+*.keystore
+*.p8
+*.p12
+*.mobileprovision
+
+# os / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

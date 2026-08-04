@@ -1,0 +1,15 @@
+{
+  "name": "@bygsmart/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Design tokens — the single source of colour, spacing, type. Nothing else defines these (AR-04).",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json --emitDeclarationOnly false || true",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src --max-warnings=0",
+    "test": "echo \"(tokens: no unit tests yet)\" && exit 0"
+  }
+}

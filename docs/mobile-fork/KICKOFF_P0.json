@@ -1,0 +1,146 @@
+{
+  "$schema": "bygsmart-3-native/kickoff/v1",
+  "mission": "Execute Phase P0 of BygSmart 3.0 Native: a ground-up rebuild of BygSmart 2.1 as ONE universal Expo application shipping to iOS, Android and an installable PWA from a single codebase. You are the lead engineer. Work autonomously, fan out to sub-agents for parallel work, and stop at the G0 gate for human review.",
+
+  "read_first": {
+    "instruction": "Read these before doing anything. They are the governing specification. Do not re-derive decisions they already contain, and do not contradict them without saying so explicitly.",
+    "documents": [
+      { "path": "docs/mobile-fork/03_BUILD_PLAN.md", "role": "GOVERNING PLAN v4.1 — phases, gates, staffing, corrected schedule" },
+      { "path": "docs/mobile-fork/02_PRD_BYGSMART_3_NATIVE.md", "role": "PRD v2.0 — requirements, 10 epics with acceptance criteria, offline contract, decisions" },
+      { "path": "docs/mobile-fork/06_PHASE_READINESS_REVIEW.md", "role": "Phase-by-phase audit. Its corrected schedule and staffing OVERRIDE the build plan where they differ" },
+      { "path": "docs/mobile-fork/01_AUDIT_MOBILE_FORK.md", "role": "Codebase inventory + target architecture (§7 is the sync-design skeleton). NOTE: §8 and §11 are VOID — no users to protect" },
+      { "path": "docs/mobile-fork/05_PLAN_HARDENING_REVIEW.md", "role": "Tri-target hardening findings — the three-runtime offline problem" },
+      { "path": "docs/mobile-fork/04_BMAD_VALIDATION_REPORT.md", "role": "Technical corrections. Every finding still stands" }
+    ]
+  },
+
+  "project": {
+    "name": "BygSmart 3.0 Native",
+    "type": "Universal Expo app — iOS + Android + installable PWA via React Native Web",
+    "new_repo": { "name": "bygsmart-3-native", "visibility": "private", "host": "github.com/moh0709" },
+    "source_repo": {
+      "path": "E:\\01PROJEKTER\\04 Mobil APPS\\bygsmart 2.1\\Byggeapp-2.1",
+      "remote": "https://github.com/moh0709/Byggeapp-2.0.git",
+      "status": "REFERENCE ONLY — a parts bin, not a system to preserve. It has NO users and NO customers.",
+      "rule": "Never modify it except to create the tag v2.1.0-final."
+    },
+    "identity": {
+      "bundle_id": "com.bygsmart.app",
+      "supabase": "NEW project. Archive pkzburssqetnlcbvabdq read-only.",
+      "domains": { "app": "app.bygsmart.com", "admin": "admin.bygsmart.com", "marketing": "bygsmart.com" },
+      "deep_link_scheme": "bygsmart://"
+    },
+    "target_shape": "apps/{app,admin} + packages/{core,calc-engine,ui,tokens,api-client} + server + supabase + legacy"
+  },
+
+  "current_phase": {
+    "id": "P0",
+    "name": "Decide, spike & scaffold",
+    "duration_weeks": 4,
+    "goal": "Convert the programme's biggest unknowns into evidence, and stand up a monorepo that builds on three targets with a test harness already in place.",
+    "tasks": [
+      { "id": "0.1", "name": "Tri-target sync spike", "priority": "HIGHEST", "effort_days": "8-10", "detail": "Evaluate PowerSync AND ElectricSQL on iOS, Android AND React Native Web against the real schema. PowerSync's RNW support is BETA — that is exactly what this spike must establish. Output: signed decision D-11 (recommendation: BUY, not build).", "blocks": ["P3a", "P3b"] },
+      { "id": "0.2", "name": "Calculator divergence measurement", "effort_days": "2-3", "detail": "For each of the ~90 calculators in legacy/modules/tools/pages, determine: does it delegate to catalog.ts, partially delegate, or hold its own maths? StairCalculator.tsx is a known deliberate divergence. Output: a table. This sizes a quarter of the programme." },
+      { "id": "0.3", "name": "Schema baseline consolidation", "effort_days": "3-5", "detail": "Collapse 90+ migrations into ONE clean offline-native baseline: soft deletes + tombstones with a retention window, trigger-maintained indexed updated_at on every syncable table, idempotency tables, the cascade-delete design resolved, RLS re-derived. Provision the new Supabase project." },
+      { "id": "0.4", "name": "Monorepo + Expo scaffold", "effort_days": "3-4", "detail": "pnpm workspaces + Turborepo. Expo SDK 56 (55 if 56 slips). The universal app must run on web, a PHYSICAL iPhone and a PHYSICAL mid-range Android by day 5." },
+      { "id": "0.5", "name": "Test harness", "effort_days": "4-5", "detail": "All eight layers wired. Layers 1, 2 and 7 are REAL. Layers 3, 4, 5, 6, 6b are FAILING PLACEHOLDERS that CI reports as red-pending — a failing placeholder cannot be forgotten, an absent layer can." },
+      { "id": "0.6", "name": "Developer accounts", "priority": "DAY ONE", "detail": "Apple organisation enrolment needs a D-U-N-S number: 2-4 weeks of pure latency. Google Play too. Reserve com.bygsmart.app on both. THIS IS THE LONGEST LEAD ITEM AND IT IS NOT ENGINEERING WORK." },
+      { "id": "0.7", "name": "Repo + identity", "effort_days": "1", "detail": "Tag the 2.1 repo v2.1.0-final. Create bygsmart-3-native (private). Vendor the tagged 2.1 tree into legacy/ as ONE snapshot commit. Copy docs/mobile-fork/ into the new repo. Plan domains." },
+      { "id": "0.8", "name": "Physical devices", "priority": "WEEK ONE", "detail": "Buy one current iPhone and one Samsung A54 or equivalent. Needed by day 5. Procurement is latency, not work." },
+      { "id": "0.9", "name": "Design key flows", "owner": "designer", "detail": "Capture, check-in, sync states, conflict resolution. P1 must build against something." }
+    ]
+  },
+
+  "gate": {
+    "id": "G0",
+    "stop_and_request_human_review": true,
+    "exit_criteria": [
+      "D-11 signed on tri-target evidence (not native-only evidence)",
+      "Calculator divergence table complete",
+      "Consolidated baseline schema reviewed and deployed to the new Supabase project",
+      "pnpm test green on an empty universal app running on THREE PHYSICAL TARGETS",
+      "Apple and Google developer account applications submitted",
+      "New repo created, 2.1 tagged and vendored into legacy/"
+    ]
+  },
+
+  "decisions": {
+    "settled_do_not_relitigate": {
+      "D-02": "i18n layer (i18next) added in P1, shipping da-DK only",
+      "D-03": "Styling — NativeWind v5 consumes Tailwind v4 @theme directly. Resolved, not a blocker",
+      "D-04": "Calculators ship if ready; explicitly OFF the critical path",
+      "D-05": "Responsive from E1 — phone / tablet / desktop breakpoints in every primitive from the first line",
+      "D-06": "iOS 16.4 / Android API 26, set by Expo SDK 56 — NOT by ARKit RoomPlan (which needs LiDAR)",
+      "D-08": "Offline grace: 14 days native, 72 hours web, 72h entitlement cache TTL",
+      "D-12": "Universality — ONE universal app for the product; back-office is a separate DOM Vite app; .web.tsx siblings are the sanctioned escape hatch",
+      "D-13": "Commerce lives on the WEB surface. The PWA and admin carry the full Stripe marketplace at 0% commission. Native binaries are CAPABILITY-ONLY: no module names, no prices, no descriptions, no purchase path"
+    },
+    "open": {
+      "D-11": "Offline: buy (PowerSync / ElectricSQL) or build bespoke. RESOLVED BY TASK 0.1. Recommendation: buy — 35-55 dev-days vs 100-160."
+    }
+  },
+
+  "subagent_strategy": {
+    "note": "BMAD-METHOD is installed globally at ~/.claude/bmad with 10 subagents and 17 slash commands. Use it.",
+    "parallel_fan_out_for_P0": [
+      { "agent": "general-purpose", "task": "0.1a — PowerSync spike on all three runtimes", "isolation": "worktree" },
+      { "agent": "general-purpose", "task": "0.1b — ElectricSQL spike on all three runtimes", "isolation": "worktree" },
+      { "agent": "Explore", "task": "0.2 — calculator divergence measurement across legacy/modules/tools" },
+      { "agent": "bmad-architect", "task": "0.3 — schema baseline consolidation, and the sync design document (audit §7 is its skeleton)" },
+      { "agent": "general-purpose", "task": "0.4 + 0.5 — monorepo scaffold and test harness" }
+    ],
+    "by_phase": {
+      "architecture_and_design_docs": "/bmad:architect",
+      "scope_and_requirement_questions": "/bmad:pm",
+      "turning_epics_into_stories": "/bmad:sm",
+      "implementing_a_story": "/bmad:dev",
+      "reviewing_a_story": "/bmad:qa",
+      "cross_document_consistency": "/bmad:po",
+      "checklist_validation": "/bmad:checklist"
+    },
+    "context_passing": "BMAD's core idea: context lives in STORY FILES, not chat history. Before implementing, generate the story with /bmad:story so a fresh agent can pick it up with no prior context. This is how the project survives session boundaries."
+  },
+
+  "guardrails": {
+    "non_negotiable": [
+      "Every PR must produce a GREEN BUILD ON ALL THREE PHYSICAL TARGETS — one real iPhone, one mid-range Android, and web. Simulators do not count. This is the gate teams relax first and it is what prevents a nasty surprise at P7.",
+      "NO SKIPPED TESTS, EVER. A skipped test is a lie about what you can safely delete — and being unable to delete things is what turns a fast rebuild into a slow one.",
+      "The web performance budget is enforced in CI FROM P1, not measured at P6: first-route JS <= 1.5 MB gzipped, LCP < 2.5s, Lighthouse PWA >= 90. If it drifts, the phone web experience becomes WORSE than 2.1's while still being called an upgrade.",
+      "NO SCREEN MAY IMPORT A SYNC-ENGINE TYPE DIRECTLY. Enforce with a lint rule. This is why 'swap the sync engine in a week' is credible.",
+      "eslint-plugin-boundaries module discipline is carried into the monorepo on DAY ONE. It is the reason 2.1's code is portable at all.",
+      "Module manifest load() uses LITERAL STATIC IMPORT EXPRESSIONS (Metro constraint), and React.lazy is NEVER nested inside React.lazy (caused a production crash on 2026-07-11).",
+      "RLS is the SOLE authorisation boundary. The anon key ships inside the binary and is trivially extractable. Never introduce client-side-only authorisation.",
+      "MEASURE, DO NOT ESTIMATE SILENTLY. When a number is needed, go and count it. If you must estimate, label it and give the band."
+    ],
+    "do_not": [
+      "Do not modify the BygSmart 2.1 repository except to create the tag v2.1.0-final.",
+      "Do not carry the 90 incremental migrations forward. One consolidated baseline.",
+      "Do not begin P3a/P3b offline work before D-11 is signed.",
+      "Do not put any purchase path, module name, price or description into the native binaries (D-13).",
+      "Do not skip elicitation on BMAD tasks marked elicit=true, and never answer your own elicitation questions.",
+      "Do not build 'compatibility layers' or shims. There are no users to protect. Build the target directly.",
+      "Do not treat the browser as a smaller phone — it is a different storage substrate (see 05, section 1)."
+    ]
+  },
+
+  "known_traps": [
+    "expo-secure-store caps values at ~2048 bytes; Supabase sessions exceed it. A chunking adapter is required.",
+    "expo-file-system background upload survives SUSPENSION but not TERMINATION. Resumption after force-quit needs URLSession/WorkManager plus a reconcile-on-launch sweep.",
+    "RAM bundles are INCOMPATIBLE with Hermes. Hermes is already the default. Use inline requires instead.",
+    "@react-three/fiber does not render under the New Architecture, which Expo SDK 55+ makes mandatory. The 3D wizard stays in apps/admin.",
+    "ARKit RoomPlan requires LiDAR — Pro iPhones only. It is a premium path, not the AR strategy.",
+    "OPFS is unavailable in Safari private browsing and capped at ~100MB in Chrome incognito. The browser can evict the entire database.",
+    "The 1.32 MB regulation corpus and the 239 KB calculator catalogue must never land in the initial bundle."
+  ],
+
+  "reporting": {
+    "cadence": "At the end of each task, and at G0.",
+    "format": "What was done, what the evidence is, what changed in the plan's assumptions, what is blocked.",
+    "escalate_immediately_if": [
+      "The tri-target sync spike shows PowerSync AND ElectricSQL are both unusable on React Native Web",
+      "Calculator divergence exceeds 40 of ~90",
+      "The universal app cannot be made to run on a physical iPhone or Android by day 7",
+      "Any guardrail above would have to be broken to hit a date"
+    ]
+  }
+}

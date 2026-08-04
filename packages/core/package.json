@@ -1,0 +1,15 @@
+{
+  "name": "@bygsmart/core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Types, module registry, entitlements, org, and pure business rules. Harvested from legacy/, not extracted in place.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src --max-warnings=0",
+    "test": "vitest run",
+    "test:unit": "vitest run"
+  }
+}

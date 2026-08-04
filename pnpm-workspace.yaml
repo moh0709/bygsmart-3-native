@@ -1,0 +1,7 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "server"
+# legacy/ is deliberately NOT a workspace member — it is a vendored, read-only
+# snapshot of BygSmart 2.1, harvested then deleted at G5. Never import from it
+# in shipping code; the boundaries lint rule treats it as forbidden.

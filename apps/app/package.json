@@ -1,0 +1,22 @@
+{
+  "name": "@bygsmart/app",
+  "version": "0.0.0",
+  "private": true,
+  "description": "BygSmart 3.0 Native — the universal Expo app: iOS + Android + installable PWA (React Native Web).",
+  "main": "expo-router/entry",
+  "dependencies": {
+    "@bygsmart/core": "workspace:*",
+    "@bygsmart/calc-engine": "workspace:*",
+    "@bygsmart/ui": "workspace:*",
+    "@bygsmart/tokens": "workspace:*",
+    "@bygsmart/api-client": "workspace:*"
+  },
+  "scripts": {
+    "start": "expo start",
+    "web": "expo start --web",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "test": "vitest run"
+  },
+  "//": "Expo SDK 56 (55 fallback) + RN + react-native-web + NativeWind v5 + expo-router are added by the Expo init step (deliverable 0.4 completion). Metro constraint: manifest load() uses LITERAL static imports; React.lazy is NEVER nested inside React.lazy."
+}

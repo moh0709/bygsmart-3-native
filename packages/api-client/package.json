@@ -1,0 +1,17 @@
+{
+  "name": "@bygsmart/api-client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Typed Supabase + /api client. RLS is the sole authorisation boundary; this client never invents authorisation (P4).",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "dependencies": {
+    "@bygsmart/core": "workspace:*"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src --max-warnings=0",
+    "test": "vitest run"
+  }
+}

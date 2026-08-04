@@ -1,0 +1,16 @@
+{
+  "name": "@bygsmart/server",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Express API, redesigned for sync: GET /api/sync/:entity, POST /api/sync/mutations, three-provider push. RLS-applied; server is the authority.",
+  "type": "module",
+  "dependencies": {
+    "@bygsmart/core": "workspace:*"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src --max-warnings=0",
+    "test": "vitest run"
+  }
+}

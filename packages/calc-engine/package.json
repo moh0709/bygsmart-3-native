@@ -1,0 +1,18 @@
+{
+  "name": "@bygsmart/calc-engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Calculator formulas as pure functions + input schemas + viz descriptors + golden fixtures. Computes; knows nothing of rendering (SRP).",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "dependencies": {
+    "@bygsmart/core": "workspace:*"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src --max-warnings=0",
+    "test": "vitest run",
+    "test:unit": "vitest run"
+  }
+}
