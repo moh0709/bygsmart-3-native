@@ -125,4 +125,31 @@ const auth = () => `Bearer ${signJwt(U)}`;
   it('401 without a token', async () => {
     await request(app).post('/api/sync/mutations').send({ mutations: [] }).expect(401);
   });
+
+  it('forbids a replay whose module was revoked; foundation entities still land (2.7)', async () => {
+    // Revoke `purchasing` on U's active org, then replay a purchases write.
+    await withDb(async (c) => {
+      const org = await c.query('SELECT active_org_id FROM profiles WHERE id = $1', [U]);
+      const orgId = org.rows[0].active_org_id as string;
+      await c.query(
+        `INSERT INTO org_module_entitlements (org_id, module_id, status) VALUES ($1,'purchasing','disabled')
+         ON CONFLICT (org_id, module_id) DO UPDATE SET status = 'disabled'`,
+        [orgId],
+      );
+    });
+    try {
+      const res = await post([
+        { id: randomUUID(), entity: 'purchases', op: 'upsert', data: { id: randomUUID() } },
+        { id: randomUUID(), entity: 'projects', op: 'upsert', data: { id: randomUUID(), name: 'OK', owner_id: U } },
+      ]).expect(200);
+      const [purchase, project] = res.body.results;
+      expect(purchase.status).toBe('forbidden');
+      expect(purchase.error).toMatch(/purchasing/);
+      expect(project.status).toBe('applied'); // foundation module, never gated
+    } finally {
+      await withDb((c) =>
+        c.query(`DELETE FROM org_module_entitlements WHERE module_id = 'purchasing' AND org_id IN (SELECT active_org_id FROM profiles WHERE id = $1)`, [U]),
+      );
+    }
+  });
 });

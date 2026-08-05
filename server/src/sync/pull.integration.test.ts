@@ -35,7 +35,10 @@ function signJwt(sub: string): string {
 async function seed() {
   const c = new Client({ connectionString: DB_URL });
   await c.connect();
-  // Clean prior run (auth.users cascade → profiles/orgs/projects/tasks).
+  // Clean prior run. owner_id is ON DELETE SET NULL, so projects/tasks survive a
+  // user delete — remove the fixed-uuid rows explicitly (children first) to stay idempotent.
+  await c.query('DELETE FROM public.tasks WHERE id = ANY($1)', [[TA1, TA2, TB1]]);
+  await c.query('DELETE FROM public.projects WHERE id = ANY($1)', [[PA, PB]]);
   await c.query('DELETE FROM auth.users WHERE id = ANY($1)', [[A, B]]);
   for (const [id, email] of [[A, 'a@bygsmart.test'], [B, 'b@bygsmart.test']] as const) {
     await c.query(

@@ -1,5 +1,6 @@
 {
   "extends": "../tsconfig.base.json",
-  "compilerOptions": { "outDir": "dist", "rootDir": "src", "types": ["node"] },
+  "//": "noEmit (no rootDir) so cross-workspace @bygsmart/core source imports don't trip TS6059; server runs via tsx, not tsc.",
+  "compilerOptions": { "noEmit": true, "types": ["node"] },
   "include": ["src"]
 }

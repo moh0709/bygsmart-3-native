@@ -1,4 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { adjudicateReplay, type ModuleId } from '@bygsmart/core';
 import { cursorEntity } from './entities';
 import {
   conflictPolicy,
@@ -19,12 +20,14 @@ export async function applyMutations(
   serviceDb: SupabaseClient,
   userId: string,
   mutations: Mutation[],
+  /** Caller's CURRENT enabled modules for replay adjudication (null = fail-open, P2 2.7). */
+  enabledModules: ReadonlySet<ModuleId> | null = null,
 ): Promise<MutationResult[]> {
   const ordered = topoSort(mutations); // throws on cycle/unknown dep → 400 upstream
   const results = new Map<string, MutationResult>();
 
   for (const m of ordered) {
-    results.set(m.id, await applyOne(userDb, serviceDb, userId, m, results));
+    results.set(m.id, await applyOne(userDb, serviceDb, userId, m, results, enabledModules));
   }
   // Return in the caller's original order.
   return mutations.map((m) => results.get(m.id)!);
@@ -40,6 +43,7 @@ async function applyOne(
   userId: string,
   m: Mutation,
   results: Map<string, MutationResult>,
+  enabledModules: ReadonlySet<ModuleId> | null,
 ): Promise<MutationResult> {
   // 1) Gate on dependencies.
   for (const dep of m.dependsOn ?? []) {
@@ -52,6 +56,11 @@ async function applyOne(
   // 2) Validate entity.
   const entity = cursorEntity(m.entity);
   if (!entity) return { id: m.id, status: 'error', error: `unknown entity ${m.entity}` };
+
+  // 2b) Re-adjudicate against CURRENT entitlements (P2 2.7): a module revoked while
+  // the device was offline must not let a queued write land. Fail-open when null.
+  const verdict = adjudicateReplay(m.entity, enabledModules);
+  if (!verdict.allowed) return { id: m.id, status: 'forbidden', error: verdict.reason };
   const rowId = typeof m.data.id === 'string' ? m.data.id : null;
   if (!rowId) return { id: m.id, status: 'error', error: 'mutation.data.id required' };
 

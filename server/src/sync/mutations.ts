@@ -17,7 +17,7 @@ export interface Mutation {
   dependsOn?: string[];
 }
 
-export type MutationStatus = 'applied' | 'duplicate' | 'conflict' | 'blocked' | 'error';
+export type MutationStatus = 'applied' | 'duplicate' | 'conflict' | 'blocked' | 'forbidden' | 'error';
 
 export interface MutationResult {
   id: string;

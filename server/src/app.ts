@@ -5,6 +5,7 @@ import { cursorEntity } from './sync/entities';
 import { clampLimit, pullEntity } from './sync/pull';
 import { applyMutations } from './sync/apply';
 import type { Mutation } from './sync/mutations';
+import { resolveEnabledModules } from './sync/entitlements';
 import { verifyJwtSub } from './jwt';
 
 /** Minimal shape validation for an incoming mutation batch. */
@@ -79,9 +80,11 @@ export function createApp(env: Env): Express {
       if (!userId) return res.status(401).json({ error: 'invalid token' });
 
       const userDb = userClient(env, token);
+      const svc = serviceClient(env);
+      const enabledModules = await resolveEnabledModules(svc, userId);
       let results;
       try {
-        results = await applyMutations(userDb, serviceClient(env), userId, mutations);
+        results = await applyMutations(userDb, svc, userId, mutations, enabledModules);
       } catch (e) {
         // topoSort rejects the whole batch (cycle / unknown dependency).
         return res.status(400).json({ error: e instanceof Error ? e.message : 'bad batch' });

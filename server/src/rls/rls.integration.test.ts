@@ -42,6 +42,11 @@ async function seed() {
   const c = new Client({ connectionString: DB_URL });
   await c.connect();
   try {
+    // owner_id is ON DELETE SET NULL, so fixed-uuid rows survive a user delete —
+    // remove them explicitly (children first) so the seed is idempotent.
+    await c.query('DELETE FROM public.tasks WHERE id = $1', [T]);
+    await c.query('DELETE FROM public.project_resources WHERE project_id = $1', [P]);
+    await c.query('DELETE FROM public.projects WHERE id = $1', [P]);
     await c.query('DELETE FROM auth.users WHERE id = ANY($1)', [[O, M, X]]);
     for (const [id, email] of [[O, 'o@t.test'], [M, 'm@t.test'], [X, 'x@t.test']] as const) {
       await c.query(

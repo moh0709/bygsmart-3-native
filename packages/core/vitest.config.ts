@@ -15,6 +15,7 @@ export default defineConfig({
         'src/status/**/*.ts',
         'src/org/**/*.ts',
         'src/capabilities/**/*.ts',
+        'src/session/**/*.ts',
       ],
       exclude: ['src/**/*.test.ts'],
       reporter: ['text-summary', 'text'],

@@ -17,3 +17,5 @@ export * from './status/partner';
 export * from './status/taskStatus';
 export * from './org/org';
 export * from './capabilities/storageTier';
+export * from './session/session';
+export * from './entitlements/offlineAuth';
