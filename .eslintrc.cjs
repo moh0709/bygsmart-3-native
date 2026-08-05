@@ -44,6 +44,9 @@ module.exports = {
     ],
   },
   rules: {
+    // Allow intentionally-unused _-prefixed args (e.g. Express error handlers,
+    // whose 4-arg arity is what marks them as error middleware).
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     'boundaries/no-unknown': 'off',
     'boundaries/no-unknown-files': 'off',
     'boundaries/element-types': [

@@ -255,6 +255,22 @@ BEGIN
 END $$;
 
 -- ─────────────────────────────────────────────────────────────────────────────
+-- 70.1b  TABLE PRIVILEGES.  RLS is the ROW gate, but a role still needs
+--   table-level privileges to attempt access at all. Supabase's provisioned
+--   projects grant these to authenticated by default; the baseline makes it
+--   EXPLICIT so the schema is self-contained and portable (a `DROP SCHEMA public`
+--   or a non-Supabase Postgres does not silently leave every table 42501). RLS
+--   then restricts rows — and the 54 tables all have RLS enabled, so a table
+--   with no policy stays fully denied even with the grant. `anon` gets nothing:
+--   every path in this app requires authentication.
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO authenticated;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO authenticated;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+  GRANT USAGE, SELECT ON SEQUENCES TO authenticated;
+
+-- ─────────────────────────────────────────────────────────────────────────────
 -- 70.2  Policies — IDENTITY
 -- ─────────────────────────────────────────────────────────────────────────────
 CREATE POLICY profiles_select_own       ON public.profiles FOR SELECT USING (auth.uid() = id);

@@ -1,5 +1,11 @@
-// @bygsmart/server — Express API, redesigned for sync. Endpoints land in P2 (E2):
-// GET /api/sync/:entity (cursor, RLS-applied, tombstones, paged) · POST /api/sync/mutations
-// (idempotency keys, dependsOn ordering, baseVersion optimistic concurrency) · three-provider
-// push (web VAPID, expo/APNs, expo/FCM). The server is the authority; RLS is the boundary.
-export const PLACEHOLDER_SERVER = 'bygsmart-server' as const;
+// @bygsmart/server — Express API, redesigned for sync. The server is the authority;
+// RLS is the boundary. P2: GET /api/sync/:entity (2.2) · POST /api/sync/mutations (2.3)
+// · three-provider push (2.4).
+import { loadEnv } from './env';
+import { createApp } from './app';
+
+const env = loadEnv();
+createApp(env).listen(env.port, () => {
+  // eslint-disable-next-line no-console
+  console.log(`@bygsmart/server listening on :${env.port}`);
+});
