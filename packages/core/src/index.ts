@@ -16,3 +16,4 @@ export * from './status/lifecycle';
 export * from './status/partner';
 export * from './status/taskStatus';
 export * from './org/org';
+export * from './capabilities/storageTier';

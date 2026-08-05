@@ -44,6 +44,16 @@ export const da = {
     emptyTitle: 'Opgaver',
     emptyBody: 'Min Dag og opgavelister bygges i P5.',
   },
+  capabilities: {
+    title: 'Offline-kapacitet',
+    detecting: 'Registrerer…',
+    tierFull: 'Fuld offline',
+    tierSession: 'Offline i denne session',
+    tierOnline: 'Kun online',
+    full: 'Ændringer gemmes lokalt og synkroniseres, når du er online.',
+    session: 'Ændringer gemmes, men kan ryddes — installér appen for fuld offline.',
+    online: 'Kræver forbindelse — ændringer kan ikke gemmes offline her.',
+  },
 } as const;
 
 export type DaResources = typeof da;
