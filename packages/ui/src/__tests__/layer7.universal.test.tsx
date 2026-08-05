@@ -22,6 +22,7 @@ import { TwoPane } from '../primitives/TwoPane';
 // under jsdom — its SVG rendering is covered by the expo web export + typecheck.
 // The name vocabulary is pure and unit-tested here.
 import { isIconName, ICON_NAMES } from '../icons/iconRegistry';
+import { GanttView, type GanttRow } from '../canary/GanttView';
 
 // Each render mounts into document.body; clean up so queries don't see prior tests.
 afterEach(cleanup);
@@ -166,5 +167,18 @@ describe('icon name vocabulary', () => {
     for (const n of ['home', 'more', 'projects', 'tasks']) {
       expect(ICON_NAMES).toContain(n);
     }
+  });
+});
+
+describe('Gantt canary (1.7) — renders through react-native-web', () => {
+  const rows: GanttRow[] = [
+    { id: '1', label: 'Fundament', bars: [{ start: 0, end: 3, label: 'Støbning' }] },
+    { id: '2', label: 'Råhus', bars: [{ start: 2, end: 6, label: 'Rejsning', tone: 'warning' }] },
+  ];
+
+  it('draws row labels and bar labels on the web renderer', () => {
+    render(<GanttView rows={rows} days={10} todayColumn={4} />);
+    expect(screen.getByText('Fundament')).toBeTruthy();
+    expect(screen.getByText('Rejsning')).toBeTruthy();
   });
 });

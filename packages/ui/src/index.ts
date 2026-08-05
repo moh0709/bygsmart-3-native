@@ -30,3 +30,5 @@ export * from './primitives/TwoPane';
 export * from './icons/iconRegistry';
 export * from './icons/Icon';
 export * from './navigation/NavShell';
+// P1 1.7 Gantt canary — throwaway universality probe, delete with the planning module.
+export * from './canary/GanttView';
