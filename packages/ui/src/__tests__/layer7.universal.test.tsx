@@ -18,6 +18,10 @@ import { ListItem } from '../primitives/ListItem';
 import { ProgressBar } from '../primitives/ProgressBar';
 import { Grid } from '../primitives/Grid';
 import { TwoPane } from '../primitives/TwoPane';
+// Icon itself imports react-native-svg (native/Fabric build) which doesn't load
+// under jsdom — its SVG rendering is covered by the expo web export + typecheck.
+// The name vocabulary is pure and unit-tested here.
+import { isIconName, ICON_NAMES } from '../icons/iconRegistry';
 
 // Each render mounts into document.body; clean up so queries don't see prior tests.
 afterEach(cleanup);
@@ -148,5 +152,19 @@ describe('Layer 7 — display + layout primitives', () => {
     render(<TwoPane primary={<Text>Liste</Text>} secondary={<Text>Detalje</Text>} />);
     expect(screen.getByText('Liste')).toBeTruthy();
     expect(screen.getByText('Detalje')).toBeTruthy();
+  });
+});
+
+describe('icon name vocabulary', () => {
+  it('isIconName guards the registry', () => {
+    expect(isIconName('home')).toBe(true);
+    expect(isIconName('tasks')).toBe(true);
+    expect(isIconName('not-an-icon')).toBe(false);
+  });
+
+  it('has the nav icons the app wires by name', () => {
+    for (const n of ['home', 'more', 'projects', 'tasks']) {
+      expect(ICON_NAMES).toContain(n);
+    }
   });
 });

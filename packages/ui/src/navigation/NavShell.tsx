@@ -4,6 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../theme/ThemeProvider';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import { Text } from '../primitives/Text';
+import { Icon } from '../icons/Icon';
+import { isIconName } from '../icons/iconRegistry';
 
 export interface NavItem {
   key: string;
@@ -34,6 +36,7 @@ export function NavShell({ items, activeKey, onSelect, children }: NavShellProps
     return (
       <View style={{ flex: 1, flexDirection: 'row', backgroundColor: t.colors.background }}>
         <View
+          accessibilityRole="tablist"
           style={{
             width: isDesktop ? 220 : 80,
             paddingTop: insets.top + t.spacing.md,
@@ -57,6 +60,7 @@ export function NavShell({ items, activeKey, onSelect, children }: NavShellProps
     <View style={{ flex: 1, backgroundColor: t.colors.background }}>
       <View style={{ flex: 1 }}>{children}</View>
       <View
+        accessibilityRole="tablist"
         style={{
           flexDirection: 'row',
           paddingBottom: insets.bottom,
@@ -87,7 +91,8 @@ function NavButton({
   onPress: () => void;
 }) {
   const t = useTheme();
-  const color = active ? t.colors.primary : t.colors.textSecondary;
+  const colorToken = active ? 'primary' : 'textSecondary';
+  const color = t.colors[colorToken];
   const isTab = orientation === 'tab';
   return (
     <Pressable
@@ -108,7 +113,11 @@ function NavButton({
         backgroundColor: active && !isTab ? t.colors.surfaceAlt : 'transparent',
       }}
     >
-      <Text style={{ fontSize: 20, color }}>{item.icon}</Text>
+      {isIconName(item.icon) ? (
+        <Icon name={item.icon} size={22} color={colorToken} />
+      ) : (
+        <Text style={{ fontSize: 20, color }}>{item.icon}</Text>
+      )}
       {expanded ? (
         <Text variant="caption" style={{ color, fontWeight: active ? t.fontWeights.semibold : t.fontWeights.regular }}>
           {item.label}

@@ -7,5 +7,5 @@ export const tasksManifest: ModuleManifest = {
   description: 'Opret, tildel og følg opgaver',
   requires: [],
   entitlement: 'module.tasks',
-  nav: [{ to: '/tasks', label: 'Opgaver', icon: '☑️', surface: 'bottom', order: 10 }],
+  nav: [{ to: '/tasks', label: 'Opgaver', icon: 'tasks', surface: 'bottom', order: 10 }],
 };

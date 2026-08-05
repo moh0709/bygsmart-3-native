@@ -21,6 +21,7 @@ import {
   ListItem,
   ProgressBar,
   Grid,
+  Icon,
   useBreakpoint,
   useOutdoorMode,
 } from '@bygsmart/ui';
@@ -109,6 +110,22 @@ export default function Gallery() {
             <ProgressBar value={0.7} label="Projekt" />
             <ProgressBar value={0.3} tone="warning" />
             <ProgressBar value={1} tone="success" />
+          </VStack>
+        </Card>
+
+        <Card>
+          <VStack gap="sm">
+            <Text variant="title">Ikoner (react-native-svg)</Text>
+            <HStack gap="md" style={{ flexWrap: 'wrap' }}>
+              <Icon name="home" />
+              <Icon name="projects" color="primary" />
+              <Icon name="tasks" color="success" />
+              <Icon name="camera" />
+              <Icon name="document" />
+              <Icon name="warning" color="danger" />
+              <Icon name="sync" color="textSecondary" />
+              <Icon name="settings" />
+            </HStack>
           </VStack>
         </Card>
 

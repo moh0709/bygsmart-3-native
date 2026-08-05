@@ -7,5 +7,5 @@ export const projectsManifest: ModuleManifest = {
   description: 'Projekt-hub, overblik og status',
   requires: [],
   entitlement: 'module.projects',
-  nav: [{ to: '/projects', label: 'Projekter', icon: '🏗️', surface: 'bottom', order: 20 }],
+  nav: [{ to: '/projects', label: 'Projekter', icon: 'projects', surface: 'bottom', order: 20 }],
 };

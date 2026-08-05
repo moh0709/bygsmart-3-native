@@ -2,6 +2,7 @@
 // Every primitive: token-driven, responsive-aware, a11y role, >=48dp targets (P6).
 export * from './theme/ThemeProvider';
 export * from './hooks/useBreakpoint';
+export * from './hooks/useFontScale';
 export * from './primitives/Text';
 export * from './primitives/Box';
 export * from './primitives/Stack';
@@ -26,4 +27,6 @@ export * from './primitives/ListItem';
 export * from './primitives/ProgressBar';
 export * from './primitives/Grid';
 export * from './primitives/TwoPane';
+export * from './icons/iconRegistry';
+export * from './icons/Icon';
 export * from './navigation/NavShell';

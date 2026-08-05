@@ -21,8 +21,8 @@ type TFn = ReturnType<typeof useTranslation>['t'];
 // labels stay the manifest's Danish display name (the ModuleManifest contract).
 function buildNav(t: TFn): ShellNav[] {
   const kernel: ShellNav[] = [
-    { key: 'index', label: t('nav.home'), icon: '🏠', route: '/', order: 0 },
-    { key: 'more', label: t('nav.more'), icon: '⋯', route: '/more', order: 99 },
+    { key: 'index', label: t('nav.home'), icon: 'home', route: '/', order: 0 },
+    { key: 'more', label: t('nav.more'), icon: 'more', route: '/more', order: 99 },
   ];
   const enabled = computeEnabledModules(null);
   const active = resolveActiveManifests(enabled, ALL_MANIFESTS);
