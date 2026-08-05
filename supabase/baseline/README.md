@@ -1,8 +1,30 @@
-# BygSmart 3.0 Native — Consolidated Offline-Native Baseline (DRAFT)
+# BygSmart 3.0 Native — Consolidated Offline-Native Baseline
 
-**Status:** P0.3 deliverable 0.3 — authoring for human review. **Nothing here has
-been provisioned, connected to Supabase, or run against any database.** Deployment
-happens later against the freshly provisioned BygSmart 3.0 project.
+**Status:** ✅ **VALIDATED (P2 2.1, 2026-08-06).** The baseline was deployed to a
+local Supabase Postgres (`supabase db reset`), structurally validated, and
+functionally smoke-tested (see "Validation record" below). The runnable SQL now
+lives as ordered migrations in **`supabase/migrations/`** (`20260806000000..07_baseline_*`)
+— that is the deployable artifact `supabase db push` sends to the provisioned
+BygSmart 3.0 project (owner-gated). This directory keeps the design docs
+(`README.md`, `SYNCABLE_TABLES.md`); future schema changes are NEW migrations,
+never edits to the baseline.
+
+## Validation record (2026-08-06)
+
+- All 8 sections apply cleanly on a fresh DB via `supabase db reset`.
+- **One bug fixed** (never caught because the baseline had never been run):
+  `sync_idempotency_keys.user_id` inline-referenced `public.profiles` in section
+  10, but profiles is created in section 20 → forward-reference error. Resolved by
+  deferring the FK (`sync_idempotency_keys_user_fkey`) into section 20, matching
+  the existing `profiles_active_org_fkey` deferral pattern.
+- Structural checks: **54 tables**, RLS enabled on all 54, **23 `emit_tombstone`**
+  + **23 `cascade_soft_delete`** triggers, 26 `deleted_at` columns (23 "full" + 3
+  derived-tombstone; read-cache + local-cursor tables intentionally excluded),
+  **28 SECURITY DEFINER functions with 0 missing `search_path`** (invariant #1).
+- Functional smoke (the offline spine): a simulated signup fired `handle_new_user`
+  → profile + personal org + membership; soft-deleting a project **emitted its
+  tombstone, cascaded the soft-delete to its child task, and emitted the task's
+  tombstone** — i.e. a two-week-offline device learns the whole subtree delete (G2).
 
 This baseline is the **net effect** of replaying the 85 BygSmart 2.1 migrations
 (`supabase/migrations/`), re-derived for the offline-native access model per

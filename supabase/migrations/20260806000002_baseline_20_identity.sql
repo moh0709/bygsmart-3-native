@@ -150,6 +150,12 @@ ALTER TABLE public.profiles
   FOREIGN KEY (active_org_id) REFERENCES public.organizations(id) ON DELETE SET NULL;
 CREATE INDEX IF NOT EXISTS idx_profiles_active_org ON public.profiles (active_org_id) WHERE active_org_id IS NOT NULL;
 
+-- 20.2c  Close the sync_idempotency_keys -> profiles forward reference (the table is
+--        created in 10_sync_infrastructure.sql, before profiles exists).
+ALTER TABLE public.sync_idempotency_keys
+  ADD CONSTRAINT sync_idempotency_keys_user_fkey
+  FOREIGN KEY (user_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
+
 -- ─────────────────────────────────────────────────────────────────────────────
 -- 20.3  organization_members  (SINGLE source of truth for membership)
 -- ─────────────────────────────────────────────────────────────────────────────

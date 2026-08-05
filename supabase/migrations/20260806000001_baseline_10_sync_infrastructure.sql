@@ -235,7 +235,9 @@ COMMENT ON FUNCTION public.parent_is_gone(regclass, uuid) IS
 -- ─────────────────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS public.sync_idempotency_keys (
   idempotency_key uuid        NOT NULL,          -- client-generated per mutation
-  user_id         uuid        NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  -- FK to profiles(id) is a forward reference (profiles is created in 20_identity.sql);
+  -- added deferred there, matching the profiles_active_org_fkey pattern.
+  user_id         uuid        NOT NULL,
   request_hash    text,                          -- guards key-reuse with a different body
   response        jsonb,                          -- persisted result to replay
   status          text        NOT NULL DEFAULT 'completed'
