@@ -28,7 +28,7 @@ the planning module commits to a single universal component:
 | Target | Method | Result |
 |---|---|---|
 | **Web (RNW)** | `expo export --platform web` compiles (1.3 MB); layer-7 render test passes | ✅ renders — nested opposite-axis `ScrollView`s, `position:absolute` bars, frozen column, today marker all render correctly |
-| **Android (native)** | Uses only core RN primitives (`View`/`ScrollView`/`Text` + absolute layout) — all first-class RN; the app already runs on the Android emulator (P0) | ✅ high confidence; **this canary not yet run on the emulator/device** (see follow-ups) |
+| **Android (native)** | Ran on the `bygsmart_test` emulator (API 34) via Expo Go + Metro; deep-linked to `/gantt` and screenshotted | ✅ **renders** — frozen label column, day axis, weekend shading, and absolutely-positioned bars (Nedrivning/Støbning/Rejsning) all draw; timeline scrolls horizontally. Matches the web render exactly (2026-08-05) |
 | **iOS (native)** | Same universal SDK-56 tree; iOS trusted to follow Android (owner decision) | ⏳ owner-gated (Apple Developer membership + device) |
 
 ## Verdict
@@ -46,8 +46,9 @@ universal `GanttView`**; the `.web.tsx` escape hatch stays *named but unused*.
    handling (react-native-gesture-handler / Reanimated worklets) is the *more* likely
    RNW divergence than static rendering. Spike this separately when the real module
    is built — it does **not** change the render verdict.
-3. **Native render of this canary** — confirm on the Android emulator when convenient
-   (low risk; pure RN primitives). Physical iOS is owner-gated.
+3. ~~**Native render of this canary** — confirm on the Android emulator.~~ **DONE
+   2026-08-05** — renders on the `bygsmart_test` emulator identically to web.
+   Physical iOS remains owner-gated (trusted to follow Android).
 
 ## Disposition
 
