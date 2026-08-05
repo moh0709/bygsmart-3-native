@@ -8,6 +8,7 @@
     "@bygsmart/api-client": "workspace:*",
     "@bygsmart/calc-engine": "workspace:*",
     "@bygsmart/core": "workspace:*",
+    "@bygsmart/i18n": "workspace:*",
     "@bygsmart/tokens": "workspace:*",
     "@bygsmart/ui": "workspace:*",
     "@expo/metro-runtime": "~56.0.18",

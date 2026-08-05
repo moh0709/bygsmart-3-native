@@ -32,6 +32,7 @@ module.exports = {
       { type: 'core', pattern: 'packages/core/**' },
       { type: 'calc-engine', pattern: 'packages/calc-engine/**' },
       { type: 'api-client', pattern: 'packages/api-client/**' },
+      { type: 'i18n', pattern: 'packages/i18n/**' },
       { type: 'ui', pattern: 'packages/ui/**' },
       { type: 'sync', pattern: 'apps/app/src/sync/**' },
       { type: 'db', pattern: 'apps/app/src/db/**' },
@@ -55,6 +56,9 @@ module.exports = {
           { from: 'core', allow: [] },
           { from: 'calc-engine', allow: ['core'] },
           { from: 'api-client', allow: ['core'] },
+          // i18n = the translation layer (i18next + da-DK catalog). A leaf: it
+          // depends on no other workspace package, only external i18next.
+          { from: 'i18n', allow: [] },
           { from: 'ui', allow: ['tokens', 'core'] },
 
           // App-internal layers.
@@ -63,12 +67,12 @@ module.exports = {
           // db = the repository contract; the ONLY place the sync engine is wired in.
           { from: 'db', allow: ['core', 'api-client', 'sync'] },
           // screens — NOTE: `sync` is intentionally ABSENT. This is AR-05.
-          { from: 'screens', allow: ['ui', 'core', 'calc-engine', 'api-client', 'db'] },
+          { from: 'screens', allow: ['ui', 'core', 'calc-engine', 'api-client', 'db', 'i18n'] },
           // The app shell is the composition root: it may wire the engine at startup.
-          { from: 'app-shell', allow: ['screens', 'db', 'sync', 'ui', 'tokens', 'core', 'calc-engine', 'api-client'] },
+          { from: 'app-shell', allow: ['screens', 'db', 'sync', 'ui', 'tokens', 'core', 'calc-engine', 'api-client', 'i18n'] },
 
           // Back-office is DOM-native and online: no RN `ui`, no local `sync`/`db`.
-          { from: 'admin', allow: ['core', 'api-client', 'tokens'] },
+          { from: 'admin', allow: ['core', 'api-client', 'tokens', 'i18n'] },
 
           // Server shares domain types only.
           { from: 'server', allow: ['core'] },

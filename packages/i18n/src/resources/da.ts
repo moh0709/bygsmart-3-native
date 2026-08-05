@@ -1,0 +1,49 @@
+// da-DK translation catalog — the ONLY locale we ship (D-02). One namespace
+// ('translation'), nested keys. `as const` gives every key a literal type so
+// t('nav.home') is checked at compile time (see ../types.ts).
+//
+// Module display names live in each module's manifest (the ModuleManifest
+// contract calls `name`/`label` the Danish display name); those are not keyed
+// here — with a single locale they are already final. This catalog owns the
+// app-shell + screen chrome so a second locale later is a drop-in file.
+export const da = {
+  common: {
+    appName: 'BygSmart',
+    save: 'Gem',
+    cancel: 'Annuller',
+    delete: 'Slet',
+    retry: 'Prøv igen',
+    close: 'Luk',
+    back: 'Tilbage',
+    confirm: 'Bekræft',
+    loading: 'Indlæser…',
+  },
+  nav: {
+    home: 'Hjem',
+    projects: 'Projekter',
+    tasks: 'Opgaver',
+    more: 'Mere',
+  },
+  states: {
+    offlineTitle: 'Offline',
+    offlineBody: 'Ændringer gemmes lokalt og synkroniseres, når du er online igen.',
+    emptyTitle: 'Ingen data endnu',
+    errorTitle: 'Noget gik galt',
+  },
+  more: {
+    title: 'Mere',
+    appTitle: 'BygSmart 3.0 Native',
+    appSubtitle: 'Universal app · P1 foundation',
+    badgeDev: 'Udvikling',
+  },
+  projects: {
+    emptyTitle: 'Projekter',
+    emptyBody: 'Projektlisten bygges i P5.',
+  },
+  tasks: {
+    emptyTitle: 'Opgaver',
+    emptyBody: 'Min Dag og opgavelister bygges i P5.',
+  },
+} as const;
+
+export type DaResources = typeof da;

@@ -1,0 +1,25 @@
+{
+  "name": "@bygsmart/i18n",
+  "version": "0.0.0",
+  "private": true,
+  "description": "i18n layer (i18next). Ships da-DK only (D-02). Universal: works under React Native, React Native Web, and the DOM admin. One namespace, type-safe keys.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src --ext .ts,.tsx --max-warnings=0",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "react": "^19.2.0"
+  },
+  "dependencies": {
+    "i18next": "^26.3.6",
+    "react-i18next": "^17.0.11"
+  }
+}
