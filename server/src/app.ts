@@ -1,8 +1,35 @@
 import express, { type Express, type NextFunction, type Request, type Response } from 'express';
 import type { Env } from './env';
-import { userClient } from './supabase';
+import { serviceClient, userClient } from './supabase';
 import { cursorEntity } from './sync/entities';
 import { clampLimit, pullEntity } from './sync/pull';
+import { applyMutations } from './sync/apply';
+import type { Mutation } from './sync/mutations';
+import { verifyJwtSub } from './jwt';
+
+/** Minimal shape validation for an incoming mutation batch. */
+function parseMutations(body: unknown): Mutation[] | null {
+  if (!body || typeof body !== 'object') return null;
+  const arr = (body as { mutations?: unknown }).mutations;
+  if (!Array.isArray(arr)) return null;
+  const out: Mutation[] = [];
+  for (const raw of arr) {
+    if (!raw || typeof raw !== 'object') return null;
+    const m = raw as Record<string, unknown>;
+    if (typeof m.id !== 'string' || typeof m.entity !== 'string') return null;
+    if (m.op !== 'upsert' && m.op !== 'delete') return null;
+    if (!m.data || typeof m.data !== 'object') return null;
+    out.push({
+      id: m.id,
+      entity: m.entity,
+      op: m.op,
+      data: m.data as Record<string, unknown>,
+      baseVersion: typeof m.baseVersion === 'string' ? m.baseVersion : undefined,
+      dependsOn: Array.isArray(m.dependsOn) ? m.dependsOn.filter((d): d is string => typeof d === 'string') : undefined,
+    });
+  }
+  return out;
+}
 
 /** Pull the Bearer token; 401 if absent. RLS (not this check) is the authorisation boundary. */
 function bearer(req: Request): string | null {
@@ -33,6 +60,33 @@ export function createApp(env: Env): Express {
 
       const result = await pullEntity(userClient(env, token), entity, cursor, limit);
       return res.json(result);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  // POST /api/sync/mutations — idempotency keys, dependsOn ordering, baseVersion
+  // optimistic concurrency, per-entity conflict adjudication.
+  app.post('/api/sync/mutations', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = bearer(req);
+      if (!token) return res.status(401).json({ error: 'missing bearer token' });
+
+      const mutations = parseMutations(req.body);
+      if (!mutations) return res.status(400).json({ error: 'body must be { mutations: Mutation[] }' });
+
+      const userId = verifyJwtSub(token, env.jwtSecret);
+      if (!userId) return res.status(401).json({ error: 'invalid token' });
+
+      const userDb = userClient(env, token);
+      let results;
+      try {
+        results = await applyMutations(userDb, serviceClient(env), userId, mutations);
+      } catch (e) {
+        // topoSort rejects the whole batch (cycle / unknown dependency).
+        return res.status(400).json({ error: e instanceof Error ? e.message : 'bad batch' });
+      }
+      return res.json({ results });
     } catch (err) {
       return next(err);
     }

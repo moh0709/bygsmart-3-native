@@ -270,6 +270,14 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
   GRANT USAGE, SELECT ON SEQUENCES TO authenticated;
 
+-- service_role is the trusted server role (BYPASSRLS) used for server-mediated
+-- writes — the idempotency ledger, tombstone purge, metering. It bypasses row
+-- policies but still needs table privileges. Grant it everything.
+GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO service_role;
+
 -- ─────────────────────────────────────────────────────────────────────────────
 -- 70.2  Policies — IDENTITY
 -- ─────────────────────────────────────────────────────────────────────────────

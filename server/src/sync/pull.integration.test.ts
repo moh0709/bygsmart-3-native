@@ -54,7 +54,7 @@ async function seed() {
   await c.end();
 }
 
-const env: Env = { supabaseUrl: URL ?? '', anonKey: ANON ?? '', serviceRoleKey: '', port: 0 };
+const env: Env = { supabaseUrl: URL ?? '', anonKey: ANON ?? '', serviceRoleKey: '', jwtSecret: JWT_SECRET ?? '', port: 0 };
 const app = createApp(env);
 const bearer = (sub: string) => `Bearer ${signJwt(sub)}`;
 
