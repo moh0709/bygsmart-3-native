@@ -8,7 +8,7 @@ the feature code (risk R9/R10 mitigation) so nothing is ever added without a hom
 |---|---|---|---|---|
 | 1 | Formula golden fixtures | `packages/calc-engine` | **REAL** | per-PR |
 | 2 | Pure business rules | `packages/core` | **REAL** | per-PR |
-| 3 | RLS policy (SQL) | `test-harness/layer3-rls/` | red-pending | nightly |
+| 3 | RLS policy (SQL) | `server/src/rls/rls.integration.test.ts` | **IMPLEMENTED (P2 2.8)** — runs vs local Supabase, skips in CI | per-PR (local) |
 | 4 | Repository / sync contract ×3 runtimes | `test-harness/layer4-repo-contract/` | red-pending | per-PR (once real) |
 | 5 | Property-based sync (`fast-check`) | `test-harness/layer5-property-sync/` | red-pending | nightly |
 | 6 | Chaos — native arm | `test-harness/layer6-chaos-native/` | red-pending | nightly |
