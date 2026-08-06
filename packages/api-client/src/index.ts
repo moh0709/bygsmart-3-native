@@ -6,3 +6,4 @@ export const PLACEHOLDER_API_CLIENT = 'bygsmart-api-client' as const;
 export * from './auth/client';
 export * from './auth/AuthProvider';
 export * from './auth/messages';
+export * from './auth/mfa';

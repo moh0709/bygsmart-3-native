@@ -37,6 +37,13 @@ export const da = {
     password: 'Adgangskode',
     submit: 'Log ind',
   },
+  mfa: {
+    title: 'To-faktor-godkendelse',
+    subtitle: 'Indtast den 6-cifrede kode fra din authenticator-app.',
+    code: 'Kode',
+    verify: 'Bekræft',
+    cancel: 'Annuller',
+  },
   sync: {
     local: 'Kun lokal',
     synced: 'Synkroniseret',
