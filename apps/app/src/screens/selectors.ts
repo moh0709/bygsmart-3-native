@@ -63,3 +63,20 @@ export function groupTasksByProject(tasks: Row[], projects: Row[]): TaskGroup[] 
   }
   return groups;
 }
+
+export interface OpenTask {
+  task: Row;
+  /** Project display name, or null when the project isn't in the list. */
+  projectName: string | null;
+}
+
+/**
+ * The Min Dag worklist: every not-done task across projects, each tagged with its
+ * project name. Preserves task order.
+ */
+export function openTasksWithProject(tasks: Row[], projects: Row[]): OpenTask[] {
+  const nameById = new Map(projects.map((p) => [String(p.id), String(p.name)]));
+  return tasks
+    .filter((t) => t.status !== 'done')
+    .map((task) => ({ task, projectName: nameById.get(String(task.project_id ?? '')) ?? null }));
+}

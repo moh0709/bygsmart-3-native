@@ -30,6 +30,13 @@ export const da = {
     emptyTitle: 'Ingen data endnu',
     errorTitle: 'Noget gik galt',
   },
+  minDag: {
+    title: 'Min Dag',
+    subtitle: 'Dine åbne opgaver',
+    openCount: '{{count}} åbne opgaver',
+    allDoneTitle: 'Alt er klaret',
+    allDoneBody: 'Du har ingen åbne opgaver lige nu.',
+  },
   more: {
     title: 'Mere',
     appTitle: 'BygSmart 3.0 Native',

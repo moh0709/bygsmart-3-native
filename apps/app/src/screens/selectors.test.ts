@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { projectSummaries, groupTasksByProject } from './selectors';
+import { projectSummaries, groupTasksByProject, openTasksWithProject } from './selectors';
 import type { Row } from '../db';
 
 const p = (id: string, name: string): Row => ({ id, updated_at: '2026-08-01T00:00:00Z', name });
@@ -53,5 +53,26 @@ describe('groupTasksByProject', () => {
     const groups = groupTasksByProject([t('t1', 'ghost', 'open')], [p('p1', 'A')]);
     expect(groups).toHaveLength(1);
     expect(groups[0]).toMatchObject({ projectId: 'ghost', projectName: null });
+  });
+});
+
+describe('openTasksWithProject', () => {
+  const projects = [p('p1', 'Villa Nord'), p('p2', 'Villa Syd')];
+
+  it('returns only not-done tasks, tagged with their project name', () => {
+    const tasks = [t('t1', 'p1', 'open'), t('t2', 'p1', 'done'), t('t3', 'p2', 'open')];
+    const out = openTasksWithProject(tasks, projects);
+    expect(out.map((o) => o.task.id)).toEqual(['t1', 't3']); // t2 (done) excluded
+    expect(out[0]).toMatchObject({ projectName: 'Villa Nord' });
+    expect(out[1]).toMatchObject({ projectName: 'Villa Syd' });
+  });
+
+  it('tags an unknown project as null', () => {
+    const out = openTasksWithProject([t('t1', 'ghost', 'open')], projects);
+    expect(out[0]).toMatchObject({ projectName: null });
+  });
+
+  it('is empty when everything is done', () => {
+    expect(openTasksWithProject([t('t1', 'p1', 'done')], projects)).toEqual([]);
   });
 });
