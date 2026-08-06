@@ -5,3 +5,5 @@ export * from './hooks';
 export * from './newId';
 export * from './open';
 export * from './seed';
+export * from './config';
+export * from './httpPullSource';

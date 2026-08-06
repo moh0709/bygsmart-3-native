@@ -30,6 +30,14 @@ export const da = {
     emptyTitle: 'Ingen data endnu',
     errorTitle: 'Noget gik galt',
   },
+  sync: {
+    local: 'Kun lokal',
+    synced: 'Synkroniseret',
+    syncing: 'Synkroniserer…',
+    error: 'Synk-fejl',
+    pending: '{{count}} i kø',
+    now: 'Synk nu',
+  },
   minDag: {
     title: 'Min Dag',
     subtitle: 'Dine åbne opgaver',

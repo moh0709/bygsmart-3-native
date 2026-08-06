@@ -1,10 +1,15 @@
-// Id + clock helpers for the write path. Mutation ids are idempotency keys, so they
-// must be unique per intent; prefer a real UUID (Hermes and browsers expose
-// crypto.randomUUID) and fall back to time+random where it is absent.
+// Id + clock helpers for the write path. Ids double as row primary keys, which are
+// `uuid` columns server-side, so they MUST be valid UUIDs — prefer crypto.randomUUID
+// (browsers + modern Hermes) and fall back to an RFC-4122 v4 shape where it is absent
+// (dev-grade randomness; still a valid uuid the DB accepts).
 export function newMutationId(): string {
   const c = (globalThis as { crypto?: { randomUUID?: () => string } }).crypto;
   if (c?.randomUUID) return c.randomUUID();
-  return `m-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (ch) => {
+    const r = (Math.random() * 16) | 0;
+    const v = ch === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 }
 
 export function nowIso(): string {

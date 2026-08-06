@@ -3,11 +3,12 @@
 // through useWrite (queued in the outbox). Reactive reads keep it in sync as tasks
 // change on any screen. AR-05: ui/i18n/db only.
 import { ScrollView } from 'react-native';
-import { Screen, VStack, Text, Card, IconButton, ListItem, Divider, EmptyState, Badge } from '@bygsmart/ui';
+import { Screen, VStack, Text, Card, IconButton, ListItem, Divider, EmptyState } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 import { useData, useLiveList, useWrite } from '../db/react';
 import type { Row } from '../db';
 import { openTasksWithProject } from './selectors';
+import { SyncBar } from './SyncBar';
 
 export function MinDagScreen(): React.JSX.Element {
   const { t } = useTranslation();
@@ -30,6 +31,8 @@ export function MinDagScreen(): React.JSX.Element {
             {t('minDag.openCount', { count: open.length })}
           </Text>
         </VStack>
+
+        <SyncBar />
 
         {open.length === 0 ? (
           <EmptyState
@@ -61,8 +64,6 @@ export function MinDagScreen(): React.JSX.Element {
             </VStack>
           </Card>
         )}
-
-        <Badge label={hydration.ready ? t('projects.ready') : t('projects.syncing')} tone={hydration.ready ? 'success' : 'pending'} />
       </ScrollView>
     </Screen>
   );

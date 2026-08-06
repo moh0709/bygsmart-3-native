@@ -5,7 +5,7 @@
 import { ScrollView } from 'react-native';
 import { Screen, VStack, HStack, Text, Card, Button, Badge, Checkbox, Divider, EmptyState } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
-import { useLiveRow, useLiveList, useWrite, newMutationId } from '../db/react';
+import { useData, useLiveRow, useLiveList, useWrite, newMutationId } from '../db/react';
 import type { Row } from '../db';
 import { tasksForProject } from './selectors';
 
@@ -16,6 +16,7 @@ export interface ProjectDetailScreenProps {
 
 export function ProjectDetailScreen({ projectId, onBack }: ProjectDetailScreenProps): React.JSX.Element {
   const { t } = useTranslation();
+  const { userId } = useData();
   const project = useLiveRow('projects', projectId);
   const allTasks = useLiveList('tasks');
   const write = useWrite();
@@ -24,11 +25,14 @@ export function ProjectDetailScreen({ projectId, onBack }: ProjectDetailScreenPr
   const addTask = (): void => {
     const n = tasks.length + 1;
     void write.upsert('tasks', {
-      id: `local-t-${newMutationId()}`,
+      // uuid PK; project-scoped task (RLS: tasks_insert_project needs project ownership).
+      id: newMutationId(),
       updated_at: '',
       title: `${t('projectDetail.newTaskTitle')} ${n}`,
       project_id: projectId,
-      status: 'open',
+      scope: 'project',
+      status: 'To Do',
+      ...(userId ? { owner_id: userId } : {}),
     });
   };
 

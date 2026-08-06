@@ -16,7 +16,7 @@ export interface ProjectsScreenProps {
 
 export function ProjectsScreen({ onOpenProject }: ProjectsScreenProps = {}): React.JSX.Element {
   const { t } = useTranslation();
-  const { hydration } = useData();
+  const { hydration, userId } = useData();
   const projects = useLiveList('projects');
   const tasks = useLiveList('tasks');
   const write = useWrite();
@@ -25,10 +25,12 @@ export function ProjectsScreen({ onOpenProject }: ProjectsScreenProps = {}): Rea
   const addProject = (): void => {
     const n = projects.length + 1;
     void write.upsert('projects', {
-      id: `local-p-${newMutationId()}`,
+      // RLS: projects_insert_own requires owner_id = auth.uid(); stamp it when signed in.
+      id: newMutationId(),
       updated_at: '',
       name: `${t('projects.defaultName')} ${n}`,
-      status: 'planning',
+      status: 'I gang',
+      ...(userId ? { owner_id: userId } : {}),
     });
   };
 
