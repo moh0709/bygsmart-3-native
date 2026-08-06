@@ -1,18 +1,10 @@
 import { Text as RNText, type TextProps as RNTextProps } from 'react-native';
-import type { FontSizeToken, FontWeightToken, ColorToken } from '@bygsmart/tokens';
+import type { ColorToken, TypographyVariant } from '@bygsmart/tokens';
 import { useTheme } from '../theme/ThemeProvider';
 import { useFontScale } from '../hooks/useFontScale';
 
-export type TextVariant = 'display' | 'heading' | 'title' | 'body' | 'label' | 'caption';
-
-const VARIANT: Record<TextVariant, { size: FontSizeToken; weight: FontWeightToken }> = {
-  display: { size: '3xl', weight: 'bold' },
-  heading: { size: '2xl', weight: 'bold' },
-  title: { size: 'xl', weight: 'semibold' },
-  body: { size: 'md', weight: 'regular' },
-  label: { size: 'sm', weight: 'medium' },
-  caption: { size: 'xs', weight: 'regular' },
-};
+/** Text variants map 1:1 onto the token type ramp (2.1 scale). */
+export type TextVariant = TypographyVariant;
 
 export interface TextProps extends RNTextProps {
   variant?: TextVariant;
@@ -36,7 +28,7 @@ export function Text({
 }: TextProps) {
   const t = useTheme();
   const fontScale = useFontScale();
-  const v = VARIANT[variant];
+  const v = t.typography[variant];
   const cap = maxFontSizeMultiplier ?? 2;
   const cappedScale = Math.min(fontScale, cap);
   const isHeading = variant === 'display' || variant === 'heading' || variant === 'title';
@@ -47,9 +39,11 @@ export function Text({
       style={[
         {
           color: t.colors[color],
-          fontSize: t.fontSizes[v.size],
-          fontWeight: t.fontWeights[v.weight],
-          lineHeight: t.fontSizes[v.size] * t.lineHeights.normal * cappedScale,
+          fontSize: v.fontSize,
+          fontWeight: v.fontWeight,
+          // lineHeight is literal px; scale it with Dynamic Type so rhythm holds.
+          lineHeight: v.lineHeight * cappedScale,
+          letterSpacing: v.letterSpacing,
           textAlign: center ? 'center' : 'left',
         },
         style,

@@ -5,6 +5,7 @@ import { afterEach, describe, it, expect, vi } from 'vitest';
 import { Text } from '../primitives/Text';
 import { Badge } from '../primitives/Badge';
 import { Button } from '../primitives/Button';
+import { Card } from '../primitives/Card';
 import { EmptyState } from '../primitives/EmptyState';
 import { TextField } from '../primitives/TextField';
 import { Checkbox } from '../primitives/Checkbox';
@@ -41,6 +42,28 @@ describe('Layer 7 — primitives render through react-native-web', () => {
   it('Button exposes an accessible button role', () => {
     render(<Button title="Gem" onPress={() => {}} />);
     expect(screen.getByText('Gem')).toBeTruthy();
+  });
+
+  it('Button supports the outline variant and sizes (design-system additions)', () => {
+    const onPress = vi.fn();
+    render(<Button title="Demo adgang" variant="outline" size="lg" fullWidth onPress={onPress} />);
+    fireEvent.click(screen.getByText('Demo adgang'));
+    expect(onPress).toHaveBeenCalled();
+  });
+
+  it('Card renders its content and an elevated + flat form', () => {
+    render(
+      <>
+        <Card>
+          <Text>Løftet kort</Text>
+        </Card>
+        <Card flat>
+          <Text>Fladt kort</Text>
+        </Card>
+      </>,
+    );
+    expect(screen.getByText('Løftet kort')).toBeTruthy();
+    expect(screen.getByText('Fladt kort')).toBeTruthy();
   });
 
   it('EmptyState shows title + description', () => {
