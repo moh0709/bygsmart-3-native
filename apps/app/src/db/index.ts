@@ -4,3 +4,6 @@
 export * from './contract';
 export * from './memory';
 export * from './puller';
+export * from './sql/driver';
+export * from './sql/schema';
+export * from './sql/sqlRepository';
