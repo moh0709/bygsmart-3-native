@@ -54,6 +54,12 @@ export const da = {
     syncing: 'Henter…',
     ready: 'Synkroniseret',
   },
+  projectDetail: {
+    tasksTitle: 'Opgaver',
+    addTask: 'Tilføj opgave',
+    newTaskTitle: 'Ny opgave',
+    notFound: 'Projekt ikke fundet',
+  },
   tasks: {
     title: 'Opgaver',
     emptyTitle: 'Ingen opgaver',

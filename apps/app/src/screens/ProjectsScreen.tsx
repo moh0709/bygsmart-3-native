@@ -9,7 +9,12 @@ import { useTranslation } from '@bygsmart/i18n';
 import { useData, useLiveList, useWrite, newMutationId } from '../db/react';
 import { projectSummaries } from './selectors';
 
-export function ProjectsScreen(): React.JSX.Element {
+export interface ProjectsScreenProps {
+  /** Navigate to a project's detail. Wired by the app-shell route (keeps expo-router out of screens). */
+  onOpenProject?: (id: string) => void;
+}
+
+export function ProjectsScreen({ onOpenProject }: ProjectsScreenProps = {}): React.JSX.Element {
   const { t } = useTranslation();
   const { hydration } = useData();
   const projects = useLiveList('projects');
@@ -59,6 +64,7 @@ export function ProjectsScreen(): React.JSX.Element {
                     }
                     leading="🏗️"
                     trailing={<Badge label={String(s.open)} tone={s.open > 0 ? 'primary' : 'neutral'} />}
+                    onPress={onOpenProject ? () => onOpenProject(String(s.project.id)) : undefined}
                   />
                 </VStack>
               ))}

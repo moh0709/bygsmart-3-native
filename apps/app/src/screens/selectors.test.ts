@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { projectSummaries, groupTasksByProject, openTasksWithProject } from './selectors';
+import { projectSummaries, groupTasksByProject, openTasksWithProject, tasksForProject } from './selectors';
 import type { Row } from '../db';
 
 const p = (id: string, name: string): Row => ({ id, updated_at: '2026-08-01T00:00:00Z', name });
@@ -74,5 +74,16 @@ describe('openTasksWithProject', () => {
 
   it('is empty when everything is done', () => {
     expect(openTasksWithProject([t('t1', 'p1', 'done')], projects)).toEqual([]);
+  });
+});
+
+describe('tasksForProject', () => {
+  it('returns only the given project\'s tasks, in order', () => {
+    const tasks = [t('t1', 'p1', 'open'), t('t2', 'p2', 'open'), t('t3', 'p1', 'done')];
+    expect(tasksForProject(tasks, 'p1').map((x) => x.id)).toEqual(['t1', 't3']);
+  });
+
+  it('is empty for a project with no tasks', () => {
+    expect(tasksForProject([t('t1', 'p1', 'open')], 'p2')).toEqual([]);
   });
 });

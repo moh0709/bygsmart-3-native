@@ -64,6 +64,11 @@ export function groupTasksByProject(tasks: Row[], projects: Row[]): TaskGroup[] 
   return groups;
 }
 
+/** All tasks belonging to one project, in list order. */
+export function tasksForProject(tasks: Row[], projectId: string): Row[] {
+  return tasks.filter((t) => String(t.project_id ?? '') === projectId);
+}
+
 export interface OpenTask {
   task: Row;
   /** Project display name, or null when the project isn't in the list. */
