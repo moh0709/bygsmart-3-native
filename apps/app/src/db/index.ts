@@ -9,3 +9,5 @@ export * from './sql/schema';
 export * from './sql/sqlRepository';
 export * from './writerElection';
 export * from './crossTab';
+export * from './crypto/aesgcm';
+export * from './recovery/quarantine';
