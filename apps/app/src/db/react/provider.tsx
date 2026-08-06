@@ -132,9 +132,11 @@ export function RepositoryProvider({
     let timer: ReturnType<typeof setInterval> | undefined;
 
     void (async () => {
-      // Backend mode uses a separate database so it never inherits the offline seed's
-      // fake ids/cursors, which would collide with the real server's keyset cursor.
-      const opened = await openDatabase(config ? 'bygsmart-live' : 'bygsmart-app');
+      // Backend mode uses a PER-USER database ('bygsmart-live-<userId>') so signing in as
+      // a different user never shows the previous user's cached rows, and so it never
+      // inherits the offline seed's fake ids/cursors (which would collide with the real
+      // server's keyset cursor).
+      const opened = await openDatabase(config ? `bygsmart-live-${config.userId}` : 'bygsmart-app');
       if (!alive) return;
       setRepo(opened.repo);
       setOutbox(opened.outbox);
