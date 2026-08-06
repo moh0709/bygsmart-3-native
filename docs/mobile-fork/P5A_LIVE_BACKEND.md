@@ -17,6 +17,22 @@ on **both** targets (Android emulator + web/OPFS), not mocks.
 | **MFA** (TOTP second factor) | — | ✅ password → challenge → code → app | aal1 held until aal2 |
 | **Register + enroll MFA** (self-service) | — | ✅ sign up → enroll 2FA → logout → login+MFA | new user, own empty data |
 | **Password reset / change** | — | ✅ forgot → email; change → relogin | new pw works, old rejected |
+| **Photo/attachment upload** | — | ✅ attach → uploaded to Storage | object in task-docs + task.attachments |
+
+### Media — offline photo/attachment uploads
+
+Attach a photo to a task → bytes go to a durable local store (OPFS/expo-file-system) +
+a media queue; the sync loop uploads them to Supabase **Storage** (bucket `task-docs`,
+path `<projectId>/<taskId>/<id>.<ext>` to satisfy the bucket RLS), then records the
+reference on `task.attachments` (which syncs via the outbox). Verified on web: a photo
+attached → object appeared in `storage.objects`, and `task.attachments` gained the path.
+
+**REAL BUG this surfaced + fixed:** GoTrue now issues **ES256 (asymmetric)** session
+tokens, but the server only verified **HS256** → every `POST /api/sync/mutations` was a
+**401 under real login** (GET worked via PostgREST/JWKS). All writes were broken since
+real auth landed; earlier write proofs used dev HS256 tokens, so it hid until the media
+write. Fix: `verifyJwtSub` now verifies asymmetric tokens against the project JWKS
+(`jose`), keeping HS256 for tests/dev.
 
 ### Real login (adapted from 2.1 production)
 
