@@ -17,7 +17,25 @@ export interface LoginResult {
   message: string;
   /** True when the password was accepted but a TOTP second factor is still required. */
   mfaRequired?: boolean;
+  /** True when a signup needs email confirmation before the account can be used. */
+  requiresConfirmation?: boolean;
 }
+
+export interface TotpFactor {
+  id: string;
+  status: string;
+  friendlyName?: string;
+}
+
+export interface EnrollTotpData {
+  factorId: string;
+  /** Base32 secret for manual entry into an authenticator app. */
+  secret: string;
+  /** SVG data-URL QR code from Supabase (scannable). */
+  qrCode: string;
+}
+
+export type EnrollTotpResult = { ok: true; data: EnrollTotpData } | { ok: false; message: string };
 
 export interface AuthValue {
   session: Session | null;
@@ -29,10 +47,20 @@ export interface AuthValue {
   /** Password accepted (aal1) but a verified TOTP factor must still be passed. */
   mfaPending: boolean;
   login(email: string, password: string): Promise<LoginResult>;
+  /** Create an account (email/password + display name). */
+  register(email: string, password: string, name: string): Promise<LoginResult>;
   /** Complete the second factor with the 6-digit code (aal1 → aal2). */
   verifyMfa(code: string): Promise<LoginResult>;
   /** Abandon a pending MFA challenge and sign the half-authenticated session out. */
   cancelMfa(): Promise<void>;
+  /** Begin TOTP enrollment — returns the secret + QR to show the user. */
+  enrollTotp(): Promise<EnrollTotpResult>;
+  /** Verify the code to activate a just-enrolled factor. */
+  confirmTotp(factorId: string, code: string): Promise<LoginResult>;
+  /** The account's TOTP factors (verified + unverified). */
+  listTotpFactors(): Promise<TotpFactor[]>;
+  /** Remove a factor (disable 2FA / clean up an aborted enrollment). */
+  unenrollTotp(factorId: string): Promise<void>;
   logout(): Promise<void>;
   /** Current access token, refreshed as needed — the sync layer calls this per request. */
   getToken(): Promise<string | null>;
@@ -44,6 +72,12 @@ export function useSession(): AuthValue {
   const v = useContext(AuthContext);
   if (!v) throw new Error('useSession must be used within an AuthProvider');
   return v;
+}
+
+/** Like useSession but returns null instead of throwing when there is no AuthProvider
+ * (offline-first mode with no Supabase configured) — for optional auth UI. */
+export function useOptionalSession(): AuthValue | null {
+  return useContext(AuthContext);
 }
 
 export function AuthProvider({ client, children }: { client: SupabaseClient; children: ReactNode }): React.JSX.Element {
@@ -108,6 +142,57 @@ export function AuthProvider({ client, children }: { client: SupabaseClient; chi
     return { success: true, message: 'Logget ind.' };
   };
 
+  const register = async (email: string, password: string, name: string): Promise<LoginResult> => {
+    const { data, error } = await client.auth.signUp({
+      email: email.trim(),
+      password,
+      options: { data: { name: name.trim() } },
+    });
+    if (error) return { success: false, message: loginErrorMessage(error.message) };
+    // With email confirmation off, signUp returns a session → straight in.
+    if (data.session) {
+      setSession(data.session);
+      await evalSession(data.session);
+      return { success: true, message: 'Konto oprettet!' };
+    }
+    return { success: true, requiresConfirmation: true, message: 'Tjek din e-mail for at bekræfte kontoen.' };
+  };
+
+  const enrollTotp = async (): Promise<EnrollTotpResult> => {
+    const { data, error } = await client.auth.mfa.enroll({
+      factorType: 'totp',
+      friendlyName: `BygSmart ${new Date().toISOString().slice(0, 10)}`,
+    });
+    if (error || !data) return { ok: false, message: error?.message ?? 'Kunne ikke starte opsætning.' };
+    return { ok: true, data: { factorId: data.id, secret: data.totp.secret, qrCode: data.totp.qr_code } };
+  };
+
+  const confirmTotp = async (factorId: string, code: string): Promise<LoginResult> => {
+    const trimmed = (code ?? '').trim();
+    if (!/^\d{6}$/.test(trimmed)) {
+      return { success: false, message: 'Indtast den 6-cifrede kode fra din authenticator-app.' };
+    }
+    const { data: challenge, error: challengeErr } = await client.auth.mfa.challenge({ factorId });
+    if (challengeErr || !challenge) {
+      return { success: false, message: challengeErr?.message ?? 'Kunne ikke oprette to-faktor-udfordring.' };
+    }
+    const { error: verifyErr } = await client.auth.mfa.verify({ factorId, challengeId: challenge.id, code: trimmed });
+    if (verifyErr) return { success: false, message: 'Forkert kode. Prøv igen.' };
+    const { data } = await client.auth.getSession();
+    setSession(data.session);
+    await evalSession(data.session);
+    return { success: true, message: 'To-faktor aktiveret.' };
+  };
+
+  const listTotpFactors = async (): Promise<TotpFactor[]> => {
+    const { data } = await client.auth.mfa.listFactors();
+    return (data?.totp ?? []).map((f) => ({ id: f.id, status: f.status, friendlyName: f.friendly_name ?? undefined }));
+  };
+
+  const unenrollTotp = async (factorId: string): Promise<void> => {
+    await client.auth.mfa.unenroll({ factorId }).catch(() => undefined);
+  };
+
   const verifyMfa = async (code: string): Promise<LoginResult> => {
     const trimmed = (code ?? '').trim();
     if (!/^\d{6}$/.test(trimmed)) {
@@ -165,8 +250,13 @@ export function AuthProvider({ client, children }: { client: SupabaseClient; chi
     isLoading,
     mfaPending,
     login,
+    register,
     verifyMfa,
     cancelMfa,
+    enrollTotp,
+    confirmTotp,
+    listTotpFactors,
+    unenrollTotp,
     logout,
     getToken,
   };

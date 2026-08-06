@@ -1,27 +1,32 @@
-// Log ind — real email/password auth against Supabase (adapted from the 2.1 production
-// login). On success the AuthProvider session updates and the app-shell swaps this out
-// for the app. Uses only ui/i18n and the auth hook (AR-05).
+// Opret konto — email/password + name signup against Supabase (adapted from the 2.1
+// register). With email confirmation off the new session lands straight in the app; if a
+// project later enables confirmation, requiresConfirmation surfaces a check-your-email
+// message. Uses only ui/i18n and the auth hook (AR-05).
 import { useState } from 'react';
 import { ScrollView } from 'react-native';
 import { Screen, VStack, Text, Card, TextField, Button, Badge } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 import { useSession } from '@bygsmart/api-client';
 
-export function LoginScreen({ onRegister }: { onRegister?: () => void } = {}): React.JSX.Element {
+export function RegisterScreen({ onLogin }: { onLogin?: () => void } = {}): React.JSX.Element {
   const { t } = useTranslation();
-  const { login } = useSession();
+  const { register } = useSession();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   const submit = async (): Promise<void> => {
     if (busy) return;
     setBusy(true);
     setError(null);
-    const res = await login(email, password);
+    setNotice(null);
+    const res = await register(email, password, name);
     setBusy(false);
     if (!res.success) setError(res.message);
+    else if (res.requiresConfirmation) setNotice(res.message); // else: signed in → gate swaps us out
   };
 
   return (
@@ -36,9 +41,10 @@ export function LoginScreen({ onRegister }: { onRegister?: () => void } = {}): R
 
         <Card>
           <VStack gap="md">
-            <Text variant="title">{t('login.title')}</Text>
+            <Text variant="title">{t('register.title')}</Text>
+            <TextField label={t('register.name')} value={name} onChangeText={setName} editable={!busy} />
             <TextField
-              label={t('login.email')}
+              label={t('register.email')}
               value={email}
               onChangeText={setEmail}
               placeholder="dig@firma.dk"
@@ -48,18 +54,19 @@ export function LoginScreen({ onRegister }: { onRegister?: () => void } = {}): R
               editable={!busy}
             />
             <TextField
-              label={t('login.password')}
+              label={t('register.password')}
               value={password}
               onChangeText={setPassword}
               secureTextEntry
               autoCapitalize="none"
-              autoComplete="password"
+              autoComplete="password-new"
               editable={!busy}
             />
             {error ? <Badge label={error} tone="danger" /> : null}
-            <Button title={t('login.submit')} onPress={submit} loading={busy} />
-            {onRegister ? (
-              <Button title={`${t('loginExtra.noAccount')} ${t('loginExtra.toRegister')}`} variant="ghost" onPress={onRegister} />
+            {notice ? <Badge label={notice} tone="success" /> : null}
+            <Button title={t('register.submit')} onPress={submit} loading={busy} />
+            {onLogin ? (
+              <Button title={`${t('register.haveAccount')} ${t('register.toLogin')}`} variant="ghost" onPress={onLogin} />
             ) : null}
           </VStack>
         </Card>

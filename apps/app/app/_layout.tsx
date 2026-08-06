@@ -7,7 +7,7 @@ import { I18nProvider, useTranslation } from '@bygsmart/i18n';
 import { AuthProvider, useSession } from '@bygsmart/api-client';
 import { RepositoryProvider, readSyncBaseUrl, type BackendConfig } from '../src/db/react';
 import { authClient } from '../src/auth/client';
-import { LoginScreen } from '../src/screens/LoginScreen';
+import { AuthFlow } from '../src/screens/AuthFlow';
 import { MfaChallengeScreen } from '../src/screens/MfaChallengeScreen';
 import { ALL_MANIFESTS } from '../src/registry/manifests';
 
@@ -89,7 +89,7 @@ function Gate() {
   }
   // A half-authenticated session (password OK, second factor still owed) → challenge.
   if (session && mfaPending) return <MfaChallengeScreen />;
-  if (backendConfigured && !session) return <LoginScreen />;
+  if (backendConfigured && !session) return <AuthFlow />;
   return <AuthedApp />;
 }
 
