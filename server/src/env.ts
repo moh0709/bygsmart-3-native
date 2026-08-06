@@ -2,8 +2,10 @@ export interface Env {
   supabaseUrl: string;
   anonKey: string;
   serviceRoleKey: string;
-  /** Supabase project JWT secret — verifies the caller's token to read its `sub`. */
+  /** Supabase project JWT secret — verifies legacy HS256 tokens' `sub`. */
   jwtSecret: string;
+  /** Project JWKS URL — verifies modern asymmetric (ES256/RS256) session tokens. */
+  jwksUrl: string;
   /** Web push (VAPID). Web push is enabled only when the key pair is present. */
   vapidSubject: string;
   vapidPublicKey: string;
@@ -27,6 +29,7 @@ export function loadEnv(): Env {
     anonKey,
     serviceRoleKey,
     jwtSecret,
+    jwksUrl: process.env.SUPABASE_JWKS_URL ?? `${supabaseUrl.replace(/\/$/, '')}/auth/v1/.well-known/jwks.json`,
     vapidSubject: process.env.VAPID_SUBJECT ?? '',
     vapidPublicKey: process.env.VAPID_PUBLIC_KEY ?? '',
     vapidPrivateKey: process.env.VAPID_PRIVATE_KEY ?? '',

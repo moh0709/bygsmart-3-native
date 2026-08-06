@@ -33,7 +33,7 @@ async function withDb<T>(fn: (c: Client) => Promise<T>): Promise<T> {
   }
 }
 
-const env: Env = { supabaseUrl: URL ?? '', anonKey: ANON ?? '', serviceRoleKey: SERVICE ?? '', jwtSecret: JWT_SECRET ?? '', vapidSubject: '', vapidPublicKey: '', vapidPrivateKey: '', expoAccessToken: '', port: 0 };
+const env: Env = { supabaseUrl: URL ?? '', anonKey: ANON ?? '', serviceRoleKey: SERVICE ?? '', jwtSecret: JWT_SECRET ?? '', jwksUrl: (URL ?? '') + '/auth/v1/.well-known/jwks.json', vapidSubject: '', vapidPublicKey: '', vapidPrivateKey: '', expoAccessToken: '', port: 0 };
 const app = createApp(env);
 const auth = () => `Bearer ${signJwt(U)}`;
 

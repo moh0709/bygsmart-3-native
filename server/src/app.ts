@@ -89,7 +89,7 @@ export function createApp(env: Env): Express {
       const mutations = parseMutations(req.body);
       if (!mutations) return res.status(400).json({ error: 'body must be { mutations: Mutation[] }' });
 
-      const userId = verifyJwtSub(token, env.jwtSecret);
+      const userId = await verifyJwtSub(token, { hmacSecret: env.jwtSecret, jwksUrl: env.jwksUrl });
       if (!userId) return res.status(401).json({ error: 'invalid token' });
 
       const userDb = userClient(env, token);

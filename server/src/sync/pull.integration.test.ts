@@ -57,7 +57,7 @@ async function seed() {
   await c.end();
 }
 
-const env: Env = { supabaseUrl: URL ?? '', anonKey: ANON ?? '', serviceRoleKey: '', jwtSecret: JWT_SECRET ?? '', vapidSubject: '', vapidPublicKey: '', vapidPrivateKey: '', expoAccessToken: '', port: 0 };
+const env: Env = { supabaseUrl: URL ?? '', anonKey: ANON ?? '', serviceRoleKey: '', jwtSecret: JWT_SECRET ?? '', jwksUrl: (URL ?? '') + '/auth/v1/.well-known/jwks.json', vapidSubject: '', vapidPublicKey: '', vapidPrivateKey: '', expoAccessToken: '', port: 0 };
 const app = createApp(env);
 const bearer = (sub: string) => `Bearer ${signJwt(sub)}`;
 
