@@ -13,5 +13,7 @@ export * from './outbox/contract';
 export * from './outbox/memoryOutbox';
 export * from './outbox/writes';
 export * from './outbox/flusher';
+export * from './outbox/schema';
+export * from './outbox/sqlOutbox';
 export * from './crypto/aesgcm';
 export * from './recovery/quarantine';
