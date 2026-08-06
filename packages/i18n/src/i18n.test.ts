@@ -11,7 +11,7 @@ describe('i18n instance', () => {
   it('resolves known keys to Danish', () => {
     expect(i18n.t('nav.home')).toBe('Hjem');
     expect(i18n.t('nav.more')).toBe('Mere');
-    expect(i18n.t('projects.emptyBody')).toBe('Projektlisten bygges i P5.');
+    expect(i18n.t('projects.title')).toBe('Projekter');
     expect(i18n.t('states.offlineTitle')).toBe('Offline');
   });
 

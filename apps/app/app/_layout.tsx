@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider, NavShell, type NavItem } from '@bygsmart/ui';
 import { resolveActiveManifests, collectSlot, computeEnabledModules } from '@bygsmart/core';
 import { I18nProvider, useTranslation } from '@bygsmart/i18n';
+import { RepositoryProvider } from '../src/db/react';
 import { ALL_MANIFESTS } from '../src/registry/manifests';
 
 interface ShellNav extends NavItem {
@@ -61,7 +62,9 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <I18nProvider>
         <ThemeProvider>
-          <Shell />
+          <RepositoryProvider>
+            <Shell />
+          </RepositoryProvider>
         </ThemeProvider>
       </I18nProvider>
     </SafeAreaProvider>

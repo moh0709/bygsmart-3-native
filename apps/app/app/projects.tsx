@@ -1,11 +1,7 @@
-import { Screen, EmptyState } from '@bygsmart/ui';
-import { useTranslation } from '@bygsmart/i18n';
+import { ProjectsScreen } from '../src/screens/ProjectsScreen';
 
+// app-shell route → the real Projekter screen. Data comes from the RepositoryProvider
+// mounted in _layout.
 export default function Projects() {
-  const { t } = useTranslation();
-  return (
-    <Screen edges={['top']}>
-      <EmptyState title={t('projects.emptyTitle')} description={t('projects.emptyBody')} icon="🏗️" />
-    </Screen>
-  );
+  return <ProjectsScreen />;
 }

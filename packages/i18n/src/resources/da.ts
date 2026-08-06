@@ -37,12 +37,19 @@ export const da = {
     badgeDev: 'Udvikling',
   },
   projects: {
-    emptyTitle: 'Projekter',
-    emptyBody: 'Projektlisten bygges i P5.',
+    title: 'Projekter',
+    emptyTitle: 'Ingen projekter endnu',
+    emptyBody: 'Opret dit første projekt for at komme i gang.',
+    newProject: 'Nyt projekt',
+    defaultName: 'Nyt projekt',
+    taskSummary: '{{open}} af {{total}} opgaver åbne',
+    noTasks: 'Ingen opgaver endnu',
+    syncing: 'Henter…',
+    ready: 'Synkroniseret',
   },
   tasks: {
-    emptyTitle: 'Opgaver',
-    emptyBody: 'Min Dag og opgavelister bygges i P5.',
+    emptyTitle: 'Ingen opgaver',
+    emptyBody: 'Opgaver vises her, når de er tildelt.',
   },
   capabilities: {
     title: 'Offline-kapacitet',
