@@ -14,6 +14,7 @@ on **both** targets (Android emulator + web/OPFS), not mocks.
 | **Cross-client** | write on emulator → **read on web** | ✅ | same DB |
 | **Conflict** (two writers edit one row) | ✅ detected + parked + resolved | — | keep-mine landed in DB |
 | **Login** (Supabase email/password) | login screen renders | ✅ signed in → real backend | session token drives sync |
+| **MFA** (TOTP second factor) | — | ✅ password → challenge → code → app | aal1 held until aal2 |
 
 ### Real login (adapted from 2.1 production)
 
@@ -26,7 +27,17 @@ token (auto-refreshed) drives every sync request, and `owner_id` comes from
 on web). Seed the demo user + password with `node server/dev-seed.mjs` (creates it through
 GoTrue's admin API so the identity/token rows are correct); it prints
 `EXPO_PUBLIC_SUPABASE_URL/ANON_KEY` + `EXPO_PUBLIC_SYNC_URL` and the demo credentials.
-**MFA (aal1→aal2 TOTP, enforced in 2.1) is the next increment** (seam: `LoginResult.mfaRequired`).
+### MFA — TOTP second factor (adapted from 2.1, enforced)
+
+A password login lands at **aal1**; if the account has a verified TOTP factor, the app
+holds at a **To-faktor-godkendelse** screen (`isAuthenticated` stays false) until the
+6-digit code steps the session up to **aal2**. Enforced centrally in the AuthProvider
+(`evalSession` runs on every session change) so no code path bypasses it. Enable TOTP in
+`supabase/config.toml` (`[auth.mfa.totp] enroll_enabled/verify_enabled = true`). Set a
+factor up for the demo user with `node server/dev-mfa-enroll.mjs` (prints the secret);
+compute a code with `node server/totp.mjs <secret>`. **Verified on web:** password →
+challenge screen → valid code → session upgraded → app loaded the real backend.
+Enrollment / registration / password-reset screens are the remaining auth follow-ups.
 
 ### Conflict resolution (two-writer, proven live on the emulator)
 
