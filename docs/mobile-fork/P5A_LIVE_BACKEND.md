@@ -12,6 +12,16 @@ on **both** targets (Android emulator + web/OPFS), not mocks.
 | **Update** (toggle task done → outbox → `POST /api/sync/mutations`) | ✅ | ✅ sees it | `Støbe fundament = done` |
 | **Create** (new project, RLS `owner_id = auth.uid()`) | ✅ | ✅ sees "Nyt projekt 2" | inserted w/ owner |
 | **Cross-client** | write on emulator → **read on web** | ✅ | same DB |
+| **Conflict** (two writers edit one row) | ✅ detected + parked + resolved | — | keep-mine landed in DB |
+
+### Conflict resolution (two-writer, proven live on the emulator)
+
+A "colleague" edited **Rejse spær** directly in Postgres (new `updated_at`); the app then
+marked the same task done against its stale version and synced. The server rejected the
+write on optimistic concurrency (`update … where updated_at = baseVersion` → 0 rows), the
+outbox parked it with the server's row, and the app surfaced a **Konflikt** banner showing
+*Min* vs *Server*. Choosing **Behold min** re-queued the write rebased on the server
+version; the next sync applied it and Postgres showed the resolved row (`Rejse spær = done`).
 
 ## Integration issues found + fixed while making it real
 

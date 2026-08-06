@@ -55,6 +55,11 @@ await c.query(
   [T1, T2, T3, P, U],
 );
 
+// The hard DELETEs above fire emit_tombstone triggers, so a RE-seed would leave
+// tombstones that (correctly) make clients drop these re-inserted rows on pull. Purge
+// the demo ids' tombstones so a fresh hydrate sees the rows. (Dev seed only.)
+await c.query('DELETE FROM public.sync_tombstones WHERE entity_id = ANY($1)', [[U, P, T1, T2, T3]]);
+
 await c.end();
 
 const token = signJwt(U);
