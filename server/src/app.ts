@@ -44,6 +44,19 @@ export function createApp(env: Env): Express {
   const app = express();
   app.use(express.json({ limit: '2mb' }));
 
+  // CORS — the web (react-native-web PWA) target calls this API cross-origin. The
+  // bearer token travels in the Authorization header (not a cookie), so a wildcard
+  // origin is safe here; tighten to the app origin in production via CORS_ORIGIN.
+  const corsOrigin = process.env.CORS_ORIGIN ?? '*';
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    res.header('Access-Control-Allow-Origin', corsOrigin);
+    res.header('Vary', 'Origin');
+    res.header('Access-Control-Allow-Headers', 'authorization, content-type');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    if (req.method === 'OPTIONS') return res.sendStatus(204);
+    return next();
+  });
+
   app.get('/health', (_req, res) => res.json({ ok: true }));
 
   // GET /api/sync/:entity — cursor (updated_at, id), RLS-applied, tombstones, paged.
