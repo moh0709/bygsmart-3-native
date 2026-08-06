@@ -13,6 +13,20 @@ on **both** targets (Android emulator + web/OPFS), not mocks.
 | **Create** (new project, RLS `owner_id = auth.uid()`) | ✅ | ✅ sees "Nyt projekt 2" | inserted w/ owner |
 | **Cross-client** | write on emulator → **read on web** | ✅ | same DB |
 | **Conflict** (two writers edit one row) | ✅ detected + parked + resolved | — | keep-mine landed in DB |
+| **Login** (Supabase email/password) | login screen renders | ✅ signed in → real backend | session token drives sync |
+
+### Real login (adapted from 2.1 production)
+
+The dev token is gone. The app now shows a **Log ind** screen (auth gate) when a backend is
+configured; email/password authenticates against Supabase GoTrue, the session's access
+token (auto-refreshed) drives every sync request, and `owner_id` comes from
+`session.user.id`. Verified on web: signed in as the seeded demo user → app hydrated
+**Villa Nord + its tasks from Postgres** (2 open) → **reloaded and stayed logged in**
+(session persisted via the injected storage adapter — AsyncStorage on native, localStorage
+on web). Seed the demo user + password with `node server/dev-seed.mjs` (creates it through
+GoTrue's admin API so the identity/token rows are correct); it prints
+`EXPO_PUBLIC_SUPABASE_URL/ANON_KEY` + `EXPO_PUBLIC_SYNC_URL` and the demo credentials.
+**MFA (aal1→aal2 TOTP, enforced in 2.1) is the next increment** (seam: `LoginResult.mfaRequired`).
 
 ### Conflict resolution (two-writer, proven live on the emulator)
 
