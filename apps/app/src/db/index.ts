@@ -7,3 +7,5 @@ export * from './puller';
 export * from './sql/driver';
 export * from './sql/schema';
 export * from './sql/sqlRepository';
+export * from './writerElection';
+export * from './crossTab';

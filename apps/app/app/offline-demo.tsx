@@ -1,20 +1,23 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, ScrollView } from 'react-native';
 import { Screen, VStack, HStack, Text, Card, Button, Badge, ProgressBar, ListItem, Divider, EmptyState } from '@bygsmart/ui';
 import {
   InMemoryRepository,
   SqlRepository,
+  electSingleWriter,
   hydrate,
+  openChangeChannel,
+  type ChangeChannel,
   type PullPage,
   type PullSource,
   type Repository,
   type Row,
 } from '../src/db';
 
-// P3a demo: the repository contract + delta puller + reactive reads in the real app.
-// On NATIVE it runs on a persistent device SQLite file (data survives restarts); on
-// web it uses the in-memory runtime for now (OPFS persistence is a later step). A fake
-// PullSource stands in for GET /api/sync/:entity so the read path is visible with no backend.
+// P3a demo: repository contract + delta puller + reactive reads in the real app.
+// NATIVE → persistent device SQLite (expo-sqlite); WEB → wasm SQLite over OPFS
+// (survives reload). A single-writer election + cross-tab broadcast keep two browser
+// tabs consistent. A fake PullSource stands in for GET /api/sync/:entity.
 function task(id: string, title: string, project: string): Row {
   return { id, updated_at: new Date().toISOString(), title, project };
 }
@@ -50,7 +53,6 @@ async function openRepo(): Promise<{ repo: Repository; source: string }> {
     const { openExpoSqliteDriver } = await import('../src/db/sql/expoSqliteDriver');
     return { repo: await SqlRepository.create(await openExpoSqliteDriver('bygsmart-demo.db')), source: 'enhed (SQLite)' };
   }
-  // Web: wasm SQLite (sql.js) persisted to OPFS when available, else in-memory.
   const { opfsAvailable } = await import('../src/db/opfs/opfs');
   if (opfsAvailable()) {
     const { openWebSqlDriver } = await import('../src/db/sql/webSqlDriver');
@@ -62,37 +64,49 @@ async function openRepo(): Promise<{ repo: Repository; source: string }> {
 export default function OfflineDemo() {
   const source = useMemo(makeSource, []);
   const nextId = useRef(4);
+  const channelRef = useRef<ChangeChannel | null>(null);
 
   const [repo, setRepo] = useState<Repository | null>(null);
   const [sourceLabel, setSourceLabel] = useState('');
+  const [isWriter, setIsWriter] = useState(true);
   const [progress, setProgress] = useState(0);
   const [ready, setReady] = useState(false);
   const [fromDisk, setFromDisk] = useState(false);
   const [rows, setRows] = useState<Row[]>([]);
 
+  // (Re)open the repo — also called when another tab broadcasts a change, so a
+  // follower re-reads the shared OPFS store.
+  const load = useCallback(async () => {
+    const { repo: r, source: label } = await openRepo();
+    setRepo(r);
+    setSourceLabel(label);
+    const existing = await r.list('tasks');
+    if (existing.length > 0) {
+      setFromDisk(true);
+      setProgress(1);
+      setReady(true);
+      nextId.current = existing.length + 1;
+    } else {
+      await hydrate(r, source, ['tasks'], (p) => setProgress(p));
+      setReady(true);
+    }
+  }, [source]);
+
   useEffect(() => {
     let mounted = true;
-    (async () => {
-      const { repo: r, source: label } = await openRepo();
-      if (!mounted) return;
-      setRepo(r);
-      setSourceLabel(label);
-      const existing = await r.list('tasks');
-      if (existing.length > 0) {
-        // Data was already on the device from a previous run — the restart proof.
-        setFromDisk(true);
-        setProgress(1);
-        setReady(true);
-        nextId.current = existing.length + 1;
-      } else {
-        await hydrate(r, source, ['tasks'], (p) => setProgress(p));
-        setReady(true);
-      }
-    })();
+    void load();
+    const election = electSingleWriter('bygsmart-demo');
+    setIsWriter(election.isLeader());
+    const offElection = election.onChange((v) => mounted && setIsWriter(v));
+    const channel = openChangeChannel('bygsmart-demo', () => mounted && void load());
+    channelRef.current = channel;
     return () => {
       mounted = false;
+      offElection();
+      election.release();
+      channel.close();
     };
-  }, [source]);
+  }, [load]);
 
   useEffect(() => {
     if (!repo) return;
@@ -102,13 +116,14 @@ export default function OfflineDemo() {
     return off;
   }, [repo]);
 
+  const announce = () => channelRef.current?.broadcast();
   const addFromServer = () => {
     if (!repo) return;
     const id = `t${nextId.current++}`;
-    repo.applyDelta('tasks', { upserts: [task(id, `Ny opgave ${id}`, 'Villa Vest')], deletes: [] });
+    repo.applyDelta('tasks', { upserts: [task(id, `Ny opgave ${id}`, 'Villa Vest')], deletes: [] }).then(announce);
   };
   const deleteFirst = () => {
-    if (repo && rows[0]?.id) repo.applyDelta('tasks', { upserts: [], deletes: [{ id: rows[0].id as string }] });
+    if (repo && rows[0]?.id) repo.applyDelta('tasks', { upserts: [], deletes: [{ id: rows[0].id as string }] }).then(announce);
   };
   const reset = async () => {
     if (!repo) return;
@@ -116,6 +131,7 @@ export default function OfflineDemo() {
     await repo.applyDelta('tasks', { upserts: [], deletes: all.map((r) => ({ id: r.id as string })) });
     await repo.setCursor('tasks', null);
     setFromDisk(false);
+    announce();
   };
 
   return (
@@ -138,6 +154,7 @@ export default function OfflineDemo() {
             <HStack gap="sm" style={{ flexWrap: 'wrap' }}>
               <Badge label={`Kilde: ${sourceLabel || '…'}`} tone="neutral" />
               <Badge label={fromDisk ? 'Indlæst fra enheden' : 'Hydreret fra server'} tone={fromDisk ? 'primary' : 'neutral'} />
+              <Badge label={isWriter ? 'Denne fane: Skriver' : 'Denne fane: Læser'} tone={isWriter ? 'success' : 'warning'} />
             </HStack>
             <Text variant="caption" color="textSecondary">
               {Math.round(progress * 100)}% · {rows.length} opgaver i lokal database
@@ -165,7 +182,7 @@ export default function OfflineDemo() {
           <VStack gap="sm">
             <Text variant="title">Simulér serverændring</Text>
             <Text variant="body" color="textSecondary">
-              Ændringer gemmes i den lokale database og overlever en genstart af appen.
+              Ændringer gemmes i den lokale database og deles med andre faner.
             </Text>
             <HStack gap="sm" style={{ flexWrap: 'wrap' }}>
               <Button title="Ny opgave fra server" onPress={addFromServer} />

@@ -12,18 +12,14 @@ export async function openWebSqlDriver(name = 'bygsmart.sqlite'): Promise<SqlDri
   const existing = await opfsReadBytes(name);
   const db: Database = existing ? new SQL.Database(existing) : new SQL.Database();
 
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const persist = () => {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
-      void opfsWriteBytes(name, db.export());
-    }, 150);
-  };
-
   return {
+    // Persist to OPFS synchronously with the write: run() only resolves once the
+    // database file is durable, so a follower notified afterwards reads fresh data
+    // (no debounce race). Fine for this store's low write volume; production would
+    // batch exports behind a flush-then-broadcast barrier.
     async run(sql, params = []) {
       db.run(sql, params as never[]);
-      persist();
+      await opfsWriteBytes(name, db.export());
     },
     async all<T>(sql: string, params: unknown[] = []): Promise<T[]> {
       const stmt = db.prepare(sql);
