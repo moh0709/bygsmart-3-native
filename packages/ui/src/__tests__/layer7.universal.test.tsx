@@ -6,6 +6,7 @@ import { Text } from '../primitives/Text';
 import { Badge } from '../primitives/Badge';
 import { Button } from '../primitives/Button';
 import { Card } from '../primitives/Card';
+import { Alert } from '../primitives/Alert';
 import { EmptyState } from '../primitives/EmptyState';
 import { TextField } from '../primitives/TextField';
 import { Checkbox } from '../primitives/Checkbox';
@@ -64,6 +65,12 @@ describe('Layer 7 — primitives render through react-native-web', () => {
     );
     expect(screen.getByText('Løftet kort')).toBeTruthy();
     expect(screen.getByText('Fladt kort')).toBeTruthy();
+  });
+
+  it('Alert renders a message with the alert role (status tokens)', () => {
+    render(<Alert variant="danger" message="Forkert adgangskode" />);
+    expect(screen.getByRole('alert')).toBeTruthy();
+    expect(screen.getByText('Forkert adgangskode')).toBeTruthy();
   });
 
   it('EmptyState shows title + description', () => {

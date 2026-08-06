@@ -32,6 +32,7 @@ export const da = {
   },
   login: {
     title: 'Log ind',
+    welcome: 'Velkommen tilbage!',
     subtitle: 'Byggeprojekter, offline-først.',
     email: 'E-mail',
     password: 'Adgangskode',
