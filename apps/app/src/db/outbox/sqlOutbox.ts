@@ -6,7 +6,7 @@
 // in-memory reference, so behaviour is identical across stores.
 import type { SqlDriver } from '../sql/driver';
 import type { Outbox, OutboxEntry, OutboxMutation, OutboxStatus } from './contract';
-import { OUTBOX_SCHEMA_SQL } from './schema';
+import { OUTBOX_SCHEMA_SQL, OUTBOX_ADD_COLUMNS } from './schema';
 
 interface OutboxRow {
   id: string;
@@ -20,6 +20,7 @@ interface OutboxRow {
   attempts: number;
   next_attempt_at: string | null;
   last_error: string | null;
+  conflict_row: string | null;
   enqueued_at: string;
 }
 
@@ -36,6 +37,7 @@ function toEntry(r: OutboxRow): OutboxEntry {
     attempts: r.attempts,
     nextAttemptAt: r.next_attempt_at,
     ...(r.last_error !== null ? { lastError: r.last_error } : {}),
+    ...(r.conflict_row != null ? { conflictRow: JSON.parse(r.conflict_row) as Record<string, unknown> } : {}),
     enqueuedAt: r.enqueued_at,
   };
 }
@@ -50,6 +52,12 @@ export class SqlOutbox implements Outbox {
   ): Promise<SqlOutbox> {
     for (const stmt of OUTBOX_SCHEMA_SQL.split(';').map((s) => s.trim()).filter(Boolean)) {
       await driver.run(stmt);
+    }
+    // Guarded migrations for dev dbs created before a column existed.
+    const cols = await driver.all<{ name: string }>('PRAGMA table_info(outbox)');
+    const have = new Set(cols.map((c) => c.name));
+    for (const [name, ddl] of Object.entries(OUTBOX_ADD_COLUMNS)) {
+      if (!have.has(name)) await driver.run(ddl);
     }
     return new SqlOutbox(driver, now);
   }
@@ -137,8 +145,12 @@ export class SqlOutbox implements Outbox {
     );
   }
 
-  async markConflict(id: string, error: string): Promise<void> {
-    await this.driver.run("UPDATE outbox SET status = 'conflict', last_error = ? WHERE id = ?", [error, id]);
+  async markConflict(id: string, error: string, serverRow?: Record<string, unknown>): Promise<void> {
+    await this.driver.run("UPDATE outbox SET status = 'conflict', last_error = ?, conflict_row = ? WHERE id = ?", [
+      error,
+      serverRow ? JSON.stringify(serverRow) : null,
+      id,
+    ]);
   }
 
   async discard(id: string): Promise<void> {

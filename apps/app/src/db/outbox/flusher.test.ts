@@ -71,11 +71,11 @@ describe('flushOnce', () => {
     expect(reconcile).not.toHaveBeenCalled();
   });
 
-  it('conflict and forbidden park the entry (stays, excluded from future batches)', async () => {
+  it('conflict and forbidden park the entry, keeping the server row', async () => {
     await outbox.enqueue(mut('a'));
     await outbox.enqueue(mut('b'));
     const transport = new FakeTransport(() => [
-      { id: 'a', status: 'conflict', error: 'baseVersion mismatch' },
+      { id: 'a', status: 'conflict', error: 'baseVersion mismatch', row: { id: 'row-a', title: 'server' } },
       { id: 'b', status: 'forbidden', error: 'module revoked' },
     ]);
 
@@ -83,6 +83,7 @@ describe('flushOnce', () => {
 
     expect(s.conflicts).toBe(2);
     expect((await outbox.get('a'))?.status).toBe('conflict');
+    expect((await outbox.get('a'))?.conflictRow).toEqual({ id: 'row-a', title: 'server' });
     expect((await outbox.get('b'))?.status).toBe('conflict');
     expect(await outbox.nextBatch(at(10 * 60_000), 10)).toEqual([]); // never re-sent automatically
   });

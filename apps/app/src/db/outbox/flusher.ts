@@ -130,7 +130,8 @@ export async function flushOnce(
         break;
       case 'conflict':
       case 'forbidden':
-        await outbox.markConflict(e.id, r.error ?? r.status);
+        // Keep the server's current row so the UI can offer keep-server / keep-mine.
+        await outbox.markConflict(e.id, r.error ?? r.status, r.row);
         summary.conflicts += 1;
         break;
       case 'blocked':

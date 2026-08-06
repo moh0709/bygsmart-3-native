@@ -9,6 +9,7 @@ import { useData, useLiveList, useWrite } from '../db/react';
 import type { Row } from '../db';
 import { openTasksWithProject } from './selectors';
 import { SyncBar } from './SyncBar';
+import { ConflictBanner } from './ConflictBanner';
 
 export function MinDagScreen(): React.JSX.Element {
   const { t } = useTranslation();
@@ -33,6 +34,7 @@ export function MinDagScreen(): React.JSX.Element {
         </VStack>
 
         <SyncBar />
+        <ConflictBanner />
 
         {open.length === 0 ? (
           <EmptyState

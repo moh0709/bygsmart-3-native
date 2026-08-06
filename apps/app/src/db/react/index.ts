@@ -7,3 +7,4 @@ export * from './open';
 export * from './seed';
 export * from './config';
 export * from './httpPullSource';
+export * from './conflicts';

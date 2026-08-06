@@ -89,10 +89,12 @@ export function runOutboxContract(name: string, make: () => Outbox | Promise<Out
       expect((await ob.nextBatch(T1, 10)).map((e) => e.id)).toEqual(['a']);
     });
 
-    it('markConflict parks the entry: excluded from batches and safe from clobber', async () => {
+    it('markConflict parks the entry with the server row: excluded from batches and safe from clobber', async () => {
       await ob.enqueue(mut('a'));
-      await ob.markConflict('a', 'baseVersion mismatch');
-      expect((await ob.get('a'))?.status).toBe('conflict');
+      await ob.markConflict('a', 'baseVersion mismatch', { id: 'row-a', title: 'server wins', updated_at: 'v2' });
+      const parked = await ob.get('a');
+      expect(parked?.status).toBe('conflict');
+      expect(parked?.conflictRow).toEqual({ id: 'row-a', title: 'server wins', updated_at: 'v2' });
       expect(await ob.nextBatch(T1, 10)).toEqual([]);
       // A later enqueue of the same id must NOT reset a parked conflict.
       await ob.enqueue(mut('a', { data: { id: 'row-a', title: 'late' } }));

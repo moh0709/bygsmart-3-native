@@ -17,7 +17,14 @@ CREATE TABLE IF NOT EXISTS outbox (
   attempts        INTEGER NOT NULL,
   next_attempt_at TEXT,
   last_error      TEXT,
+  conflict_row    TEXT,
   enqueued_at     TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_outbox_seq ON outbox (seq);
 `;
+
+/** Column name → DDL for guarded migrations of an existing outbox table (dev dbs
+ * created before a column existed). Applied only when PRAGMA table_info lacks it. */
+export const OUTBOX_ADD_COLUMNS: Record<string, string> = {
+  conflict_row: 'ALTER TABLE outbox ADD COLUMN conflict_row TEXT',
+};

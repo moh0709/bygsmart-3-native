@@ -38,6 +38,14 @@ export const da = {
     pending: '{{count}} i kø',
     now: 'Synk nu',
   },
+  conflict: {
+    title: 'Konflikt',
+    body: 'En anden har ændret dette, mens du var offline. Vælg hvilken version der gælder.',
+    keepServer: 'Behold serverens',
+    keepMine: 'Behold min',
+    mine: 'Min',
+    server: 'Server',
+  },
   minDag: {
     title: 'Min Dag',
     subtitle: 'Dine åbne opgaver',

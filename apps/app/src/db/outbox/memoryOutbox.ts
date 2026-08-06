@@ -78,8 +78,8 @@ export class InMemoryOutbox implements Outbox {
     }
   }
 
-  async markConflict(id: string, error: string): Promise<void> {
-    this.patch(id, { status: 'conflict', lastError: error });
+  async markConflict(id: string, error: string, serverRow?: Record<string, unknown>): Promise<void> {
+    this.patch(id, { status: 'conflict', lastError: error, ...(serverRow ? { conflictRow: serverRow } : {}) });
   }
 
   async discard(id: string): Promise<void> {

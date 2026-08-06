@@ -13,6 +13,8 @@ import { createHttpPullSource } from './httpPullSource';
 import { openDatabase } from './open';
 import { makeSeedSource, SEED_ENTITIES } from './seed';
 import { readSyncConfig, SYNC_ENTITIES } from './config';
+import { listConflicts, applyConflictResolution, type ConflictChoice, type ConflictInfo } from './conflicts';
+import { newMutationId } from './newId';
 
 export type SyncStatus = 'offline' | 'idle' | 'syncing' | 'error';
 
@@ -35,6 +37,10 @@ export interface DataContextValue {
   sync: SyncState;
   /** Flush the outbox to the server and re-pull now. No-op offline. */
   syncNow: () => void;
+  /** Writes the server rejected on a version/permission clash, awaiting a decision. */
+  conflicts: ConflictInfo[];
+  /** Resolve one parked conflict: keep the server row or re-queue mine on top. */
+  resolveConflict: (id: string, choice: ConflictChoice) => void;
 }
 
 const DataContext = createContext<DataContextValue>({
@@ -45,6 +51,8 @@ const DataContext = createContext<DataContextValue>({
   userId: null,
   sync: { status: 'offline', pending: 0 },
   syncNow: () => {},
+  conflicts: [],
+  resolveConflict: () => {},
 });
 
 export function useData(): DataContextValue {
@@ -57,6 +65,7 @@ export function RepositoryProvider({ children }: { children: ReactNode }): React
   const [label, setLabel] = useState('');
   const [hydration, setHydration] = useState<HydrationState>({ ready: false, progress: 0 });
   const [sync, setSync] = useState<SyncState>({ status: 'offline', pending: 0 });
+  const [conflicts, setConflicts] = useState<ConflictInfo[]>([]);
   const started = useRef(false);
 
   const config = useRef(readSyncConfig()).current;
@@ -78,10 +87,26 @@ export function RepositoryProvider({ children }: { children: ReactNode }): React
       });
       for (const entity of SYNC_ENTITIES) await pullEntity(e.repo, e.source, entity);
       setSync({ status: 'idle', pending: await e.outbox.size() });
+      setConflicts(listConflicts(await e.outbox.all()));
     } catch (err) {
       setSync((s) => ({ ...s, status: 'error', lastError: err instanceof Error ? err.message : String(err) }));
     }
   }, []);
+
+  const resolveConflict = useCallback(
+    (id: string, choice: ConflictChoice) => {
+      void (async () => {
+        const e = engine.current;
+        if (!e) return;
+        const entry = (await e.outbox.all()).find((x) => x.id === id);
+        if (!entry) return;
+        await applyConflictResolution(e.repo, e.outbox, entry, choice, newMutationId);
+        setConflicts(listConflicts(await e.outbox.all()));
+        void runSync();
+      })();
+    },
+    [runSync],
+  );
 
   useEffect(() => {
     if (started.current) return;
@@ -140,7 +165,7 @@ export function RepositoryProvider({ children }: { children: ReactNode }): React
   const syncNow = useCallback(() => void runSync(), [runSync]);
 
   return (
-    <DataContext.Provider value={{ repo, outbox, hydration, label, userId, sync, syncNow }}>
+    <DataContext.Provider value={{ repo, outbox, hydration, label, userId, sync, syncNow, conflicts, resolveConflict }}>
       {children}
     </DataContext.Provider>
   );

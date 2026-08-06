@@ -48,6 +48,8 @@ export interface OutboxEntry extends OutboxMutation {
   nextAttemptAt: string | null;
   /** Last transport/server error message, for surfacing + debugging. */
   lastError?: string;
+  /** On a parked conflict: the server's current authoritative row (for keep-server / keep-mine). */
+  conflictRow?: Record<string, unknown>;
   enqueuedAt: string;
 }
 
@@ -87,8 +89,8 @@ export interface Outbox {
   markAcked(id: string): Promise<void>;
   /** Transient failure — bump `attempts`, record the error, schedule retry at `nextAttemptAt`. */
   markFailed(id: string, error: string, nextAttemptAt: string): Promise<void>;
-  /** Server rejected on a version/permission conflict — park it for resolution. */
-  markConflict(id: string, error: string): Promise<void>;
+  /** Server rejected on a version/permission conflict — park it, keeping the server's row. */
+  markConflict(id: string, error: string, serverRow?: Record<string, unknown>): Promise<void>;
   /** Remove an entry outright (a conflict resolved by discarding, or a manual purge). */
   discard(id: string): Promise<void>;
 }
