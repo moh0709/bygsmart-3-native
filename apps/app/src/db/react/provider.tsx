@@ -12,9 +12,19 @@ import { createHttpMutationTransport } from '../outbox/httpTransport';
 import { createHttpPullSource } from './httpPullSource';
 import { openDatabase } from './open';
 import { makeSeedSource, SEED_ENTITIES } from './seed';
-import { readSyncConfig, SYNC_ENTITIES } from './config';
+import { SYNC_ENTITIES } from './config';
 import { listConflicts, applyConflictResolution, type ConflictChoice, type ConflictInfo } from './conflicts';
 import { newMutationId } from './newId';
+
+/** Backend wiring supplied by the app-shell once the user is signed in (null = offline). */
+export interface BackendConfig {
+  /** Express sync API origin incl. /api. */
+  baseUrl: string;
+  /** Current access token, refreshed as needed (from the auth session). */
+  getToken: () => Promise<string | null>;
+  /** Signed-in user id — stamps owner_id on creates. */
+  userId: string;
+}
 
 export type SyncStatus = 'offline' | 'idle' | 'syncing' | 'error';
 
@@ -59,7 +69,14 @@ export function useData(): DataContextValue {
   return useContext(DataContext);
 }
 
-export function RepositoryProvider({ children }: { children: ReactNode }): React.JSX.Element {
+export function RepositoryProvider({
+  backend = null,
+  children,
+}: {
+  /** Set by the app-shell once signed in; null = offline-first on the local seed. */
+  backend?: BackendConfig | null;
+  children: ReactNode;
+}): React.JSX.Element {
   const [repo, setRepo] = useState<Repository | null>(null);
   const [outbox, setOutbox] = useState<Outbox | null>(null);
   const [label, setLabel] = useState('');
@@ -68,7 +85,7 @@ export function RepositoryProvider({ children }: { children: ReactNode }): React
   const [conflicts, setConflicts] = useState<ConflictInfo[]>([]);
   const started = useRef(false);
 
-  const config = useRef(readSyncConfig()).current;
+  const config = useRef(backend).current; // captured once; the app-shell remounts on sign-in/out
   const userId = config?.userId ?? null;
 
   // Stable engine refs so syncNow and the interval share one source/transport.
@@ -124,7 +141,7 @@ export function RepositoryProvider({ children }: { children: ReactNode }): React
       setLabel(opened.label);
 
       const source: PullSource = config
-        ? createHttpPullSource({ baseUrl: config.baseUrl, getToken: () => config.token, limit: 500 })
+        ? createHttpPullSource({ baseUrl: config.baseUrl, getToken: config.getToken, limit: 500 })
         : makeSeedSource();
       const entities = config ? SYNC_ENTITIES : SEED_ENTITIES;
 
@@ -133,7 +150,7 @@ export function RepositoryProvider({ children }: { children: ReactNode }): React
           repo: opened.repo,
           outbox: opened.outbox,
           source,
-          transport: createHttpMutationTransport({ baseUrl: config.baseUrl, getToken: () => config.token }),
+          transport: createHttpMutationTransport({ baseUrl: config.baseUrl, getToken: config.getToken }),
         };
       }
 

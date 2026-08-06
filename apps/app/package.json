@@ -12,6 +12,7 @@
     "@bygsmart/tokens": "workspace:*",
     "@bygsmart/ui": "workspace:*",
     "@expo/metro-runtime": "~56.0.18",
+    "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "~56.0.18",
     "expo-constants": "~56.0.22",
     "expo-linking": "~56.0.16",

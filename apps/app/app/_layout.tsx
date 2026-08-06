@@ -1,10 +1,13 @@
 import { useMemo } from 'react';
 import { Slot, useRouter, usePathname, type Href } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ThemeProvider, NavShell, type NavItem } from '@bygsmart/ui';
+import { ThemeProvider, NavShell, Screen, Spinner, type NavItem } from '@bygsmart/ui';
 import { resolveActiveManifests, collectSlot, computeEnabledModules } from '@bygsmart/core';
 import { I18nProvider, useTranslation } from '@bygsmart/i18n';
-import { RepositoryProvider } from '../src/db/react';
+import { AuthProvider, useSession } from '@bygsmart/api-client';
+import { RepositoryProvider, readSyncBaseUrl, type BackendConfig } from '../src/db/react';
+import { authClient } from '../src/auth/client';
+import { LoginScreen } from '../src/screens/LoginScreen';
 import { ALL_MANIFESTS } from '../src/registry/manifests';
 
 interface ShellNav extends NavItem {
@@ -57,14 +60,51 @@ function Shell() {
   );
 }
 
+/** The signed-in app: builds the backend wiring from the live session and mounts the
+ * repository + shell. Rendered only past the auth gate, so a session is present. */
+function AuthedApp() {
+  const { session, getToken } = useSession();
+  const baseUrl = readSyncBaseUrl();
+  const backend: BackendConfig | null =
+    baseUrl && session ? { baseUrl, getToken, userId: session.user.id } : null;
+  return (
+    <RepositoryProvider backend={backend}>
+      <Shell />
+    </RepositoryProvider>
+  );
+}
+
+/** Auth gate: while a backend is configured, require sign-in; otherwise (offline-first
+ * dev with no Supabase) go straight in. */
+function Gate() {
+  const { isLoading, isAuthenticated } = useSession();
+  const backendConfigured = !!readSyncBaseUrl();
+  if (isLoading) {
+    return (
+      <Screen>
+        <Spinner />
+      </Screen>
+    );
+  }
+  if (backendConfigured && !isAuthenticated) return <LoginScreen />;
+  return <AuthedApp />;
+}
+
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <I18nProvider>
         <ThemeProvider>
-          <RepositoryProvider>
-            <Shell />
-          </RepositoryProvider>
+          {authClient ? (
+            <AuthProvider client={authClient}>
+              <Gate />
+            </AuthProvider>
+          ) : (
+            // No Supabase configured → offline-first, no login.
+            <RepositoryProvider backend={null}>
+              <Shell />
+            </RepositoryProvider>
+          )}
         </ThemeProvider>
       </I18nProvider>
     </SafeAreaProvider>

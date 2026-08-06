@@ -30,6 +30,13 @@ export const da = {
     emptyTitle: 'Ingen data endnu',
     errorTitle: 'Noget gik galt',
   },
+  login: {
+    title: 'Log ind',
+    subtitle: 'Byggeprojekter, offline-først.',
+    email: 'E-mail',
+    password: 'Adgangskode',
+    submit: 'Log ind',
+  },
   sync: {
     local: 'Kun lokal',
     synced: 'Synkroniseret',
