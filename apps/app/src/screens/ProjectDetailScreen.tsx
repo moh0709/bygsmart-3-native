@@ -3,7 +3,20 @@
 // Navigation-agnostic: it takes projectId + an onBack callback, so expo-router stays in
 // the app-shell route and out of the screens element (AR-05).
 import { ScrollView } from 'react-native';
-import { Screen, VStack, HStack, Text, Card, Button, Badge, Checkbox, Divider, EmptyState, IconButton } from '@bygsmart/ui';
+import {
+  Screen,
+  VStack,
+  HStack,
+  Text,
+  Card,
+  Button,
+  Badge,
+  Checkbox,
+  Divider,
+  EmptyState,
+  IconButton,
+  useTheme,
+} from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 import { useData, useLiveRow, useLiveList, useWrite, newMutationId } from '../db/react';
 import { pickImage } from '../db/media/pickImage';
@@ -15,13 +28,21 @@ export interface ProjectDetailScreenProps {
   onBack?: () => void;
 }
 
+function statusTone(status: string): 'success' | 'neutral' | 'primary' {
+  if (status === 'I gang') return 'success';
+  if (status === 'Afsluttet' || status === 'Arkiveret') return 'neutral';
+  return 'primary';
+}
+
 export function ProjectDetailScreen({ projectId, onBack }: ProjectDetailScreenProps): React.JSX.Element {
   const { t } = useTranslation();
+  const theme = useTheme();
   const { userId, attachMedia } = useData();
   const project = useLiveRow('projects', projectId);
   const allTasks = useLiveList('tasks');
   const write = useWrite();
   const tasks = tasksForProject(allTasks, projectId);
+  const openCount = tasks.filter((task) => task.status !== 'done').length;
 
   const attach = async (task: Row): Promise<void> => {
     const picked = await pickImage();
@@ -49,15 +70,24 @@ export function ProjectDetailScreen({ projectId, onBack }: ProjectDetailScreenPr
 
   return (
     <Screen edges={['top']} padding="none">
-      <ScrollView contentContainerStyle={{ padding: 16, gap: 16 }}>
-        {onBack ? <Button title={t('common.back')} variant="ghost" onPress={onBack} /> : null}
+      <ScrollView contentContainerStyle={{ padding: theme.spacing.lg, gap: theme.spacing.lg }}>
+        {onBack ? (
+          <Button title={`← ${t('common.back')}`} variant="ghost" size="sm" onPress={onBack} style={{ alignSelf: 'flex-start' }} />
+        ) : null}
 
         {!project ? (
           <EmptyState title={t('projectDetail.notFound')} icon="🏗️" />
         ) : (
           <>
             <VStack gap="xs">
-              <Text variant="heading">{String(project.name)}</Text>
+              <HStack justify="space-between" align="center" gap="sm">
+                <Text variant="title" numberOfLines={2} style={{ flex: 1 }}>
+                  {String(project.name)}
+                </Text>
+                {project.status ? (
+                  <Badge label={String(project.status)} tone={statusTone(String(project.status))} />
+                ) : null}
+              </HStack>
               {project.address ? (
                 <Text variant="body" color="textSecondary">
                   {String(project.address)}
@@ -69,7 +99,17 @@ export function ProjectDetailScreen({ projectId, onBack }: ProjectDetailScreenPr
 
             <Card>
               <VStack gap="sm">
-                <Text variant="title">{t('projectDetail.tasksTitle')}</Text>
+                <HStack justify="space-between" align="center" gap="sm">
+                  <Text variant="heading" style={{ flex: 1 }}>
+                    {t('projectDetail.tasksTitle')}
+                  </Text>
+                  {tasks.length > 0 ? (
+                    <Badge
+                      label={openCount > 0 ? String(openCount) : '✓'}
+                      tone={openCount > 0 ? 'primary' : 'success'}
+                    />
+                  ) : null}
+                </HStack>
                 {tasks.length === 0 ? (
                   <EmptyState title={t('tasks.emptyTitle')} description={t('tasks.emptyBody')} icon="☑️" />
                 ) : (
