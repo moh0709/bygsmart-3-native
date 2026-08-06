@@ -1,0 +1,4 @@
+import { runMediaQueueContract } from './mediaSuite';
+import { InMemoryMediaQueue } from './memoryMediaQueue';
+
+runMediaQueueContract('InMemoryMediaQueue', () => new InMemoryMediaQueue(() => '2026-08-06T00:00:00.000Z'));

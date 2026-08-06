@@ -14,7 +14,13 @@ import { openDatabase } from './open';
 import { makeSeedSource, SEED_ENTITIES } from './seed';
 import { SYNC_ENTITIES } from './config';
 import { listConflicts, applyConflictResolution, type ConflictChoice, type ConflictInfo } from './conflicts';
-import { newMutationId } from './newId';
+import { newMutationId, nowIso } from './newId';
+import { upsertRow } from '../outbox/writes';
+import { drainMedia, type MediaTransport } from '../media/uploader';
+import type { MediaQueue, MediaStore } from '../media/contract';
+import { createMediaStore } from '../media/mediaStore';
+import type { PickedImage } from '../media/pickImage';
+import type { Row } from '../contract';
 
 /** Backend wiring supplied by the app-shell once the user is signed in (null = offline). */
 export interface BackendConfig {
@@ -24,6 +30,8 @@ export interface BackendConfig {
   getToken: () => Promise<string | null>;
   /** Signed-in user id — stamps owner_id on creates. */
   userId: string;
+  /** Ships attachment bytes to Supabase Storage (built from the auth client). */
+  mediaTransport: MediaTransport;
 }
 
 export type SyncStatus = 'offline' | 'idle' | 'syncing' | 'error';
@@ -51,6 +59,10 @@ export interface DataContextValue {
   conflicts: ConflictInfo[];
   /** Resolve one parked conflict: keep the server row or re-queue mine on top. */
   resolveConflict: (id: string, choice: ConflictChoice) => void;
+  /** Attachment uploads still queued for Storage. */
+  mediaPending: number;
+  /** Queue a photo/attachment for a task (durable; uploaded on the next sync). */
+  attachMedia: (entity: string, entityId: string, projectId: string, file: PickedImage) => Promise<void>;
 }
 
 const DataContext = createContext<DataContextValue>({
@@ -63,6 +75,8 @@ const DataContext = createContext<DataContextValue>({
   syncNow: () => {},
   conflicts: [],
   resolveConflict: () => {},
+  mediaPending: 0,
+  attachMedia: async () => {},
 });
 
 export function useData(): DataContextValue {
@@ -83,32 +97,77 @@ export function RepositoryProvider({
   const [hydration, setHydration] = useState<HydrationState>({ ready: false, progress: 0 });
   const [sync, setSync] = useState<SyncState>({ status: 'offline', pending: 0 });
   const [conflicts, setConflicts] = useState<ConflictInfo[]>([]);
+  const [mediaPending, setMediaPending] = useState(0);
   const started = useRef(false);
 
   const config = useRef(backend).current; // captured once; the app-shell remounts on sign-in/out
   const userId = config?.userId ?? null;
 
-  // Stable engine refs so syncNow and the interval share one source/transport.
-  const engine = useRef<{ repo: Repository; outbox: Outbox; source: PullSource; transport: MutationTransport } | null>(null);
+  // Stable engine refs. `local` (repo/outbox/media/store) exists in both modes; `remote`
+  // (sync source/transport/media transport) only when a backend is configured.
+  const engine = useRef<{ repo: Repository; outbox: Outbox; media: MediaQueue; store: MediaStore } | null>(null);
+  const remote = useRef<{ source: PullSource; transport: MutationTransport; mediaTransport: MediaTransport } | null>(null);
 
   const runSync = useCallback(async () => {
     const e = engine.current;
-    if (!e) return;
+    const r = remote.current;
+    if (!e || !r) return;
     setSync((s) => ({ ...s, status: 'syncing' }));
     try {
       // Push local writes first, then pull server truth (so our own writes come back
       // authoritative), applying upserts into the store on the way in.
-      await drain(e.outbox, e.transport, {
+      await drain(e.outbox, r.transport, {
         now: () => new Date().toISOString(),
         reconcile: async (entity, row) => e.repo.applyDelta(entity, { upserts: [row], deletes: [] }),
       });
-      for (const entity of SYNC_ENTITIES) await pullEntity(e.repo, e.source, entity);
+      for (const entity of SYNC_ENTITIES) await pullEntity(e.repo, r.source, entity);
+
+      // Ship queued attachments to Storage; on success, record the reference on the row.
+      await drainMedia(e.media, {
+        now: () => new Date().toISOString(),
+        store: e.store,
+        transport: r.mediaTransport,
+        onUploaded: async (entry) => {
+          const row = await e.repo.get(entry.entity, entry.entityId);
+          if (!row) return;
+          const attachments = Array.isArray(row.attachments) ? (row.attachments as unknown[]) : [];
+          const updated: Row = {
+            ...row,
+            attachments: [...attachments, { path: entry.path, contentType: entry.contentType, uploadedAt: nowIso() }],
+          };
+          await upsertRow({ repo: e.repo, outbox: e.outbox, newId: newMutationId, now: nowIso }, entry.entity, updated);
+        },
+      });
+
       setSync({ status: 'idle', pending: await e.outbox.size() });
       setConflicts(listConflicts(await e.outbox.all()));
+      setMediaPending(await e.media.pendingCount());
     } catch (err) {
       setSync((s) => ({ ...s, status: 'error', lastError: err instanceof Error ? err.message : String(err) }));
     }
   }, []);
+
+  const attachMedia = useCallback(
+    async (entity: string, entityId: string, projectId: string, file: PickedImage) => {
+      const e = engine.current;
+      if (!e) return;
+      const id = newMutationId();
+      await e.store.put(id, file.bytes);
+      const ext = file.contentType === 'image/png' ? 'png' : file.contentType === 'image/jpeg' ? 'jpg' : 'bin';
+      await e.media.enqueue({
+        id,
+        bucket: 'task-docs',
+        path: `${projectId}/${entityId}/${id}.${ext}`,
+        contentType: file.contentType,
+        size: file.bytes.length,
+        entity,
+        entityId,
+      });
+      setMediaPending(await e.media.pendingCount());
+      void runSync();
+    },
+    [runSync],
+  );
 
   const resolveConflict = useCallback(
     (id: string, choice: ConflictChoice) => {
@@ -141,6 +200,7 @@ export function RepositoryProvider({
       setRepo(opened.repo);
       setOutbox(opened.outbox);
       setLabel(opened.label);
+      engine.current = { repo: opened.repo, outbox: opened.outbox, media: opened.media, store: createMediaStore() };
 
       const source: PullSource = config
         ? createHttpPullSource({ baseUrl: config.baseUrl, getToken: config.getToken, limit: 500 })
@@ -148,11 +208,10 @@ export function RepositoryProvider({
       const entities = config ? SYNC_ENTITIES : SEED_ENTITIES;
 
       if (config) {
-        engine.current = {
-          repo: opened.repo,
-          outbox: opened.outbox,
+        remote.current = {
           source,
           transport: createHttpMutationTransport({ baseUrl: config.baseUrl, getToken: config.getToken }),
+          mediaTransport: config.mediaTransport,
         };
       }
 
@@ -170,6 +229,7 @@ export function RepositoryProvider({
 
       if (config && alive) {
         setSync({ status: 'idle', pending: await opened.outbox.size() });
+        setMediaPending(await opened.media.pendingCount());
         // Gentle background loop so queued writes leave and server changes arrive.
         timer = setInterval(() => void runSync(), 8000);
       }
@@ -184,7 +244,9 @@ export function RepositoryProvider({
   const syncNow = useCallback(() => void runSync(), [runSync]);
 
   return (
-    <DataContext.Provider value={{ repo, outbox, hydration, label, userId, sync, syncNow, conflicts, resolveConflict }}>
+    <DataContext.Provider
+      value={{ repo, outbox, hydration, label, userId, sync, syncNow, conflicts, resolveConflict, mediaPending, attachMedia }}
+    >
       {children}
     </DataContext.Provider>
   );

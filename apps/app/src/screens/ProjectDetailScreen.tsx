@@ -3,9 +3,10 @@
 // Navigation-agnostic: it takes projectId + an onBack callback, so expo-router stays in
 // the app-shell route and out of the screens element (AR-05).
 import { ScrollView } from 'react-native';
-import { Screen, VStack, HStack, Text, Card, Button, Badge, Checkbox, Divider, EmptyState } from '@bygsmart/ui';
+import { Screen, VStack, HStack, Text, Card, Button, Badge, Checkbox, Divider, EmptyState, IconButton } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 import { useData, useLiveRow, useLiveList, useWrite, newMutationId } from '../db/react';
+import { pickImage } from '../db/media/pickImage';
 import type { Row } from '../db';
 import { tasksForProject } from './selectors';
 
@@ -16,11 +17,17 @@ export interface ProjectDetailScreenProps {
 
 export function ProjectDetailScreen({ projectId, onBack }: ProjectDetailScreenProps): React.JSX.Element {
   const { t } = useTranslation();
-  const { userId } = useData();
+  const { userId, attachMedia } = useData();
   const project = useLiveRow('projects', projectId);
   const allTasks = useLiveList('tasks');
   const write = useWrite();
   const tasks = tasksForProject(allTasks, projectId);
+
+  const attach = async (task: Row): Promise<void> => {
+    const picked = await pickImage();
+    if (picked) await attachMedia('tasks', String(task.id), projectId, picked);
+  };
+  const attachmentCount = (task: Row): number => (Array.isArray(task.attachments) ? task.attachments.length : 0);
 
   const addTask = (): void => {
     const n = tasks.length + 1;
@@ -73,7 +80,13 @@ export function ProjectDetailScreen({ projectId, onBack }: ProjectDetailScreenPr
                         {i > 0 ? <Divider /> : null}
                         <HStack justify="space-between" align="center" gap="sm">
                           <Checkbox checked={done} onChange={(v) => toggle(task, v)} label={String(task.title)} />
-                          <Badge label={done ? t('tasks.done') : t('tasks.open')} tone={done ? 'success' : 'primary'} />
+                          <HStack gap="sm" align="center">
+                            {attachmentCount(task) > 0 ? (
+                              <Badge label={t('media.count', { count: attachmentCount(task) })} tone="neutral" />
+                            ) : null}
+                            <IconButton icon="📎" accessibilityLabel={t('media.attach')} onPress={() => void attach(task)} />
+                            <Badge label={done ? t('tasks.done') : t('tasks.open')} tone={done ? 'success' : 'primary'} />
+                          </HStack>
                         </HStack>
                       </VStack>
                     );

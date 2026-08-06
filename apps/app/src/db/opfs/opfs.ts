@@ -15,6 +15,7 @@ interface OpfsFileHandle {
 }
 interface OpfsDir {
   getFileHandle(name: string, opts?: { create?: boolean }): Promise<OpfsFileHandle>;
+  removeEntry?(name: string): Promise<void>;
 }
 interface StorageLike {
   getDirectory?(): Promise<OpfsDir>;
@@ -49,4 +50,15 @@ export async function opfsWriteBytes(name: string, bytes: Uint8Array): Promise<v
   const writable = await handle.createWritable();
   await writable.write(bytes);
   await writable.close();
+}
+
+export async function opfsRemove(name: string): Promise<void> {
+  const s = storage();
+  if (!s?.getDirectory) return;
+  try {
+    const root = await s.getDirectory();
+    await root.removeEntry?.(name);
+  } catch {
+    /* already gone */
+  }
 }

@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider, NavShell, Screen, Spinner, type NavItem } from '@bygsmart/ui';
 import { resolveActiveManifests, collectSlot, computeEnabledModules } from '@bygsmart/core';
 import { I18nProvider, useTranslation } from '@bygsmart/i18n';
-import { AuthProvider, useSession } from '@bygsmart/api-client';
+import { AuthProvider, useSession, uploadToStorage } from '@bygsmart/api-client';
 import { RepositoryProvider, readSyncBaseUrl, type BackendConfig } from '../src/db/react';
 import { authClient } from '../src/auth/client';
 import { AuthFlow } from '../src/screens/AuthFlow';
@@ -66,8 +66,18 @@ function Shell() {
 function AuthedApp() {
   const { session, getToken } = useSession();
   const baseUrl = readSyncBaseUrl();
+  const client = authClient; // capture once so it narrows to non-null below
   const backend: BackendConfig | null =
-    baseUrl && session ? { baseUrl, getToken, userId: session.user.id } : null;
+    baseUrl && session && client
+      ? {
+          baseUrl,
+          getToken,
+          userId: session.user.id,
+          mediaTransport: {
+            upload: (bucket, path, bytes, contentType) => uploadToStorage(client, bucket, path, bytes, contentType),
+          },
+        }
+      : null;
   return (
     <RepositoryProvider backend={backend}>
       <Shell />

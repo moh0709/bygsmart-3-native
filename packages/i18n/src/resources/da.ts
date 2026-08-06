@@ -140,6 +140,11 @@ export const da = {
     newTaskTitle: 'Ny opgave',
     notFound: 'Projekt ikke fundet',
   },
+  media: {
+    attach: 'Tilføj foto',
+    pending: '{{count}} billeder i kø',
+    count: '{{count}} 📎',
+  },
   tasks: {
     title: 'Opgaver',
     emptyTitle: 'Ingen opgaver',
