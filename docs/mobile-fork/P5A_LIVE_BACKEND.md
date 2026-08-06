@@ -18,6 +18,16 @@ on **both** targets (Android emulator + web/OPFS), not mocks.
 | **Register + enroll MFA** (self-service) | — | ✅ sign up → enroll 2FA → logout → login+MFA | new user, own empty data |
 | **Password reset / change** | — | ✅ forgot → email; change → relogin | new pw works, old rejected |
 | **Photo/attachment upload** | — | ✅ attach → uploaded to Storage | object in task-docs + task.attachments |
+| **Single-writer (multi-tab)** | native = always writer | ✅ 1 Skriver / 1 Læser; failover | one writer to OPFS |
+
+### Single-writer write-gating (multi-tab)
+
+Multiple browser tabs share the OPFS database, so the Web-Locks election now GATES the
+sync loop: only the elected **writer** tab flushes/pulls (no two tabs write OPFS at once);
+**reader** tabs re-open the shared store when the writer broadcasts a change. Native is
+always the writer (one process). Verified with two tabs: one showed *Denne fane: Skriver*,
+the other *Læser*; the writer's task toggle synced to Postgres and the reader refreshed to
+match; and when the writer released the lock, the reader **auto-promoted** to writer.
 
 ### Media — offline photo/attachment uploads
 
