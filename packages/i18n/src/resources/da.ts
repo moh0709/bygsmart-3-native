@@ -48,8 +48,13 @@ export const da = {
     ready: 'Synkroniseret',
   },
   tasks: {
+    title: 'Opgaver',
     emptyTitle: 'Ingen opgaver',
     emptyBody: 'Opgaver vises her, når de er tildelt.',
+    open: 'Åben',
+    done: 'Færdig',
+    noProject: 'Uden projekt',
+    markDone: 'Markér som færdig',
   },
   capabilities: {
     title: 'Offline-kapacitet',

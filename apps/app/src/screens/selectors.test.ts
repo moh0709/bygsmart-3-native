@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { projectSummaries } from './selectors';
+import { projectSummaries, groupTasksByProject } from './selectors';
 import type { Row } from '../db';
 
 const p = (id: string, name: string): Row => ({ id, updated_at: '2026-08-01T00:00:00Z', name });
@@ -30,5 +30,28 @@ describe('projectSummaries', () => {
   it('preserves project order', () => {
     const projects = [p('p3', 'C'), p('p1', 'A'), p('p2', 'B')];
     expect(projectSummaries(projects, []).map((s) => s.project.id)).toEqual(['p3', 'p1', 'p2']);
+  });
+});
+
+describe('groupTasksByProject', () => {
+  it('groups tasks under their project in the projects list order', () => {
+    const projects = [p('p1', 'Villa Nord'), p('p2', 'Villa Syd')];
+    const tasks = [t('t1', 'p2', 'open'), t('t2', 'p1', 'open'), t('t3', 'p1', 'done')];
+    const groups = groupTasksByProject(tasks, projects);
+    expect(groups.map((g) => g.projectId)).toEqual(['p1', 'p2']); // list order, not task order
+    expect(groups[0]).toMatchObject({ projectName: 'Villa Nord' });
+    expect(groups[0]!.tasks.map((x) => x.id)).toEqual(['t2', 't3']);
+    expect(groups[1]!.tasks.map((x) => x.id)).toEqual(['t1']);
+  });
+
+  it('omits projects that have no tasks', () => {
+    const groups = groupTasksByProject([t('t1', 'p1', 'open')], [p('p1', 'A'), p('p2', 'B')]);
+    expect(groups.map((g) => g.projectId)).toEqual(['p1']);
+  });
+
+  it('collects orphan tasks (unknown project) into a trailing null-name group', () => {
+    const groups = groupTasksByProject([t('t1', 'ghost', 'open')], [p('p1', 'A')]);
+    expect(groups).toHaveLength(1);
+    expect(groups[0]).toMatchObject({ projectId: 'ghost', projectName: null });
   });
 });

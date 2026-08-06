@@ -26,3 +26,40 @@ export function projectSummaries(projects: Row[], tasks: Row[]): ProjectSummary[
     return { project, open: cur.open, total: cur.total };
   });
 }
+
+export interface TaskGroup {
+  projectId: string;
+  /** Project display name, or null when the task's project isn't in the list. */
+  projectName: string | null;
+  tasks: Row[];
+}
+
+/**
+ * Group tasks under their project, ordered by the projects list (so the grouping is
+ * stable and matches the Projects screen). Tasks whose project is unknown are collected
+ * into trailing groups with a null name.
+ */
+export function groupTasksByProject(tasks: Row[], projects: Row[]): TaskGroup[] {
+  const byProject = new Map<string, Row[]>();
+  for (const t of tasks) {
+    const pid = String(t.project_id ?? '');
+    const list = byProject.get(pid);
+    if (list) list.push(t);
+    else byProject.set(pid, [t]);
+  }
+
+  const groups: TaskGroup[] = [];
+  const seen = new Set<string>();
+  for (const p of projects) {
+    const pid = String(p.id);
+    const list = byProject.get(pid);
+    if (list) {
+      groups.push({ projectId: pid, projectName: String(p.name), tasks: list });
+      seen.add(pid);
+    }
+  }
+  for (const [pid, list] of byProject) {
+    if (!seen.has(pid)) groups.push({ projectId: pid, projectName: null, tasks: list });
+  }
+  return groups;
+}

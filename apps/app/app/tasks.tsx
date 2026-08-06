@@ -1,11 +1,6 @@
-import { Screen, EmptyState } from '@bygsmart/ui';
-import { useTranslation } from '@bygsmart/i18n';
+import { TasksScreen } from '../src/screens/TasksScreen';
 
+// app-shell route → the real Opgaver screen (data from the RepositoryProvider).
 export default function Tasks() {
-  const { t } = useTranslation();
-  return (
-    <Screen edges={['top']}>
-      <EmptyState title={t('tasks.emptyTitle')} description={t('tasks.emptyBody')} icon="☑️" />
-    </Screen>
-  );
+  return <TasksScreen />;
 }
