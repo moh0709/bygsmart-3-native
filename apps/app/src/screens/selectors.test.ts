@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { projectSummaries, groupTasksByProject, openTasksWithProject, tasksForProject } from './selectors';
+import {
+  projectSummaries,
+  groupTasksByProject,
+  openTasksWithProject,
+  tasksForProject,
+  danishGreeting,
+  formatDanishDate,
+  firstNameOf,
+} from './selectors';
 import type { Row } from '../db';
 
 const p = (id: string, name: string): Row => ({ id, updated_at: '2026-08-01T00:00:00Z', name });
@@ -85,5 +93,27 @@ describe('tasksForProject', () => {
 
   it('is empty for a project with no tasks', () => {
     expect(tasksForProject([t('t1', 'p1', 'open')], 'p2')).toEqual([]);
+  });
+});
+
+describe('home header helpers', () => {
+  it('greets by time of day', () => {
+    expect(danishGreeting(new Date(2026, 7, 7, 8))).toBe('God morgen');
+    expect(danishGreeting(new Date(2026, 7, 7, 12))).toBe('God eftermiddag');
+    expect(danishGreeting(new Date(2026, 7, 7, 18))).toBe('God aften');
+    expect(danishGreeting(new Date(2026, 7, 7, 23))).toBe('God aften');
+  });
+
+  it('formats a Danish date line', () => {
+    // 2026-08-07 is a Friday.
+    expect(formatDanishDate(new Date(2026, 7, 7))).toBe('Fredag 7. august');
+    expect(formatDanishDate(new Date(2026, 0, 1))).toBe('Torsdag 1. januar');
+  });
+
+  it('extracts the first name (or undefined)', () => {
+    expect(firstNameOf('Mikkel Overgaard')).toBe('Mikkel');
+    expect(firstNameOf('Bo')).toBe('Bo');
+    expect(firstNameOf('  ')).toBeUndefined();
+    expect(firstNameOf(null)).toBeUndefined();
   });
 });

@@ -85,3 +85,32 @@ export function openTasksWithProject(tasks: Row[], projects: Row[]): OpenTask[] 
     .filter((t) => t.status !== 'done')
     .map((task) => ({ task, projectName: nameById.get(String(task.project_id ?? '')) ?? null }));
 }
+
+// ─── Home header (Min Dag) — the 2.1 greeting + date line, da-DK ────────────────
+// The app is single-locale (D-02), so the Danish weekday/month names live here as
+// locale data rather than i18n copy. Pure (date in → string out) so they unit-test.
+
+const DA_WEEKDAYS = ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'] as const;
+const DA_MONTHS = [
+  'januar', 'februar', 'marts', 'april', 'maj', 'juni',
+  'juli', 'august', 'september', 'oktober', 'november', 'december',
+] as const;
+
+/** Time-of-day greeting, matching the 2.1 home (morgen < 12 <= eftermiddag < 18 <= aften). */
+export function danishGreeting(date: Date): string {
+  const h = date.getHours();
+  if (h < 12) return 'God morgen';
+  if (h < 18) return 'God eftermiddag';
+  return 'God aften';
+}
+
+/** e.g. "Fredag 7. august" — capitalised weekday, day, lowercase month. */
+export function formatDanishDate(date: Date): string {
+  return `${DA_WEEKDAYS[date.getDay()]} ${date.getDate()}. ${DA_MONTHS[date.getMonth()]}`;
+}
+
+/** First name from a full name (or undefined). Used for the greeting. */
+export function firstNameOf(fullName: string | null | undefined): string | undefined {
+  const first = (fullName ?? '').trim().split(/\s+/)[0];
+  return first || undefined;
+}

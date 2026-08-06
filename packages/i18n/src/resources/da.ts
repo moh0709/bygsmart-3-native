@@ -117,6 +117,7 @@ export const da = {
     title: 'Min Dag',
     subtitle: 'Dine åbne opgaver',
     openCount: '{{count}} åbne opgaver',
+    todaysTasks: 'Dagens opgaver',
     allDoneTitle: 'Alt er klaret',
     allDoneBody: 'Du har ingen åbne opgaver lige nu.',
   },
