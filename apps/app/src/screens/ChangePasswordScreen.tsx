@@ -3,7 +3,7 @@
 // reached from Mere. Uses only ui/i18n and the auth hook (AR-05).
 import { useState } from 'react';
 import { ScrollView } from 'react-native';
-import { Screen, VStack, Text, Card, TextField, Button, Badge } from '@bygsmart/ui';
+import { Screen, VStack, Text, Card, TextField, Button, Alert } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 import { useSession } from '@bygsmart/api-client';
 
@@ -37,7 +37,7 @@ export function ChangePasswordScreen({ onDone }: { onDone?: () => void } = {}): 
   return (
     <Screen edges={['top']} padding="none">
       <ScrollView contentContainerStyle={{ padding: 16, gap: 16 }}>
-        <Text variant="heading">{t('changePassword.title')}</Text>
+        <Text variant="title">{t('changePassword.title')}</Text>
         <Card>
           <VStack gap="md">
             <TextField
@@ -56,9 +56,9 @@ export function ChangePasswordScreen({ onDone }: { onDone?: () => void } = {}): 
               autoCapitalize="none"
               editable={!busy}
             />
-            {error ? <Badge label={error} tone="danger" /> : null}
-            {notice ? <Badge label={notice} tone="success" /> : null}
-            <Button title={t('changePassword.submit')} onPress={submit} loading={busy} />
+            {error ? <Alert variant="danger" message={error} /> : null}
+            {notice ? <Alert variant="success" message={notice} /> : null}
+            <Button title={t('changePassword.submit')} size="lg" fullWidth onPress={submit} loading={busy} />
           </VStack>
         </Card>
         {onDone ? <Button title={t('changePassword.back')} variant="ghost" onPress={onDone} /> : null}

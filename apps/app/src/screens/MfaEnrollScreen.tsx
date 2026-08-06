@@ -4,7 +4,7 @@
 // (reached from Mere). Uses only ui/i18n and the auth hook (AR-05).
 import { useCallback, useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
-import { Screen, VStack, Text, Card, TextField, Button, Badge, Divider } from '@bygsmart/ui';
+import { Screen, VStack, Text, Card, TextField, Button, Badge, Alert, Divider } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 import { useSession, type EnrollTotpData, type TotpFactor } from '@bygsmart/api-client';
 
@@ -62,7 +62,7 @@ export function MfaEnrollScreen({ onDone }: { onDone?: () => void } = {}): React
   return (
     <Screen edges={['top']} padding="none">
       <ScrollView contentContainerStyle={{ padding: 16, gap: 16 }}>
-        <Text variant="heading">{t('mfaEnroll.title')}</Text>
+        <Text variant="title">{t('mfaEnroll.title')}</Text>
 
         <Card>
           <VStack gap="md">
@@ -94,16 +94,16 @@ export function MfaEnrollScreen({ onDone }: { onDone?: () => void } = {}): React
                   maxLength={6}
                   editable={!busy}
                 />
-                {error ? <Badge label={error} tone="danger" /> : null}
-                <Button title={t('mfaEnroll.activate')} onPress={activate} loading={busy} />
+                {error ? <Alert variant="danger" message={error} /> : null}
+                <Button title={t('mfaEnroll.activate')} size="lg" fullWidth onPress={activate} loading={busy} />
               </>
             ) : (
               <>
                 <Text variant="body" color="textSecondary">
                   {t('mfaEnroll.intro')}
                 </Text>
-                {error ? <Badge label={error} tone="danger" /> : null}
-                <Button title={t('mfaEnroll.start')} onPress={start} loading={busy} />
+                {error ? <Alert variant="danger" message={error} /> : null}
+                <Button title={t('mfaEnroll.start')} size="lg" fullWidth onPress={start} loading={busy} />
               </>
             )}
           </VStack>

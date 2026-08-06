@@ -1,12 +1,12 @@
 // To-faktor-godkendelse — the login-time TOTP challenge (aal1 → aal2). Shown by the
 // app-shell gate when a signed-in session still owes its second factor. Enter the
-// 6-digit code → verifyMfa; Annuller signs the half-authenticated session out. Uses
-// only ui/i18n and the auth hook (AR-05).
+// 6-digit code → verifyMfa; Annuller signs the half-authenticated session out.
+// Presentation via AuthScaffold; auth wiring unchanged (AR-05).
 import { useState } from 'react';
-import { ScrollView } from 'react-native';
-import { Screen, VStack, Text, Card, TextField, Button, Badge } from '@bygsmart/ui';
+import { VStack, Text, TextField, Button, Alert } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 import { useSession } from '@bygsmart/api-client';
+import { AuthScaffold } from './AuthScaffold';
 
 export function MfaChallengeScreen(): React.JSX.Element {
   const { t } = useTranslation();
@@ -25,30 +25,30 @@ export function MfaChallengeScreen(): React.JSX.Element {
   };
 
   return (
-    <Screen padding="none">
-      <ScrollView contentContainerStyle={{ padding: 16, gap: 16, flexGrow: 1, justifyContent: 'center' }}>
-        <Card>
-          <VStack gap="md">
-            <Text variant="title">{t('mfa.title')}</Text>
-            <Text variant="body" color="textSecondary">
-              {t('mfa.subtitle')}
-            </Text>
-            <TextField
-              label={t('mfa.code')}
-              value={code}
-              onChangeText={(v) => setCode(v.replace(/\D/g, '').slice(0, 6))}
-              placeholder="123456"
-              keyboardType="number-pad"
-              autoComplete="one-time-code"
-              maxLength={6}
-              editable={!busy}
-            />
-            {error ? <Badge label={error} tone="danger" /> : null}
-            <Button title={t('mfa.verify')} onPress={submit} loading={busy} />
-            <Button title={t('mfa.cancel')} variant="ghost" onPress={() => void cancelMfa()} />
-          </VStack>
-        </Card>
-      </ScrollView>
-    </Screen>
+    <AuthScaffold>
+      <VStack gap="md">
+        <VStack gap="xs">
+          <Text variant="title" center>
+            {t('mfa.title')}
+          </Text>
+          <Text variant="body" color="textSecondary" center>
+            {t('mfa.subtitle')}
+          </Text>
+        </VStack>
+        <TextField
+          label={t('mfa.code')}
+          value={code}
+          onChangeText={(v) => setCode(v.replace(/\D/g, '').slice(0, 6))}
+          placeholder="123456"
+          keyboardType="number-pad"
+          autoComplete="one-time-code"
+          maxLength={6}
+          editable={!busy}
+        />
+        {error ? <Alert variant="danger" message={error} /> : null}
+        <Button title={t('mfa.verify')} size="lg" fullWidth onPress={submit} loading={busy} />
+        <Button title={t('mfa.cancel')} variant="ghost" onPress={() => void cancelMfa()} />
+      </VStack>
+    </AuthScaffold>
   );
 }
