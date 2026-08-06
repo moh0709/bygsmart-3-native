@@ -15,6 +15,7 @@ on **both** targets (Android emulator + web/OPFS), not mocks.
 | **Conflict** (two writers edit one row) | ✅ detected + parked + resolved | — | keep-mine landed in DB |
 | **Login** (Supabase email/password) | login screen renders | ✅ signed in → real backend | session token drives sync |
 | **MFA** (TOTP second factor) | — | ✅ password → challenge → code → app | aal1 held until aal2 |
+| **Register + enroll MFA** (self-service) | — | ✅ sign up → enroll 2FA → logout → login+MFA | new user, own empty data |
 
 ### Real login (adapted from 2.1 production)
 
