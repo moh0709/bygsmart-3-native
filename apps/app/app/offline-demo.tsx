@@ -3,11 +3,19 @@ import { Platform, ScrollView } from 'react-native';
 import { Screen, VStack, HStack, Text, Card, Button, Badge, ProgressBar, ListItem, Divider, EmptyState } from '@bygsmart/ui';
 import {
   InMemoryRepository,
+  InMemoryOutbox,
   SqlRepository,
+  SqlOutbox,
+  drain,
+  upsertRow,
   electSingleWriter,
   hydrate,
   openChangeChannel,
   type ChangeChannel,
+  type MutationResult,
+  type MutationTransport,
+  type Outbox,
+  type OutboxMutation,
   type PullPage,
   type PullSource,
   type Repository,
@@ -48,17 +56,41 @@ function makeSource(): PullSource {
   };
 }
 
-async function openRepo(): Promise<{ repo: Repository; source: string }> {
+// The repo AND the outbox share ONE device database (same driver), so both the synced
+// rows and the unsent writes are durable together.
+async function openRepo(): Promise<{ repo: Repository; outbox: Outbox; source: string }> {
   if (Platform.OS !== 'web') {
     const { openExpoSqliteDriver } = await import('../src/db/sql/expoSqliteDriver');
-    return { repo: await SqlRepository.create(await openExpoSqliteDriver('bygsmart-demo.db')), source: 'enhed (SQLite)' };
+    const driver = await openExpoSqliteDriver('bygsmart-demo.db');
+    return { repo: await SqlRepository.create(driver), outbox: await SqlOutbox.create(driver), source: 'enhed (SQLite)' };
   }
   const { opfsAvailable } = await import('../src/db/opfs/opfs');
   if (opfsAvailable()) {
     const { openWebSqlDriver } = await import('../src/db/sql/webSqlDriver');
-    return { repo: await SqlRepository.create(await openWebSqlDriver('bygsmart-demo.sqlite')), source: 'browser (OPFS SQLite)' };
+    const driver = await openWebSqlDriver('bygsmart-demo.sqlite');
+    return { repo: await SqlRepository.create(driver), outbox: await SqlOutbox.create(driver), source: 'browser (OPFS SQLite)' };
   }
-  return { repo: new InMemoryRepository(), source: 'hukommelse (web)' };
+  return { repo: new InMemoryRepository(), outbox: new InMemoryOutbox(), source: 'hukommelse (web)' };
+}
+
+// A stand-in for POST /api/sync/mutations — an in-memory "server" that applies the
+// batch and echoes one result per mutation, so the whole write loop is visible on the
+// device without the real backend. Refuses when "offline" (throws, like a dropped
+// connection) so the outbox holds the writes until connectivity returns.
+class FakeServer {
+  rows = new Map<string, Row>();
+  apply(muts: OutboxMutation[]): MutationResult[] {
+    return muts.map((m) => {
+      const id = (m.data as { id: string }).id;
+      if (m.op === 'delete') {
+        this.rows.delete(id);
+        return { id: m.id, status: 'applied' };
+      }
+      const row = { ...(m.data as Row), updated_at: new Date().toISOString() };
+      this.rows.set(id, row);
+      return { id: m.id, status: 'applied', row };
+    });
+  }
 }
 
 export default function OfflineDemo() {
@@ -67,6 +99,7 @@ export default function OfflineDemo() {
   const channelRef = useRef<ChangeChannel | null>(null);
 
   const [repo, setRepo] = useState<Repository | null>(null);
+  const [outbox, setOutbox] = useState<Outbox | null>(null);
   const [sourceLabel, setSourceLabel] = useState('');
   const [isWriter, setIsWriter] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -74,12 +107,22 @@ export default function OfflineDemo() {
   const [fromDisk, setFromDisk] = useState(false);
   const [rows, setRows] = useState<Row[]>([]);
 
+  // Write-path (P3b) state.
+  const server = useRef(new FakeServer());
+  const onlineRef = useRef(true);
+  const [online, setOnline] = useState(true);
+  const [pending, setPending] = useState(0);
+  const [serverCount, setServerCount] = useState(0);
+  const [flushMsg, setFlushMsg] = useState('');
+
   // (Re)open the repo — also called when another tab broadcasts a change, so a
   // follower re-reads the shared OPFS store.
   const load = useCallback(async () => {
-    const { repo: r, source: label } = await openRepo();
+    const { repo: r, outbox: ob, source: label } = await openRepo();
     setRepo(r);
+    setOutbox(ob);
     setSourceLabel(label);
+    setPending(await ob.size());
     const existing = await r.list('tasks');
     if (existing.length > 0) {
       setFromDisk(true);
@@ -134,13 +177,61 @@ export default function OfflineDemo() {
     announce();
   };
 
+  // Write path (P3b): the transport is the in-memory server, gated by the online flag.
+  const transport: MutationTransport = useMemo(
+    () => ({
+      async send(muts) {
+        if (!onlineRef.current) throw new Error('offline');
+        await new Promise((r) => setTimeout(r, 300));
+        return server.current.apply(muts);
+      },
+    }),
+    [],
+  );
+
+  // Make a change offline: optimistic local write + enqueue in the durable outbox.
+  const writeOffline = async () => {
+    if (!repo || !outbox) return;
+    const id = `local-${nextId.current++}`;
+    await upsertRow(
+      { repo, outbox, newId: () => `m-${id}`, now: () => new Date().toISOString() },
+      'tasks',
+      { id, updated_at: '', title: `Egen opgave ${id}`, project: 'Min enhed' },
+    );
+    setPending(await outbox.size());
+    announce();
+  };
+
+  const toggleOnline = () => {
+    onlineRef.current = !online;
+    setOnline(!online);
+  };
+
+  // Ship the queue to the server; reconcile applied rows back into the local store.
+  const sync = async () => {
+    if (!repo || !outbox) return;
+    setFlushMsg('Synkroniserer…');
+    const summary = await drain(outbox, transport, {
+      now: () => new Date().toISOString(),
+      reconcile: async (entity, row) => repo.applyDelta(entity, { upserts: [row], deletes: [] }),
+    });
+    setPending(await outbox.size());
+    setServerCount(server.current.rows.size);
+    setFlushMsg(
+      onlineRef.current
+        ? `Sendt ${summary.applied} · fejl ${summary.failed} · konflikt ${summary.conflicts}`
+        : 'Offline — ændringer venter i køen',
+    );
+    announce();
+  };
+
   return (
     <Screen edges={['top']} padding="none">
       <ScrollView contentContainerStyle={{ padding: 16, gap: 16 }}>
         <VStack gap="xs">
-          <Text variant="heading">Offline-demo (P3a)</Text>
+          <Text variant="heading">Offline-demo (P3a + P3b)</Text>
           <Text variant="caption" color="textSecondary">
-            Lokal database · hydrering · live opdatering
+            Lokal database · hydrering · live opdatering · offline skrivekø
           </Text>
         </VStack>
 
@@ -175,6 +266,31 @@ export default function OfflineDemo() {
                 </VStack>
               ))
             )}
+          </VStack>
+        </Card>
+
+        <Card>
+          <VStack gap="sm">
+            <Text variant="title">Skriv offline (P3b)</Text>
+            <Text variant="body" color="textSecondary">
+              Egne ændringer gemmes straks lokalt og lægges i en holdbar kø. De sendes
+              til serveren i rækkefølge, når du er online igen.
+            </Text>
+            <HStack gap="sm" style={{ flexWrap: 'wrap' }}>
+              <Badge label={`Ventende: ${pending}`} tone={pending > 0 ? 'warning' : 'success'} />
+              <Badge label={online ? 'Online' : 'Offline'} tone={online ? 'success' : 'neutral'} />
+              <Badge label={`Server har: ${serverCount}`} tone="neutral" />
+            </HStack>
+            <HStack gap="sm" style={{ flexWrap: 'wrap' }}>
+              <Button title="Tilføj opgave offline" onPress={writeOffline} />
+              <Button title={online ? 'Gå offline' : 'Gå online'} variant="secondary" onPress={toggleOnline} />
+              <Button title="Synkronisér nu" onPress={sync} />
+            </HStack>
+            {flushMsg ? (
+              <Text variant="caption" color="textSecondary">
+                {flushMsg}
+              </Text>
+            ) : null}
           </VStack>
         </Card>
 
