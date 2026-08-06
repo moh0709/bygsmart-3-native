@@ -36,6 +36,7 @@ function SecurityCard() {
           />
         </HStack>
         <Button title={t('security.manage')} variant="secondary" onPress={() => router.navigate('/mfa-enroll' as Href)} />
+        <Button title={t('security.changePassword')} variant="secondary" onPress={() => router.navigate('/change-password' as Href)} />
         <Button title={t('security.logout')} variant="ghost" onPress={() => void auth.logout()} />
       </VStack>
     </Card>

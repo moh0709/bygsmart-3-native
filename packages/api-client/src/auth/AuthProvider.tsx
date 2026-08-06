@@ -49,6 +49,10 @@ export interface AuthValue {
   login(email: string, password: string): Promise<LoginResult>;
   /** Create an account (email/password + display name). */
   register(email: string, password: string, name: string): Promise<LoginResult>;
+  /** Send a password-reset email (recovery link). */
+  resetPassword(email: string): Promise<LoginResult>;
+  /** Set a new password for the current session (change password / after recovery). */
+  updatePassword(password: string): Promise<LoginResult>;
   /** Complete the second factor with the 6-digit code (aal1 → aal2). */
   verifyMfa(code: string): Promise<LoginResult>;
   /** Abandon a pending MFA challenge and sign the half-authenticated session out. */
@@ -158,6 +162,19 @@ export function AuthProvider({ client, children }: { client: SupabaseClient; chi
     return { success: true, requiresConfirmation: true, message: 'Tjek din e-mail for at bekræfte kontoen.' };
   };
 
+  const resetPassword = async (email: string): Promise<LoginResult> => {
+    const { error } = await client.auth.resetPasswordForEmail(email.trim());
+    if (error) return { success: false, message: loginErrorMessage(error.message) };
+    return { success: true, message: 'Tjek din e-mail for at nulstille adgangskoden.' };
+  };
+
+  const updatePassword = async (password: string): Promise<LoginResult> => {
+    if (password.length < 6) return { success: false, message: 'Adgangskoden skal være mindst 6 tegn.' };
+    const { error } = await client.auth.updateUser({ password });
+    if (error) return { success: false, message: loginErrorMessage(error.message) };
+    return { success: true, message: 'Adgangskoden er opdateret.' };
+  };
+
   const enrollTotp = async (): Promise<EnrollTotpResult> => {
     const { data, error } = await client.auth.mfa.enroll({
       factorType: 'totp',
@@ -251,6 +268,8 @@ export function AuthProvider({ client, children }: { client: SupabaseClient; chi
     mfaPending,
     login,
     register,
+    resetPassword,
+    updatePassword,
     verifyMfa,
     cancelMfa,
     enrollTotp,

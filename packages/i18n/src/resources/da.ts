@@ -56,6 +56,22 @@ export const da = {
   loginExtra: {
     noAccount: 'Ny hos BygSmart?',
     toRegister: 'Opret konto',
+    forgot: 'Glemt adgangskode?',
+  },
+  forgot: {
+    title: 'Nulstil adgangskode',
+    subtitle: 'Vi sender et link til din e-mail.',
+    email: 'E-mail',
+    submit: 'Send link',
+    back: 'Tilbage til login',
+  },
+  changePassword: {
+    title: 'Skift adgangskode',
+    newPassword: 'Ny adgangskode',
+    confirm: 'Gentag adgangskode',
+    mismatch: 'Adgangskoderne matcher ikke.',
+    submit: 'Gem',
+    back: 'Tilbage',
   },
   mfaEnroll: {
     title: 'To-faktor-sikkerhed',
@@ -75,6 +91,7 @@ export const da = {
     manage: 'Administrér',
     on: 'Til',
     off: 'Fra',
+    changePassword: 'Skift adgangskode',
     logout: 'Log ud',
   },
   sync: {

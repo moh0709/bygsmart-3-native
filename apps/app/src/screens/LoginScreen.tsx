@@ -7,7 +7,13 @@ import { Screen, VStack, Text, Card, TextField, Button, Badge } from '@bygsmart/
 import { useTranslation } from '@bygsmart/i18n';
 import { useSession } from '@bygsmart/api-client';
 
-export function LoginScreen({ onRegister }: { onRegister?: () => void } = {}): React.JSX.Element {
+export function LoginScreen({
+  onRegister,
+  onForgot,
+}: {
+  onRegister?: () => void;
+  onForgot?: () => void;
+} = {}): React.JSX.Element {
   const { t } = useTranslation();
   const { login } = useSession();
   const [email, setEmail] = useState('');
@@ -58,6 +64,7 @@ export function LoginScreen({ onRegister }: { onRegister?: () => void } = {}): R
             />
             {error ? <Badge label={error} tone="danger" /> : null}
             <Button title={t('login.submit')} onPress={submit} loading={busy} />
+            {onForgot ? <Button title={t('loginExtra.forgot')} variant="ghost" onPress={onForgot} /> : null}
             {onRegister ? (
               <Button title={`${t('loginExtra.noAccount')} ${t('loginExtra.toRegister')}`} variant="ghost" onPress={onRegister} />
             ) : null}
