@@ -101,6 +101,8 @@ export const da = {
     error: 'Synk-fejl',
     pending: '{{count}} i kø',
     now: 'Synk nu',
+    writer: 'Denne fane: Skriver',
+    reader: 'Denne fane: Læser',
   },
   conflict: {
     title: 'Konflikt',

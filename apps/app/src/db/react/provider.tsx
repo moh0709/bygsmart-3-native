@@ -15,6 +15,8 @@ import { makeSeedSource, SEED_ENTITIES } from './seed';
 import { SYNC_ENTITIES } from './config';
 import { listConflicts, applyConflictResolution, type ConflictChoice, type ConflictInfo } from './conflicts';
 import { newMutationId, nowIso } from './newId';
+import { electSingleWriter, type WriterElection } from '../writerElection';
+import { openChangeChannel, type ChangeChannel } from '../crossTab';
 import { upsertRow } from '../outbox/writes';
 import { drainMedia, type MediaTransport } from '../media/uploader';
 import type { MediaQueue, MediaStore } from '../media/contract';
@@ -63,6 +65,8 @@ export interface DataContextValue {
   mediaPending: number;
   /** Queue a photo/attachment for a task (durable; uploaded on the next sync). */
   attachMedia: (entity: string, entityId: string, projectId: string, file: PickedImage) => Promise<void>;
+  /** This tab owns the writes (single-writer election). Followers read; they don't sync. */
+  isWriter: boolean;
 }
 
 const DataContext = createContext<DataContextValue>({
@@ -77,6 +81,7 @@ const DataContext = createContext<DataContextValue>({
   resolveConflict: () => {},
   mediaPending: 0,
   attachMedia: async () => {},
+  isWriter: true,
 });
 
 export function useData(): DataContextValue {
@@ -98,7 +103,11 @@ export function RepositoryProvider({
   const [sync, setSync] = useState<SyncState>({ status: 'offline', pending: 0 });
   const [conflicts, setConflicts] = useState<ConflictInfo[]>([]);
   const [mediaPending, setMediaPending] = useState(0);
+  const [isWriter, setIsWriter] = useState(true);
   const started = useRef(false);
+  const writerRef = useRef(true); // read synchronously inside runSync
+  const channelRef = useRef<ChangeChannel | null>(null);
+  const electionRef = useRef<WriterElection | null>(null);
 
   const config = useRef(backend).current; // captured once; the app-shell remounts on sign-in/out
   const userId = config?.userId ?? null;
@@ -112,6 +121,9 @@ export function RepositoryProvider({
     const e = engine.current;
     const r = remote.current;
     if (!e || !r) return;
+    // Single-writer: only the elected tab flushes/pulls, so two tabs never write the
+    // shared OPFS database at once. Followers read; the writer broadcasts when done.
+    if (!writerRef.current) return;
     setSync((s) => ({ ...s, status: 'syncing' }));
     try {
       // Push local writes first, then pull server truth (so our own writes come back
@@ -142,6 +154,8 @@ export function RepositoryProvider({
       setSync({ status: 'idle', pending: await e.outbox.size() });
       setConflicts(listConflicts(await e.outbox.all()));
       setMediaPending(await e.media.pendingCount());
+      // Tell follower tabs the shared store changed so they re-read it.
+      channelRef.current?.broadcast();
     } catch (err) {
       setSync((s) => ({ ...s, status: 'error', lastError: err instanceof Error ? err.message : String(err) }));
     }
@@ -190,17 +204,42 @@ export function RepositoryProvider({
     let alive = true;
     let timer: ReturnType<typeof setInterval> | undefined;
 
+    // Backend mode uses a PER-USER database so signing in as a different user never shows
+    // the previous user's cached rows (and it never inherits the offline seed's cursors).
+    const dbName = config ? `bygsmart-live-${config.userId}` : 'bygsmart-app';
+    const store = createMediaStore();
+
+    // Single-writer election (web multi-tab; native is always the writer). Followers
+    // don't sync — they re-open the shared store when the writer broadcasts a change.
+    const election = electSingleWriter(`writer-${dbName}`);
+    electionRef.current = election;
+    writerRef.current = election.isLeader();
+    setIsWriter(election.isLeader());
+    const offElection = election.onChange((leader) => {
+      writerRef.current = leader;
+      if (alive) setIsWriter(leader);
+      if (leader) void runSync(); // a promoted follower starts syncing immediately
+    });
+
+    const reopenReads = async (): Promise<void> => {
+      const o = await openDatabase(dbName);
+      if (!alive) return;
+      engine.current = { repo: o.repo, outbox: o.outbox, media: o.media, store };
+      setRepo(o.repo);
+      setOutbox(o.outbox);
+    };
+    const channel = openChangeChannel(`changed-${dbName}`, () => {
+      if (!writerRef.current) void reopenReads(); // only followers reload; the writer is the source
+    });
+    channelRef.current = channel;
+
     void (async () => {
-      // Backend mode uses a PER-USER database ('bygsmart-live-<userId>') so signing in as
-      // a different user never shows the previous user's cached rows, and so it never
-      // inherits the offline seed's fake ids/cursors (which would collide with the real
-      // server's keyset cursor).
-      const opened = await openDatabase(config ? `bygsmart-live-${config.userId}` : 'bygsmart-app');
+      const opened = await openDatabase(dbName);
       if (!alive) return;
       setRepo(opened.repo);
       setOutbox(opened.outbox);
       setLabel(opened.label);
-      engine.current = { repo: opened.repo, outbox: opened.outbox, media: opened.media, store: createMediaStore() };
+      engine.current = { repo: opened.repo, outbox: opened.outbox, media: opened.media, store };
 
       const source: PullSource = config
         ? createHttpPullSource({ baseUrl: config.baseUrl, getToken: config.getToken, limit: 500 })
@@ -238,6 +277,9 @@ export function RepositoryProvider({
     return () => {
       alive = false;
       if (timer) clearInterval(timer);
+      offElection();
+      election.release();
+      channel.close();
     };
   }, [config, runSync]);
 
@@ -245,7 +287,7 @@ export function RepositoryProvider({
 
   return (
     <DataContext.Provider
-      value={{ repo, outbox, hydration, label, userId, sync, syncNow, conflicts, resolveConflict, mediaPending, attachMedia }}
+      value={{ repo, outbox, hydration, label, userId, sync, syncNow, conflicts, resolveConflict, mediaPending, attachMedia, isWriter }}
     >
       {children}
     </DataContext.Provider>

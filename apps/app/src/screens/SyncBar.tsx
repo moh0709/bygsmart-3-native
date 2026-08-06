@@ -7,7 +7,7 @@ import { useData } from '../db/react';
 
 export function SyncBar(): React.JSX.Element | null {
   const { t } = useTranslation();
-  const { sync, syncNow, mediaPending } = useData();
+  const { sync, syncNow, mediaPending, isWriter } = useData();
 
   const tone =
     sync.status === 'error' ? 'danger' : sync.status === 'syncing' ? 'primary' : sync.status === 'idle' ? 'success' : 'neutral';
@@ -24,6 +24,9 @@ export function SyncBar(): React.JSX.Element | null {
     <HStack justify="space-between" align="center" gap="sm" style={{ flexWrap: 'wrap' }}>
       <HStack gap="sm" align="center" style={{ flexWrap: 'wrap' }}>
         <Badge label={label} tone={tone} />
+        {sync.status !== 'offline' ? (
+          <Badge label={isWriter ? t('sync.writer') : t('sync.reader')} tone={isWriter ? 'success' : 'neutral'} />
+        ) : null}
         {sync.pending > 0 ? <Badge label={t('sync.pending', { count: sync.pending })} tone="warning" /> : null}
         {mediaPending > 0 ? <Badge label={t('media.pending', { count: mediaPending })} tone="warning" /> : null}
       </HStack>
