@@ -46,9 +46,17 @@ function makeSource(): PullSource {
 }
 
 async function openRepo(): Promise<{ repo: Repository; source: string }> {
-  if (Platform.OS === 'web') return { repo: new InMemoryRepository(), source: 'hukommelse (web)' };
-  const { openExpoSqliteDriver } = await import('../src/db/sql/expoSqliteDriver');
-  return { repo: await SqlRepository.create(await openExpoSqliteDriver('bygsmart-demo.db')), source: 'enhed (SQLite)' };
+  if (Platform.OS !== 'web') {
+    const { openExpoSqliteDriver } = await import('../src/db/sql/expoSqliteDriver');
+    return { repo: await SqlRepository.create(await openExpoSqliteDriver('bygsmart-demo.db')), source: 'enhed (SQLite)' };
+  }
+  // Web: wasm SQLite (sql.js) persisted to OPFS when available, else in-memory.
+  const { opfsAvailable } = await import('../src/db/opfs/opfs');
+  if (opfsAvailable()) {
+    const { openWebSqlDriver } = await import('../src/db/sql/webSqlDriver');
+    return { repo: await SqlRepository.create(await openWebSqlDriver('bygsmart-demo.sqlite')), source: 'browser (OPFS SQLite)' };
+  }
+  return { repo: new InMemoryRepository(), source: 'hukommelse (web)' };
 }
 
 export default function OfflineDemo() {
