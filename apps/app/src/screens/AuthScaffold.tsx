@@ -3,7 +3,7 @@
 // visually identical without repeating the lockup. AR-05: ui/i18n only.
 import type { ReactNode } from 'react';
 import { ScrollView, View, Pressable } from 'react-native';
-import { Screen, VStack, HStack, Text, Card, BrandMark, useTheme } from '@bygsmart/ui';
+import { Screen, VStack, HStack, Text, Card, BrandMark, useTheme, elevate } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 
 export function AuthScaffold({ children, footer }: { children: ReactNode; footer?: ReactNode }): React.JSX.Element {
@@ -27,7 +27,7 @@ export function AuthScaffold({ children, footer }: { children: ReactNode; footer
                   backgroundColor: theme.colors.primary,
                   padding: theme.spacing.md,
                   borderRadius: theme.radii.lg,
-                  ...theme.elevation.card,
+                  ...elevate(theme.elevation.card),
                 }}
               >
                 <BrandMark size={30} color={theme.colors.primaryText} />

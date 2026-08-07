@@ -1,6 +1,7 @@
 // @bygsmart/ui — universal responsive primitives (RN + RNW).
 // Every primitive: token-driven, responsive-aware, a11y role, >=48dp targets (P6).
 export * from './theme/ThemeProvider';
+export * from './theme/elevation';
 export * from './hooks/useBreakpoint';
 export * from './hooks/useFontScale';
 export * from './primitives/Text';

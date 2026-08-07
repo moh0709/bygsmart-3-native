@@ -1,5 +1,6 @@
 import { Pressable, ActivityIndicator, type PressableProps } from 'react-native';
 import { useTheme, type Theme } from '../theme/ThemeProvider';
+import { elevate } from '../theme/elevation';
 import { Text } from './Text';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline';
@@ -83,7 +84,7 @@ export function Button({
           borderRadius: t.radii.md,
           backgroundColor: p.bg,
           ...(p.border && { borderWidth: variant === 'outline' ? 1.5 : 1, borderColor: p.border }),
-          ...(glow ?? {}),
+          ...elevate(glow ?? {}),
           alignItems: 'center',
           justifyContent: 'center',
           flexDirection: 'row',

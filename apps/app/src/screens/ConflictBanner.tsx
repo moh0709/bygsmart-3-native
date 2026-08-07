@@ -1,7 +1,7 @@
 // Surfaces parked sync conflicts and lets the user resolve each one: keep the server's
 // version or keep theirs (re-queued on top). Renders nothing when there are no
 // conflicts. Reads conflicts + resolveConflict from the data context (AR-05).
-import { VStack, HStack, Text, Card, Button, Badge } from '@bygsmart/ui';
+import { VStack, HStack, Card, Button, Badge, Alert } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 import { useData } from '../db/react';
 
@@ -18,13 +18,8 @@ export function ConflictBanner(): React.JSX.Element | null {
 
   return (
     <Card>
-      <VStack gap="sm">
-        <HStack gap="sm" align="center">
-          <Badge label={t('conflict.title')} tone="warning" />
-          <Text variant="body" color="textSecondary">
-            {t('conflict.body')}
-          </Text>
-        </HStack>
+      <VStack gap="md">
+        <Alert variant="warning" title={t('conflict.title')} message={t('conflict.body')} />
         {conflicts.map((c) => (
           <VStack key={c.id} gap="xs">
             <HStack gap="sm" style={{ flexWrap: 'wrap' }}>
@@ -32,8 +27,8 @@ export function ConflictBanner(): React.JSX.Element | null {
               <Badge label={`${t('conflict.server')}: ${describe(c.server)}`} tone="neutral" />
             </HStack>
             <HStack gap="sm" style={{ flexWrap: 'wrap' }}>
-              <Button title={t('conflict.keepServer')} variant="secondary" onPress={() => resolveConflict(c.id, 'server')} />
-              <Button title={t('conflict.keepMine')} onPress={() => resolveConflict(c.id, 'mine')} />
+              <Button title={t('conflict.keepServer')} variant="secondary" size="sm" onPress={() => resolveConflict(c.id, 'server')} />
+              <Button title={t('conflict.keepMine')} size="sm" onPress={() => resolveConflict(c.id, 'mine')} />
             </HStack>
           </VStack>
         ))}

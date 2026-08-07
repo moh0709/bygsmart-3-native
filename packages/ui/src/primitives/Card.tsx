@@ -1,5 +1,6 @@
 import { Pressable, View, type ViewProps } from 'react-native';
 import { useTheme } from '../theme/ThemeProvider';
+import { elevate } from '../theme/elevation';
 
 export interface CardProps extends ViewProps {
   onPress?: () => void;
@@ -20,7 +21,7 @@ export function Card({ onPress, padded = true, flat, style, children, ...props }
     borderRadius: t.radii.lg,
     borderWidth: 1,
     borderColor: t.colors.border,
-    ...(flat ? {} : t.elevation.card),
+    ...(flat ? {} : elevate(t.elevation.card)),
     ...(padded && { padding: t.spacing.lg }),
   } as const;
 
