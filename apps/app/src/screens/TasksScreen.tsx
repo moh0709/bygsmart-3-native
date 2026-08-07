@@ -3,7 +3,7 @@
 // updated_at, sent as baseVersion for optimistic concurrency) applied optimistically
 // and queued in the outbox. Reads are reactive (useLiveList). AR-05: ui/i18n/db only.
 import { ScrollView } from 'react-native';
-import { Screen, VStack, HStack, Text, Card, Badge, Checkbox, Divider, EmptyState, useTheme } from '@bygsmart/ui';
+import { Screen, VStack, HStack, Text, Card, Badge, Checkbox, Divider, EmptyState, IconBubble, useTheme } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 import { useData, useLiveList, useWrite } from '../db/react';
 import type { Row } from '../db';
@@ -36,9 +36,12 @@ export function TasksScreen(): React.JSX.Element {
               <Card key={g.projectId}>
                 <VStack gap="sm">
                   <HStack justify="space-between" align="center" gap="sm">
-                    <Text variant="heading" numberOfLines={1} style={{ flex: 1 }}>
-                      {g.projectName ?? t('tasks.noProject')}
-                    </Text>
+                    <HStack gap="sm" align="center" style={{ flex: 1 }}>
+                      <IconBubble icon="folder" tone={openCount > 0 ? 'brand' : 'neutral'} size={34} />
+                      <Text variant="heading" numberOfLines={1} style={{ flex: 1 }}>
+                        {g.projectName ?? t('tasks.noProject')}
+                      </Text>
+                    </HStack>
                     <Badge
                       label={openCount > 0 ? String(openCount) : '✓'}
                       tone={openCount > 0 ? 'primary' : 'success'}

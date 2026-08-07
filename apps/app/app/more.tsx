@@ -11,6 +11,7 @@ import {
   Avatar,
   ListItem,
   Divider,
+  IconBubble,
   type BadgeTone,
 } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
@@ -78,13 +79,13 @@ function SecurityCard() {
         <Divider />
         <ListItem
           title={t('security.manage')}
-          leading="🔐"
+          leading={<IconBubble icon="lock" tone="brand" size={36} />}
           trailing={chevron}
           onPress={() => router.navigate('/mfa-enroll' as Href)}
         />
         <ListItem
           title={t('security.changePassword')}
-          leading="🔑"
+          leading={<IconBubble icon="key" tone="info" size={36} />}
           trailing={chevron}
           onPress={() => router.navigate('/change-password' as Href)}
         />

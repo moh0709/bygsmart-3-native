@@ -6,8 +6,8 @@ import { Text } from './Text';
 export interface ListItemProps extends Omit<ViewProps, 'children'> {
   title: string;
   subtitle?: string;
-  /** Leading glyph (emoji/text today; icon node after 1.6). */
-  leading?: string;
+  /** Leading slot — a string glyph is rendered as text; any node (e.g. IconBubble) as-is. */
+  leading?: ReactNode;
   trailing?: ReactNode;
   onPress?: () => void;
 }
@@ -29,7 +29,13 @@ export function ListItem({ title, subtitle, leading, trailing, onPress, style, .
       ]}
       {...props}
     >
-      {leading ? <Text style={{ fontSize: t.fontSizes.xl }}>{leading}</Text> : null}
+      {leading != null ? (
+        typeof leading === 'string' ? (
+          <Text style={{ fontSize: t.fontSizes.xl }}>{leading}</Text>
+        ) : (
+          leading
+        )
+      ) : null}
       <View style={{ flex: 1, gap: 2 }}>
         <Text variant="body" numberOfLines={1}>
           {title}

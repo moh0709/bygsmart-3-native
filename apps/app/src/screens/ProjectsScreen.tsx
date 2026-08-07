@@ -1,7 +1,7 @@
-// Projekter — live-reads projects + tasks from the local repository and shows each project
-// as a card (name, status, task-progress). Creating a project is optimistic + queued
-// through useWrite. Presentation adapts the 2.1 project cards; the data path is unchanged.
-// No sync-engine imports (AR-05) — only ui, i18n, and the db hooks.
+// Projekter — live-reads projects + tasks and shows each as a rich card (gradient icon
+// tile + name + status + task-progress). Creating a project is optimistic + queued through
+// useWrite. Presentation adapts the 2.1 project cards; data path unchanged. AR-05: only ui,
+// i18n, and the db hooks.
 import { ScrollView } from 'react-native';
 import {
   Screen,
@@ -13,22 +13,31 @@ import {
   Badge,
   ProgressBar,
   EmptyState,
+  IconBubble,
   useTheme,
+  type BubbleTone,
 } from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 import { useData, useLiveList, useWrite, newMutationId } from '../db/react';
 import { projectSummaries } from './selectors';
 
 export interface ProjectsScreenProps {
-  /** Navigate to a project's detail. Wired by the app-shell route (keeps expo-router out of screens). */
   onOpenProject?: (id: string) => void;
 }
 
-/** Status → badge tone. "I gang" is active (success), "Afsluttet" done (neutral), else primary. */
+const DONE_STATUSES = ['Afsluttet', 'Arkiveret', 'done', 'archived'];
+
+/** Status → status-chip tone. */
 function statusTone(status: string): 'success' | 'neutral' | 'primary' {
-  if (status === 'I gang') return 'success';
-  if (status === 'Afsluttet' || status === 'Arkiveret') return 'neutral';
+  if (status === 'I gang' || status === 'active') return 'success';
+  if (DONE_STATUSES.includes(status)) return 'neutral';
   return 'primary';
+}
+/** Status → icon-bubble tone. */
+function bubbleTone(status: string): BubbleTone {
+  if (DONE_STATUSES.includes(status)) return 'neutral';
+  if (status === 'planning' || status === 'Planlægning') return 'info';
+  return 'brand';
 }
 
 export function ProjectsScreen({ onOpenProject }: ProjectsScreenProps = {}): React.JSX.Element {
@@ -43,7 +52,6 @@ export function ProjectsScreen({ onOpenProject }: ProjectsScreenProps = {}): Rea
   const addProject = (): void => {
     const n = projects.length + 1;
     void write.upsert('projects', {
-      // RLS: projects_insert_own requires owner_id = auth.uid(); stamp it when signed in.
       id: newMutationId(),
       updated_at: '',
       name: `${t('projects.defaultName')} ${n}`,
@@ -78,31 +86,34 @@ export function ProjectsScreen({ onOpenProject }: ProjectsScreenProps = {}): Rea
               const id = String(s.project.id);
               return (
                 <Card key={id} onPress={onOpenProject ? () => onOpenProject(id) : undefined}>
-                  <VStack gap="sm">
-                    <HStack justify="space-between" align="center" gap="sm">
-                      <Text variant="heading" numberOfLines={1} style={{ flex: 1 }}>
-                        {String(s.project.name)}
-                      </Text>
-                      {status ? <Badge label={status} tone={statusTone(status)} /> : null}
-                    </HStack>
-
-                    {s.total > 0 ? (
-                      <ProgressBar value={ratio} tone="success" label={String(s.project.name)} />
-                    ) : null}
-
-                    <HStack justify="space-between" align="center">
-                      <Text variant="caption" color="textSecondary">
-                        {s.total > 0
-                          ? t('projects.taskSummary', { open: s.open, total: s.total })
-                          : t('projects.noTasks')}
-                      </Text>
-                      {s.total > 0 ? (
-                        <Text variant="caption" color="textTertiary">
-                          {done}/{s.total}
+                  <HStack gap="md" align="flex-start">
+                    <IconBubble icon="folder" tone={bubbleTone(status)} size={44} />
+                    <VStack gap="xs" flex={1}>
+                      <HStack justify="space-between" align="center" gap="sm">
+                        <Text variant="heading" numberOfLines={1} style={{ flex: 1 }}>
+                          {String(s.project.name)}
                         </Text>
+                        {status ? <Badge label={status} tone={statusTone(status)} /> : null}
+                      </HStack>
+
+                      {s.total > 0 ? (
+                        <ProgressBar value={ratio} tone="success" label={String(s.project.name)} />
                       ) : null}
-                    </HStack>
-                  </VStack>
+
+                      <HStack justify="space-between" align="center">
+                        <Text variant="caption" color="textSecondary">
+                          {s.total > 0
+                            ? t('projects.taskSummary', { open: s.open, total: s.total })
+                            : t('projects.noTasks')}
+                        </Text>
+                        {s.total > 0 ? (
+                          <Text variant="caption" color="textTertiary">
+                            {done}/{s.total}
+                          </Text>
+                        ) : null}
+                      </HStack>
+                    </VStack>
+                  </HStack>
                 </Card>
               );
             })}
