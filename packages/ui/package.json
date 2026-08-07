@@ -11,6 +11,7 @@
     "@bygsmart/core": "workspace:*"
   },
   "peerDependencies": {
+    "expo-linear-gradient": "*",
     "react": "*",
     "react-native": "*",
     "react-native-safe-area-context": "*",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@testing-library/react": "^16.1.0",
     "@types/react": "^19.2.0",
+    "expo-linear-gradient": "~56.0.4",
     "jsdom": "^25.0.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

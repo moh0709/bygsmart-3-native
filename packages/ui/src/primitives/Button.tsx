@@ -1,4 +1,5 @@
-import { Pressable, ActivityIndicator, type PressableProps } from 'react-native';
+import { Pressable, ActivityIndicator, StyleSheet, type PressableProps } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme, type Theme } from '../theme/ThemeProvider';
 import { elevate } from '../theme/elevation';
 import { Text } from './Text';
@@ -96,6 +97,16 @@ export function Button({
       ]}
       {...props}
     >
+      {/* Brand gradient fill on the primary CTA (2.1 richness), behind the label. */}
+      {variant === 'primary' && !isDisabled ? (
+        <LinearGradient
+          colors={[t.colors.primary, t.colors.primaryStrong]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[StyleSheet.absoluteFill, { borderRadius: t.radii.md }]}
+          pointerEvents="none"
+        />
+      ) : null}
       {loading ? <ActivityIndicator color={t.colors[p.fg]} /> : null}
       <Text variant="label" color={p.fg} style={{ fontSize: s.font, fontWeight: '600' }}>
         {title}
