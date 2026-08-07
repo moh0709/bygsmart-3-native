@@ -26,7 +26,13 @@ import { openTasksWithProject, danishGreeting, formatDanishDate, firstNameOf } f
 import { SyncBar } from './SyncBar';
 import { ConflictBanner } from './ConflictBanner';
 
-export function MinDagScreen(): React.JSX.Element {
+export function MinDagScreen({
+  onOpenProjects,
+  onOpenTasks,
+}: {
+  onOpenProjects?: () => void;
+  onOpenTasks?: () => void;
+} = {}): React.JSX.Element {
   const { t } = useTranslation();
   const theme = useTheme();
   const { hydration } = useData();
@@ -72,12 +78,12 @@ export function MinDagScreen(): React.JSX.Element {
         <VStack gap="sm">
           <Text variant="heading">{t('minDag.overview')}</Text>
           <HStack gap="sm">
-            <StatCard value={projects.length} label={t('minDag.statProjects')} icon="folder" tone="brand" />
-            <StatCard value={openCount} label={t('minDag.statOpen')} icon="clock" tone="warning" />
+            <StatCard value={projects.length} label={t('minDag.statProjects')} icon="folder" tone="brand" onPress={onOpenProjects} />
+            <StatCard value={openCount} label={t('minDag.statOpen')} icon="clock" tone="warning" onPress={onOpenTasks} />
           </HStack>
           <HStack gap="sm">
-            <StatCard value={doneCount} label={t('minDag.statDone')} icon="check" tone="success" />
-            <StatCard value={tasks.length} label={t('minDag.statTotal')} icon="tasks" tone="info" />
+            <StatCard value={doneCount} label={t('minDag.statDone')} icon="check" tone="success" onPress={onOpenTasks} />
+            <StatCard value={tasks.length} label={t('minDag.statTotal')} icon="tasks" tone="info" onPress={onOpenTasks} />
           </HStack>
         </VStack>
 
