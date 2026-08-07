@@ -1,8 +1,7 @@
-// Min Dag — the home worklist for a field app: every open task across all projects in
-// one focused list, each with a one-tap "done". Presentation adapts the 2.1 home (greeting
-// + date header, section structure, elevated cards); the data path is unchanged. Marking
-// done is an optimistic UPDATE through useWrite (queued in the outbox). Reactive reads keep
-// it in sync as tasks change on any screen. AR-05: ui/i18n/api-client/db only.
+// Min Dag — the home worklist for a field app. Presentation adapts the 2.1 home: avatar +
+// greeting header, a "Mit overblik" KPI grid (gradient icon bubbles), then the day's tasks
+// in an elevated card. The data path is unchanged (reactive reads + optimistic done through
+// useWrite/outbox). AR-05: ui/i18n/api-client/db only.
 import { ScrollView } from 'react-native';
 import {
   Screen,
@@ -11,6 +10,8 @@ import {
   Text,
   Card,
   Badge,
+  Avatar,
+  StatCard,
   IconButton,
   ListItem,
   Divider,
@@ -36,9 +37,13 @@ export function MinDagScreen(): React.JSX.Element {
   const open = openTasksWithProject(tasks, projects);
 
   const now = new Date();
-  const firstName = firstNameOf(auth?.user?.user_metadata?.name);
+  const displayName = (auth?.user?.user_metadata?.name as string | undefined) ?? undefined;
+  const firstName = firstNameOf(displayName);
   const greeting = danishGreeting(now) + (firstName ? `, ${firstName}` : '');
   const dateLine = formatDanishDate(now);
+
+  const doneCount = tasks.filter((task) => task.status === 'done').length;
+  const openCount = tasks.length - doneCount;
 
   const markDone = (task: Row): void => {
     void write.upsert('tasks', { ...task, status: 'done' });
@@ -47,17 +52,36 @@ export function MinDagScreen(): React.JSX.Element {
   return (
     <Screen edges={['top']} padding="none">
       <ScrollView contentContainerStyle={{ padding: theme.spacing.lg, gap: theme.spacing.lg }}>
-        {/* Greeting + date — the 2.1 home header signature */}
-        <VStack gap="none">
-          <Text variant="title">{greeting}</Text>
-          <Text variant="caption" color="textTertiary" style={{ marginTop: 2 }}>
-            {dateLine}
-          </Text>
-        </VStack>
+        {/* Header: avatar + date + greeting (2.1 home signature) */}
+        <HStack gap="md" align="center">
+          <Avatar name={displayName || 'BygSmart'} />
+          <VStack gap="none" flex={1}>
+            <Text variant="caption" color="textTertiary">
+              {dateLine}
+            </Text>
+            <Text variant="title" numberOfLines={1}>
+              {greeting}
+            </Text>
+          </VStack>
+        </HStack>
 
         <SyncBar />
         <ConflictBanner />
 
+        {/* Mit overblik — KPI grid with gradient icon bubbles */}
+        <VStack gap="sm">
+          <Text variant="heading">{t('minDag.overview')}</Text>
+          <HStack gap="sm">
+            <StatCard value={projects.length} label={t('minDag.statProjects')} icon="folder" tone="brand" />
+            <StatCard value={openCount} label={t('minDag.statOpen')} icon="clock" tone="warning" />
+          </HStack>
+          <HStack gap="sm">
+            <StatCard value={doneCount} label={t('minDag.statDone')} icon="check" tone="success" />
+            <StatCard value={tasks.length} label={t('minDag.statTotal')} icon="tasks" tone="info" />
+          </HStack>
+        </VStack>
+
+        {/* Dagens opgaver */}
         {open.length === 0 ? (
           <EmptyState
             title={hydration.ready ? t('minDag.allDoneTitle') : t('projects.syncing')}
@@ -78,7 +102,6 @@ export function MinDagScreen(): React.JSX.Element {
                     <ListItem
                       title={String(o.task.title)}
                       subtitle={o.projectName ?? t('tasks.noProject')}
-                      leading="🔨"
                       trailing={
                         <IconButton
                           icon="✓"

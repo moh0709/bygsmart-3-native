@@ -20,6 +20,14 @@ export const ICON_NAMES = [
   'clock',
   'camera',
   'document',
+  'folder',
+  'cart',
+  'message',
+  'users',
+  'bell',
+  'trendingUp',
+  'lock',
+  'key',
 ] as const;
 
 export type IconName = (typeof ICON_NAMES)[number];
