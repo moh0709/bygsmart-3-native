@@ -162,6 +162,11 @@ export const da = {
     done: 'Færdig',
     noProject: 'Uden projekt',
     markDone: 'Markér som færdig',
+    filterAll: 'Alle',
+    filterOpen: 'Åbne',
+    filterDone: 'Færdige',
+    noneMatch: 'Ingen opgaver matcher',
+    noneMatchBody: 'Prøv et andet filter.',
   },
   capabilities: {
     title: 'Offline-kapacitet',

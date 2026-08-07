@@ -1,13 +1,28 @@
-// Opgaver — tasks grouped by project, each with a done/open toggle. Toggling flips the
-// task's status through useWrite, which is an UPDATE (the row already has an
-// updated_at, sent as baseVersion for optimistic concurrency) applied optimistically
-// and queued in the outbox. Reads are reactive (useLiveList). AR-05: ui/i18n/db only.
+// Opgaver — tasks grouped by project, with a status filter (Alle/Åbne/Færdige) and a
+// done/open toggle. Toggling flips the task's status through useWrite (optimistic UPDATE,
+// queued in the outbox). Reads are reactive (useLiveList). AR-05: ui/i18n/db only.
+import { useState } from 'react';
 import { ScrollView } from 'react-native';
-import { Screen, VStack, HStack, Text, Card, Badge, Checkbox, Divider, EmptyState, IconBubble, useTheme } from '@bygsmart/ui';
+import {
+  Screen,
+  VStack,
+  HStack,
+  Text,
+  Card,
+  Badge,
+  Checkbox,
+  Divider,
+  EmptyState,
+  IconBubble,
+  SegmentedControl,
+  useTheme,
+} from '@bygsmart/ui';
 import { useTranslation } from '@bygsmart/i18n';
 import { useData, useLiveList, useWrite } from '../db/react';
 import type { Row } from '../db';
 import { groupTasksByProject } from './selectors';
+
+type TaskFilter = 'all' | 'open' | 'done';
 
 export function TasksScreen(): React.JSX.Element {
   const { t } = useTranslation();
@@ -16,7 +31,13 @@ export function TasksScreen(): React.JSX.Element {
   const tasks = useLiveList('tasks');
   const projects = useLiveList('projects');
   const write = useWrite();
-  const groups = groupTasksByProject(tasks, projects);
+  const [filter, setFilter] = useState<TaskFilter>('all');
+
+  const filtered =
+    filter === 'all'
+      ? tasks
+      : tasks.filter((tk) => (filter === 'done' ? tk.status === 'done' : tk.status !== 'done'));
+  const groups = groupTasksByProject(filtered, projects);
 
   const toggle = (task: Row, done: boolean): void => {
     void write.upsert('tasks', { ...task, status: done ? 'done' : 'open' });
@@ -27,8 +48,24 @@ export function TasksScreen(): React.JSX.Element {
       <ScrollView contentContainerStyle={{ padding: theme.spacing.lg, gap: theme.spacing.lg }}>
         <Text variant="title">{t('tasks.title')}</Text>
 
-        {groups.length === 0 && hydration.ready ? (
-          <EmptyState title={t('tasks.emptyTitle')} description={t('tasks.emptyBody')} icon="☑️" />
+        <SegmentedControl<TaskFilter>
+          segments={[
+            { value: 'all', label: t('tasks.filterAll') },
+            { value: 'open', label: t('tasks.filterOpen') },
+            { value: 'done', label: t('tasks.filterDone') },
+          ]}
+          value={filter}
+          onChange={setFilter}
+        />
+
+        {groups.length === 0 ? (
+          hydration.ready ? (
+            filter === 'all' ? (
+              <EmptyState title={t('tasks.emptyTitle')} description={t('tasks.emptyBody')} icon="☑️" />
+            ) : (
+              <EmptyState title={t('tasks.noneMatch')} description={t('tasks.noneMatchBody')} icon="🔍" />
+            )
+          ) : null
         ) : (
           groups.map((g) => {
             const openCount = g.tasks.filter((task) => task.status !== 'done').length;
